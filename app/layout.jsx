@@ -1,6 +1,8 @@
 import { Press_Start_2P } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/Header";
 
+// our gaming font
 const press = Press_Start_2P({
   subsets: ["latin"],
   weight: "400",
@@ -16,6 +18,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={press.variable}>
+        <Header />
         {children}
       </body>
     </html>
