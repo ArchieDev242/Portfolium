@@ -12,7 +12,7 @@ const Header = () => {
         <div className="container mx-auto flex justify-between items-center">
             {/* our logo */}
             <Link href="/"> 
-                <h1 className="text-4xl font-semibold">Maksym <span className="text-accent-default">.</span></h1>
+                <h1 className="text-4xl font-semibold">Archie242 <span className="text-accent-default">.</span></h1>
             </Link>
 
             {/* nav + btn hire */}

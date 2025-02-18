@@ -1,6 +1,7 @@
 import { Press_Start_2P } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import PageTransition from "@/components/PageTransition";
 
 // our gaming font
 const press = Press_Start_2P({
@@ -19,7 +20,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={press.variable}>
         <Header />
-        {children}
+          <PageTransition>
+            {children}
+          </PageTransition>
       </body>
     </html>
   );
