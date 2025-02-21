@@ -4,7 +4,9 @@ import { Button } from "./ui/button";
 // components
 
 import Nav from "./Nav";
+import MobileNav from "./MobileNav";
 
+// | our header stuff |
 
 const Header = () => {
     return(
@@ -25,7 +27,9 @@ const Header = () => {
 
             {/* mobile port */}
 
-            <div className="xl:hidden">Mobile Nav</div>
+            <div className="xl:hidden">
+                <MobileNav />
+            </div>
 
         </div>
     </header>
