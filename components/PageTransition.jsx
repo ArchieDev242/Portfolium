@@ -13,7 +13,7 @@ const PageTransition = ({ children }) => {
           key={pathname}
           initial={{ opacity: 1 }}
           animate={{ opacity: 0 }}
-          exit={{ opacity: 1, transition: { duration: 0 } }} // Миттєвий вихід
+          exit={{ opacity: 1, transition: { duration: 0 } }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="fixed inset-0 bg-primary z-50 pointer-events-none"
         />
