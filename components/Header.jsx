@@ -14,14 +14,14 @@ const Header = () => {
         <div className="container mx-auto flex justify-between items-center">
             {/* our logo */}
             <Link href="/"> 
-                <h1 className="text-4xl font-semibold">Archie242 <span className="text-accent-default">.</span></h1>
+                <h1 className="text-4xl font-semibold">Archie242 <span className="text-accent-default animate-glow">.</span></h1>
             </Link>
 
             {/* nav + btn hire */}
             <div className="hidden xl:flex items-center gap-8">
                 <Nav />
                 <Link href="/contacts">
-                    <Button>Hire Me</Button>
+                    <Button className="relative overflow-hidden group bg-transparent transition-colors duration-500 hover:bg-accent-default hover:text-black rounded-full px-6 py-3 border-none flash-animation">Hire Me</Button>
                 </Link>
             </div>
 

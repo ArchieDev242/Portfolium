@@ -29,15 +29,9 @@ const Home = () => {
 
           {/* btn + socials */}
           <div className = "flex flex-col xl:flex-row items-center gap-8">
-            <Button variant = "outline" size = "lg" className = "uppercase flex items-center gap-2 text-accent-default relative overflow-hidden group bg-transparent transition-colors duration-500 hover:bg-accent-default hover:text-black rounded-full px-6 py-3 border-none">
+            <Button variant = "outline" size = "lg" className = "uppercase flex items-center gap-2 text-accent-default relative overflow-hidden group bg-transparent transition-colors duration-500 hover:bg-accent-default hover:text-black rounded-full px-6 py-3 border-none flash-animation">
               <span>Download CV</span>
               <FiDownload className = "text-xl" />
-
-              {/* CV btn border animation */}
-
-              <div className = "absolute top-0 left-[-100%] w-full h-[3px] bg-accent-default animate-move-right rounded-full"></div>
-              <div className = "absolute bottom-0 right-[-100%] w-full h-[3px] bg-accent-default animate-move-left rounded-full"></div>
-
             </Button>
 
             <div className = "mb-8 xl:mb-0">
