@@ -45,11 +45,13 @@
 
 @keyframes move-right 
 {
-  0% {
+  0% 
+  {
     left: -100%;
   }
   
-  100% {
+  100% 
+  {
     left: 100%;
   }
 }
@@ -57,73 +59,103 @@
 @keyframes move-left 
 {
   0% {
+
     right: -100%;
   }
 
-  100% {
+  100% 
+  {
     right: 100%;
   }
 }
 
-@keyframes border-top {
-  0% {
+@keyframes border-top 
+{
+  0% 
+  {
     transform: translateX(-100%);
   }
-  100% {
+
+  100% 
+  {
     transform: translateX(100%);
   }
 }
 
-@keyframes border-right {
-  0% {
+@keyframes border-right 
+{
+  0% 
+  {
     transform: translateY(-100%);
   }
-  100% {
+
+  100% 
+  {
     transform: translateY(100%);
   }
 }
 
-@keyframes border-bottom {
-  0% {
+@keyframes border-bottom 
+{
+  0% 
+  {
     transform: translateX(100%);
   }
-  100% {
+
+  100% 
+  {
     transform: translateX(-100%);
   }
 }
 
-@keyframes border-left {
-  0% {
+@keyframes border-left 
+{
+  0% 
+  {
     transform: translateY(100%);
   }
-  100% {
+
+  100% 
+  {
     transform: translateY(-100%);
   }
 }
 
-@keyframes flash {
-  0% {
+@keyframes flash 
+{
+  0% 
+  {
     transform: translateX(-100%) rotate(45deg);
   }
-  100% {
+
+  100% 
+  {
     transform: translateX(100%) rotate(45deg);
   }
 }
 
-@keyframes glow {
-  0% {
+@keyframes glow 
+{
+  0% 
+  {
     color: #ff0000;
     text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000;
   }
-  33% {
+
+  33% 
+  {
     color: #00ff00;
     text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00;
   }
-  66% {
+
+  66% 
+  {
     color: #0000ff;
     text-shadow: 0 0 5px #0000ff, 0 0 10px #0000ff, 0 0 15px #0000ff;
   }
-  100% {
+
+  100% 
+  {
     color: #ff0000;
     text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000;
   }
@@ -137,7 +169,8 @@
     overflow: hidden;
   }
 
-  .animate-move-right::before {
+  .animate-move-right::before 
+  {
     content: '';
     position: absolute;
     top: 0;
@@ -154,7 +187,8 @@
     overflow: hidden;
   }
 
-  .animate-move-left::before {
+  .animate-move-left::before 
+  {
     content: '';
     position: absolute;
     bottom: 0;
@@ -165,13 +199,15 @@
     animation: move-left 2s linear infinite;
   }
 
-  .border-animation {
+  .border-animation 
+  {
     position: relative;
     overflow: hidden;
   }
 
   .border-animation::before,
-  .border-animation::after {
+  .border-animation::after 
+  {
     content: '';
     position: absolute;
     background: linear-gradient(90deg, transparent, #00ff99, transparent);
@@ -180,16 +216,19 @@
     animation: border-top 2s linear infinite;
   }
 
-  .border-animation::before {
+  .border-animation::before 
+  {
     top: 0;
   }
 
-  .border-animation::after {
+  .border-animation::after 
+  {
     bottom: 0;
   }
 
   .border-animation span::before,
-  .border-animation span::after {
+  .border-animation span::after 
+  {
     content: '';
     position: absolute;
     background: linear-gradient(180deg, transparent, #00ff99, transparent);
@@ -198,21 +237,25 @@
     animation: border-right 2s linear infinite;
   }
 
-  .border-animation span::before {
+  .border-animation span::before 
+  {
     right: 0;
   }
 
-  .border-animation span::after {
+  .border-animation span::after 
+  {
     left: 0;
     animation: border-left 2s linear infinite;
   }
 
-  .flash-animation {
+  .flash-animation 
+  {
     position: relative;
     overflow: hidden;
   }
 
-  .flash-animation::before {
+  .flash-animation::before 
+  {
     content: '';
     position: absolute;
     top: -50%;
@@ -229,11 +272,13 @@
     pointer-events: none;
   }
 
-  .flash-animation:hover::before {
+  .flash-animation:hover::before 
+  {
     animation: flash 1.5s linear infinite;
   }
 
-  .animate-glow {
+  .animate-glow 
+  {
     animation: glow 3s ease-in-out infinite;
   }
 }

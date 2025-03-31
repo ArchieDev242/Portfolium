@@ -10,19 +10,19 @@ import Stats from "@/components/Stats"
 
 const Home = () => {
   return (
-    <section className="h-full">
-      <div className="container mx-auto h-full px-2 xl:px-4">
-        <div className="flex flex-col xl:flex-row items-center justify-between xl:pt-4 xl:pb-16">
+    <section className = "h-full">
+      <div className = "container mx-auto h-full px-2 xl:px-4">
+        <div className = "flex flex-col xl:flex-row items-center justify-between xl:pt-4 xl:pb-16">
           
           {/* TEXT + PHOTO */}
           
-          <div className="text-center xl:text-left order-2 xl:order-none">
-            <span className="text-xl">Game & Software Developer</span>
-            <h1 className="h1 mb-4">
+          <div className = "text-center xl:text-left order-2 xl:order-none">
+            <span className = "text-xl">Game & Software Developer</span>
+            <h1 className = "h1 mb-4">
               Hello, I'm <br /> 
-              <span className="text-accent-default">Maksym Kopychko</span>
+              <span className = "text-accent-default">Maksym Kopychko</span>
             </h1>
-            <p className="prose prose-invert max-w-[500px] mb-6 text-white/80">
+            <p className = "prose prose-invert max-w-[500px] mb-6 text-white/80">
               Passionate about game development, 3D design, and cutting-edge technology. 
               Skilled in Unreal Engine, C++, Lua, Python, and AI-powered tools to craft immersive digital experiences.
             </p>

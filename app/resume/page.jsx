@@ -127,10 +127,10 @@ const Resume = () => {
                     {Experience.items.map((item, index) => (
                       <li
                         key={index}
-                        className="bg-[#232329] h-[184px] py-6 px-4 rounded-xl flex flex-col justify-center items-center gap-1 text-center"
+                        className="bg-[#232329] min-h-[160px] py-8 px-6 rounded-xl flex flex-col justify-center items-center gap-3 text-center group hover:bg-[#2a2a31] transition-colors duration-300"
                       >
                         <span className="text-accent-default lg:text-left">{item.duration}</span>
-                        <h3 className="text-xl max-w-[260px] min-h-[60px] text-center">{item.position}</h3>
+                        <h3 className="text-xl max-w-[280px] text-center">{item.position}</h3>
                         <div className="flex items-center gap-3">
                           <span className="w-[6px] h-[6px] rounded-full bg-accent-default"></span>
                           <p className="text-white/60">{item.company}</p>
@@ -146,18 +146,24 @@ const Resume = () => {
             <TabsContent value="education" className="w-full">
               <div className="flex flex-col gap-8">
                 <h3 className="text-4xl font-bold">{Education.title}</h3>
-                <div className="space-y-6">
-                  {Education.items.map((item, index) => (
-                    <div key={index} className="p-6 bg-muted rounded-xl">
-                      <h4 className="text-2xl font-semibold">{item.title}</h4>
-                      <p className="text-lg text-primary mt-2">{item.institution}</p>
-                      <div className="flex gap-4 mt-2 text-sm text-muted-foreground">
-                        <span>{item.location}</span>
-                        <span>{item.duration}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <ScrollArea className="h-[400px]">
+                  <ul className="grid grid-cols-1 lg:grid-cols-2 gap-[30px]">
+                    {Education.items.map((item, index) => (
+                      <li
+                        key={index}
+                        className="bg-[#232329] min-h-[160px] py-8 px-6 rounded-xl flex flex-col justify-center items-center gap-4 text-center group hover:bg-[#2a2a31] transition-colors duration-300"
+                      >
+                        <span className="text-accent-default text-sm lg:text-left">{item.duration}</span>
+                        <h3 className="text-lg xl:text-xl max-w-[280px] leading-tight text-center">{item.title}</h3>
+                        <div className="flex items-center gap-3">
+                          <span className="w-[6px] h-[6px] rounded-full bg-accent-default"></span>
+                          <p className="text-white/60">{item.institution}</p>
+                        </div>
+                        <p className="text-sm text-white/40">{item.location}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </ScrollArea>
               </div>
             </TabsContent>
 
@@ -165,17 +171,18 @@ const Resume = () => {
             <TabsContent value="skills" className="w-full">
               <div className="flex flex-col gap-8">
                 <h3 className="text-4xl font-bold">{Skills.title}</h3>
-                <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 xl:gap-12">
                   <TooltipProvider>
                     {Skills.items.map((skill, index) => (
                       <li key={index}>
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <div className="group w-full flex flex-col items-center gap-2 p-6 bg-muted rounded-xl hover:bg-primary/10 transition-colors duration-300">
-                              <span className="text-6xl text-white group-hover:text-accent transition-all duration-300">
+                            <div className="group w-full flex flex-col items-center gap-4 p-8 bg-muted rounded-xl hover:bg-primary/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_20px_rgba(0,255,153,0.2)] relative overflow-hidden">
+                              <div className="absolute inset-0 bg-gradient-to-br from-accent-default/0 to-accent-default/0 group-hover:from-accent-default/5 group-hover:to-accent-default/5 transition-all duration-300"></div>
+                              <span className="text-7xl text-white group-hover:text-accent-default group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 relative z-10">
                                 {skill.icon}
                               </span>
-                              <span className="font-medium">{skill.title}</span>
+                              <span className="font-medium text-lg group-hover:text-accent-default transition-colors duration-300 relative z-10">{skill.title}</span>
                             </div>
                           </TooltipTrigger>
                           <TooltipContent>

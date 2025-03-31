@@ -58,7 +58,7 @@ const PageTransition = ({ children }) => {
                 ease: "easeInOut",
                 delay: i * 0.1
               }}
-              className="absolute w-2 h-2 bg-accent-default rounded-full"
+              className = "absolute w-2 h-2 bg-accent-default rounded-full"
             />
           ))}
         </motion.div>
