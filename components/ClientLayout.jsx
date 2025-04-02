@@ -13,11 +13,9 @@ const ClientLayout = ({ children }) => {
     <>
       <Background />
       <Header />
-      <AnimatePresence mode = "wait">
-        <main key = {pathname}>
-          {children}
-        </main>
-      </AnimatePresence>
+      <main>
+        {children}
+      </main>
       <PageTransition />
     </>
   );
