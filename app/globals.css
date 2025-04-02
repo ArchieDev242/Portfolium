@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --accent-default: #00ff99;
+  --accent-hover: #00ff99dd;
+  --accent-active: #00ff99aa;
+  --accent-shadow: #00ff9933;
+  --accent-glow: #00ff9966;
+  --accent-gradient-start: #00ff9922;
+  --accent-gradient-end: #00ff9911;
+}
+
 @layer base 
 {
   body 
@@ -38,7 +48,7 @@
 
   .text-outline-hover
   {
-    -webkit-text-stroke: 1px #0f9;
+    -webkit-text-stroke: 1px var(--accent-default);
   }
 
 }
