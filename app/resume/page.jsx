@@ -10,6 +10,7 @@ import {
   FaUnity,
   FaPython,
   FaGit,
+  FaCode,
 } from "react-icons/fa";
 import {
   Tooltip,
@@ -25,7 +26,10 @@ import {
   SiLua,
   SiBlender,
   SiAdobephotoshop,
+  SiC,
+  SiCinema4D,
 } from "react-icons/si";
+import { DiCsharp } from "react-icons/di";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion } from "framer-motion";
@@ -87,12 +91,20 @@ const Skills = {
     {
       name: "Software Development",
       items: [
+        { title: "C", icon: <SiC /> },
+        { title: "C++", icon: <SiCplusplus /> },
+        { title: "C#", icon: <FaCode /> },
+        { title: "Python", icon: <FaPython /> },
+        { title: "Git", icon: <FaGit /> },
+      ],
+    },
+    {
+      name: "Web Development",
+      items: [
         { title: "JavaScript", icon: <FaJs /> },
         { title: "React.js", icon: <FaReact /> },
         { title: "Next.js", icon: <SiNextdotjs /> },
         { title: "Node.js", icon: <FaNodeJs /> },
-        { title: "Python", icon: <FaPython /> },
-        { title: "Git", icon: <FaGit /> },
       ],
     },
     {
@@ -101,6 +113,8 @@ const Skills = {
         { title: "Unreal Engine", icon: <SiUnrealengine /> },
         { title: "Unity", icon: <FaUnity /> },
         { title: "C++", icon: <SiCplusplus /> },
+        { title: "C", icon: <SiC /> },
+        { title: "C#", icon: <FaCode /> },
         { title: "Lua", icon: <SiLua /> },
       ],
     },
@@ -117,6 +131,7 @@ const Skills = {
       items: [
         { title: "Figma", icon: <FaFigma /> },
         { title: "Blender", icon: <SiBlender /> },
+        { title: "Cinema 4D", icon: <SiCinema4D /> },
         { title: "Photoshop", icon: <SiAdobephotoshop /> },
       ],
     },
