@@ -22,8 +22,8 @@ const Background = () => {
         className = "absolute inset-0" 
         style = {{
           backgroundImage: `
-            linear-gradient(to right, rgba(0,255,153,0.1) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0,255,153,0.1) 1px, transparent 1px)
+            linear-gradient(to right, var(--accent-default, rgba(0,255,153,0.1)) 1px, transparent 1px),
+            linear-gradient(to bottom, var(--accent-default, rgba(0,255,153,0.1)) 1px, transparent 1px)
           `,
           backgroundSize: '50px 50px'
         }}
@@ -35,11 +35,11 @@ const Background = () => {
           className = "absolute top-0 left-0 w-full h-full"
           animate = {{
             background: [
-              "radial-gradient(circle at 20% 20%, rgba(0,255,153,0.15) 0%, rgba(0,0,0,0) 50%)",
-              "radial-gradient(circle at 80% 80%, rgba(0,255,153,0.15) 0%, rgba(0,0,0,0) 50%)",
-              "radial-gradient(circle at 20% 80%, rgba(0,255,153,0.15) 0%, rgba(0,0,0,0) 50%)",
-              "radial-gradient(circle at 80% 20%, rgba(0,255,153,0.15) 0%, rgba(0,0,0,0) 50%)",
-              "radial-gradient(circle at 20% 20%, rgba(0,255,153,0.15) 0%, rgba(0,0,0,0) 50%)"
+              "radial-gradient(circle at 20% 20%, var(--accent-shadow, rgba(0,255,153,0.15)) 0%, rgba(0,0,0,0) 50%)",
+              "radial-gradient(circle at 80% 80%, var(--accent-shadow, rgba(0,255,153,0.15)) 0%, rgba(0,0,0,0) 50%)",
+              "radial-gradient(circle at 20% 80%, var(--accent-shadow, rgba(0,255,153,0.15)) 0%, rgba(0,0,0,0) 50%)",
+              "radial-gradient(circle at 80% 20%, var(--accent-shadow, rgba(0,255,153,0.15)) 0%, rgba(0,0,0,0) 50%)",
+              "radial-gradient(circle at 20% 20%, var(--accent-shadow, rgba(0,255,153,0.15)) 0%, rgba(0,0,0,0) 50%)"
             ]
           }}
           transition = {{
@@ -78,4 +78,4 @@ const Background = () => {
   );
 };
 
-export default Background; 
+export default Background;

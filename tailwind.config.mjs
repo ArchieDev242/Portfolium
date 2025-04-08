@@ -20,7 +20,7 @@ export default {
 	  },
 	  extend: {
 		fontFamily: {
-		  primary: ["var(--font-press-start)", "monospace"] // Виправлено синтаксис
+		  primary: ["var(--font-press-start)", "monospace"]
 		},
 		colors: {
 		//   background: 'var(--background)',
@@ -28,8 +28,11 @@ export default {
 		primary: "#1c1c22",
 		
 		accent: {
-			default: "#00ff99",
-			hover: "#00e187",
+			default: "var(--accent-default)",
+			hover: "var(--accent-hover)",
+            active: "var(--accent-active)",
+            shadow: "var(--accent-shadow)",
+            glow: "var(--accent-glow)"
 		},
 		},
 		borderRadius: {
