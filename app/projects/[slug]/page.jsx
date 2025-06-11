@@ -166,4 +166,9 @@ const ProjectPage = ({ params }) => {
   );
 };
 
-export default ProjectPage; 
+export async function generateStaticParams() 
+{
+  return [];
+}
+
+export default ProjectPage;
