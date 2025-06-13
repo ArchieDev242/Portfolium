@@ -15,7 +15,9 @@ const Skills = () => {
   // Handler for minigame completion
   const handleMinigameComplete = (score) => {
     setMinigameScore(score);
-    if (score > 20) {
+    
+    if(score > 20) 
+      {
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 3000);
     }
@@ -116,7 +118,7 @@ const Skills = () => {
       {/* Confetti for high score celebration */}
       {showConfetti && (
         <div className = "fixed inset-0 pointer-events-none z-50">
-          {/* Add confetti component if you have a library */}
+
           <div className = "absolute inset-0 flex items-center justify-center">
             <motion.div 
               className = "text-6xl"

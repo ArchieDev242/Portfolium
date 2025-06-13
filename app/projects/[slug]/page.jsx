@@ -1,11 +1,29 @@
 import ProjectPageClient from './ProjectPageClient';
+import { getAllProjects } from '@/data/projects';
 
-// Server component that exports generateStaticParams
 export async function generateStaticParams() {
-  // Return at least one static param to satisfy Next.js build requirements
-  return [
-    { slug: 'example-project' }
-  ];
+  const projects = getAllProjects();
+  
+  return projects.map((project) => ({
+    slug: project.slug,
+  }));
+}
+
+export async function generateMetadata({ params }) 
+{
+  const project = getAllProjects().find(p => p.slug === params.slug);
+  
+  if(!project) 
+    {
+    return {
+      title: 'Project Not Found',
+    };
+  }
+  
+  return {
+    title: `${project.title} | My Projects`,
+    description: project.description,
+  };
 }
 
 const ProjectPage = ({ params }) => {

@@ -46,6 +46,16 @@ body {
   @apply text-base font-bold leading-tight;
 }
 
+/* Стилі для іконок навичок */
+.skill-icon {
+  @apply text-6xl text-white transition-all duration-300 relative z-10;
+}
+
+.skill-icon:hover {
+  color: var(--accent-default);
+  transform: scale(1.1) rotate(3deg);
+}
+
 /* Стилі для тексту з піксельним виглядом */
 .pixel-text {
   font-family: 'Press Start 2P', 'Courier New', monospace;
@@ -546,7 +556,7 @@ body {
     background: linear-gradient(
       45deg,
       transparent 0%,
-      rgba(0, 255, 153, 0.1) 50%,
+      var(--accent-shadow) 50%,
       transparent 100%
     );
     animation: flash 3s linear infinite;

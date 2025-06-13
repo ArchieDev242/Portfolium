@@ -24,16 +24,13 @@ const ThemeSettings = () => {
   }, []);
 
   const updateThemeColors = (color) => {
-    // Оновлюємо основні кольори
     document.documentElement.style.setProperty("--accent-default", color);
     document.documentElement.style.setProperty("--accent-hover", `${color}dd`);
     document.documentElement.style.setProperty("--accent-active", `${color}aa`);
     
-    // Оновлюємо тіні
     document.documentElement.style.setProperty("--accent-shadow", `${color}33`);
     document.documentElement.style.setProperty("--accent-glow", `${color}66`);
     
-    // Оновлюємо градієнти
     document.documentElement.style.setProperty("--accent-gradient-start", `${color}22`);
     document.documentElement.style.setProperty("--accent-gradient-end", `${color}11`);
   };
@@ -47,58 +44,61 @@ const ThemeSettings = () => {
   return (
     <>
       <button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 p-3 bg-accent-default/10 hover:bg-accent-default/20 rounded-full transition-colors duration-300"
+        onClick = {() => setIsOpen(true)}
+        className = "fixed bottom-6 right-6 z-50 p-3 bg-accent-default/10 hover:bg-accent-default/20 rounded-full transition-colors duration-300"
       >
-        <FaPalette className="w-6 h-6 text-accent-default" />
+        <FaPalette className = "w-6 h-6 text-accent-default" />
       </button>
 
       <AnimatePresence>
         {isOpen && (
           <>
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 z-50"
-              onClick={() => setIsOpen(false)}
+              initial = {{ opacity: 0 }}
+              animate = {{ opacity: 1 }}
+              exit = {{ opacity: 0 }}
+              className = "fixed inset-0 bg-black/50 z-50"
+              onClick = {() => setIsOpen(false)}
             />
             <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 20 }}
-              className="fixed right-0 top-0 h-full w-80 bg-background border-l border-accent-default/20 p-6 z-50"
+              initial = {{ x: "100%" }}
+              animate = {{ x: 0 }}
+              exit = {{ x: "100%" }}
+              transition = {{ type: "spring", damping: 20 }}
+              className = "fixed right-0 top-0 h-full w-80 bg-background border-l border-accent-default/20 p-6 z-50"
             >
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-bold">Theme Settings</h3>
+              <div className = "flex justify-between items-center mb-6">
+                <h3 className = "text-xl font-bold">Theme Settings</h3>
                 <button
-                  onClick={() => setIsOpen(false)}
-                  className="p-2 hover:bg-accent-default/10 rounded-full transition-colors duration-300"
+                  onClick = {() => setIsOpen(false)}
+                  className = "p-2 hover:bg-accent-default/10 rounded-full transition-colors duration-300"
                 >
-                  <FaTimes className="w-5 h-5" />
+                  <FaTimes className = "w-5 h-5" />
                 </button>
               </div>
 
-              <div className="space-y-4">
-                <h4 className="text-lg font-medium">Accent Color</h4>
-                <div className="grid grid-cols-3 gap-4">
+              <div className = "space-y-4">
+                <h4 className = "text-lg font-medium">Accent Color</h4>
+                <div className = "grid grid-cols-3 gap-3">
                   {colors.map((color) => (
-                    <button
-                      key={color.name}
-                      onClick={() => handleColorChange(color)}
-                      className={`p-4 rounded-lg transition-all duration-300 ${
-                        currentColor === color.name
-                          ? "bg-accent-default/20 ring-2 ring-accent-default"
-                          : "bg-accent-default/10 hover:bg-accent-default/20"
-                      }`}
-                    >
-                      <div
-                        className="w-full h-8 rounded-md mb-2"
-                        style={{ backgroundColor: color.value }}
-                      />
-                      <span className="text-sm capitalize">{color.name}</span>
-                    </button>
+                    <div key = {color.name} className = "flex flex-col items-center">
+                      <button
+                        onClick = {() => handleColorChange(color)}
+                        className = {`w-full p-3 rounded-lg transition-all duration-300 flex flex-col items-center ${
+                          currentColor === color.name
+                            ? "bg-accent-default/20 ring-2 ring-accent-default"
+                            : "bg-accent-default/10 hover:bg-accent-default/20"
+                        }`}
+                      >
+                        <div
+                          className = "w-full h-8 rounded-md mb-2"
+                          style = {{ backgroundColor: color.value }}
+                        />
+                      </button>
+                      <span className = "text-xs text-center mt-1 text-white/80 whitespace-nowrap">
+                        {color.name}
+                      </span>
+                    </div>
                   ))}
                 </div>
               </div>

@@ -1,6 +1,9 @@
 "use client";
 
-import {
+import React from 'react';
+
+import 
+{
   FaHtml5,
   FaCss3,
   FaJs,
@@ -12,13 +15,17 @@ import {
   FaGit,
   FaCode,
 } from "react-icons/fa";
-import {
+
+import 
+{
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
+
+import 
+{
   SiTailwindcss,
   SiNextdotjs,
   SiUnrealengine,
@@ -29,6 +36,7 @@ import {
   SiC,
   SiCinema4D,
 } from "react-icons/si";
+
 import { DiCsharp } from "react-icons/di";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -37,14 +45,15 @@ import { useState } from "react";
 
 const About = {
   title: "About Me",
-  text: "Hello, my name is Maksym. I'm a software engineer with a passion for creating engaging and user-friendly web applications. I recently graduated from the prestigious University of Helsinki with a degree in Computer Science and Engineering. I have a strong foundation in HTML, CSS, JavaScript, and React.js, alongside my knowledge of various front-end libraries such as Tailwind CSS and Next.js.",
-  info: [
+  //text: "Hello, my name is Maksym. I'm a software engineer with a passion for creating engaging and user-friendly web applications. I recently graduated from the prestigious University of Helsinki with a degree in Computer Science and Engineering. I have a strong foundation in HTML, CSS, JavaScript, and React.js, alongside my knowledge of various front-end libraries such as Tailwind CSS and Next.js.",
+  info: 
+  [
     { fieldName: "Name", fieldValue: "Maksym Kopychko" },
     { fieldName: "Age", fieldValue: "18" },
     { fieldName: "Phone", fieldValue: "+380669702817" },
-    { fieldName: "Education", fieldValue: "University of Helsinki, Computer Science and Engineering" },
+    { fieldName: "Education", fieldValue: "National Technical University «Kharkiv Polytechnic Institute», Computer Engineering" },
     { fieldName: "Email", fieldValue: "maksym.kopychko@gmail.com" },
-    { fieldName: "Location", fieldValue: "Okhtyrka, Ukraine" },
+    { fieldName: "Location", fieldValue: "Okhtyrka, Sumy Region, Ukraine" },
     { fieldName: "Nationality", fieldValue: "Ukrainian" },
     { fieldName: "GameDev Experience", fieldValue: "2 Years" },
     { fieldName: "Languages", fieldValue: "English, German, Russian, Ukrainian" },
@@ -54,7 +63,8 @@ const About = {
 const Experience = {
   title: "My Experience",
   description: "Professional journey and accomplishments",
-  items: [
+  items: 
+  [
     {
       position: "Software Engineer",
       company: "XYZ Corp.",
@@ -68,18 +78,19 @@ const Experience = {
 const Education = {
   title: "My Education",
   description: "Academic background and qualifications",
-  items: [
+  items: 
+  [
     {
-      title: "Bachelor's Degree in Computer Science",
-      institution: "University of Helsinki",
-      location: "Helsinki, Finland",
-      duration: "2018 - 2022",
+      title: "Bachelor's Degree in Computer Engineering",
+      institution: "National Technical University «Kharkiv Polytechnic Institute»",
+      location: "Kharkiv, Ukraine",
+      duration: "2023 - 2027",
     },
     {
       title: "IT Courses",
       institution: "IT Start School",
-      location: "Online",
-      duration: "2018 - 2022",
+      location: "Okhtyrka, Ukraine",
+      duration: "2021 - 2022",
     },
   ],
 };
@@ -87,10 +98,12 @@ const Education = {
 const Skills = {
   title: "My Skills",
   description: "Technical proficiencies and tools",
-  categories: [
+  categories: 
+  [
     {
       name: "Software Development",
-      items: [
+      items: 
+      [
         { title: "C", icon: <SiC /> },
         { title: "C++", icon: <SiCplusplus /> },
         { title: "C#", icon: <FaCode /> },
@@ -100,7 +113,8 @@ const Skills = {
     },
     {
       name: "Web Development",
-      items: [
+      items: 
+      [
         { title: "JavaScript", icon: <FaJs /> },
         { title: "React.js", icon: <FaReact /> },
         { title: "Next.js", icon: <SiNextdotjs /> },
@@ -109,7 +123,8 @@ const Skills = {
     },
     {
       name: "Game Development",
-      items: [
+      items: 
+      [
         { title: "Unreal Engine", icon: <SiUnrealengine /> },
         { title: "Unity", icon: <FaUnity /> },
         { title: "C++", icon: <SiCplusplus /> },
@@ -120,7 +135,8 @@ const Skills = {
     },
     {
       name: "Web Design",
-      items: [
+      items: 
+      [
         { title: "HTML5", icon: <FaHtml5 /> },
         { title: "CSS3", icon: <FaCss3 /> },
         { title: "Tailwind CSS", icon: <SiTailwindcss /> },
@@ -128,7 +144,8 @@ const Skills = {
     },
     {
       name: "Design Tools",
-      items: [
+      items: 
+      [
         { title: "Figma", icon: <FaFigma /> },
         { title: "Blender", icon: <SiBlender /> },
         { title: "Cinema 4D", icon: <SiCinema4D /> },
@@ -143,10 +160,10 @@ const Resume = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ delay: 0.5, duration: 0.5, ease: "easeInOut" }}
+      initial = {{ opacity: 0 }}
+      animate = {{ opacity: 1 }}
+      exit = {{ opacity: 0 }}
+      transition = {{ delay: 0.5, duration: 0.5, ease: "easeInOut" }}
       className = "min-h-[80vh] flex items-center justify-center py-12 xl:py-0"
     >
       <div className = "container mx-auto">
@@ -161,25 +178,50 @@ const Resume = () => {
           <div className = "min-h-[70vh] w-full">
             {/* About Tab */}
             <TabsContent value = "about" className = "w-full">
-              <div className = "flex flex-col gap-8">
-                <div className = "flex flex-col gap-6 max-w-[800px] mx-auto xl:mx-0">
-                  <h3 className = "text-4xl font-bold text-center xl:text-left">{About.title}</h3>
-                  <p className = "text-lg text-center xl:text-left leading-relaxed text-white/80">{About.text}</p>
+              <div className = "flex flex-col items-center w-full max-w-4xl mx-auto">
+                <div className = "w-full text-center mb-12">
+                  <h3 className = "text-5xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-accent-default to-blue-400">
+                    {About.title}
+                  </h3>
+                  <div className = "h-1 w-24 bg-accent-default mx-auto mb-8 rounded-full" />
+                  <p className = "text-lg text-white/80 max-w-2xl mx-auto leading-relaxed">
+                    Passionate software engineer with expertise in game development and web technologies.
+                    Currently pursuing Computer Engineering at National Technical University «Kharkiv Polytechnic Institute».
+                  </p>
                 </div>
                 
-                <ScrollArea className = "h-[400px] w-full">
+                <div className = "w-full">
+                  <h4 className = "text-2xl font-semibold mb-6 text-center text-white/90">
+                    Personal Information
+                  </h4>
                   <div className = "grid grid-cols-1 md:grid-cols-2 gap-6">
                     {About.info.map((item, index) => (
-                      <div 
-                        key = {index} 
-                        className = "flex flex-col md:flex-row items-start gap-3 p-6 bg-[#232329] rounded-xl group hover:bg-[#2a2a31] transition-colors duration-300"
+                      <motion.div 
+                        key = {index}
+                        initial = {{ opacity: 0, y: 20 }}
+                        animate = {{ opacity: 1, y: 0 }}
+                        transition = {{ duration: 0.3, delay: index * 0.05 }}
+                        className = "flex flex-col p-6 bg-[#1e1e24] rounded-xl border border-white/5 hover:border-accent-default/30 transition-all duration-300"
                       >
-                        <span className = "font-medium text-accent-default shrink-0 min-w-[120px] text-base">{item.fieldName}</span>
-                        <span className = "text-white/80 text-base leading-relaxed break-words w-full">{item.fieldValue}</span>
-                      </div>
+                        <span className = "text-sm font-medium text-accent-default mb-1">
+                          {item.fieldName}
+                        </span>
+                        <span className = "text-white/90 text-base leading-relaxed break-words w-full overflow-hidden">
+                          {item.fieldName === 'Email' ? (
+                            <a 
+                              href = {`mailto:${item.fieldValue}`}
+                              className = "text-accent-default hover:underline break-all inline-block w-full"
+                            >
+                              {item.fieldValue}
+                            </a>
+                          ) : (
+                            item.fieldValue
+                          )}
+                        </span>
+                      </motion.div>
                     ))}
                   </div>
-                </ScrollArea>
+                </div>
               </div>
             </TabsContent>
 
@@ -280,12 +322,14 @@ const Resume = () => {
                             >
                               <Tooltip>
                                 <TooltipTrigger asChild>
-                                  <div className = "group h-full w-full flex flex-col items-center gap-4 p-6 bg-muted rounded-xl hover:bg-primary/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_20px_rgba(0,255,153,0.2)] relative overflow-hidden">
-                                    <div className = "absolute inset-0 bg-gradient-to-br from-accent-default/0 to-accent-default/0 group-hover:from-accent-default/5 group-hover:to-accent-default/5 transition-all duration-300"></div>
-                                    <span className = "text-6xl text-white group-hover:text-accent-default group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 relative z-10">
-                                      {skill.icon}
-                                    </span>
-                                    <span className = "font-medium text-base group-hover:text-accent-default transition-colors duration-300 relative z-10">
+                                  <div className = "group w-full flex flex-col items-center gap-2 p-4 bg-muted rounded-xl hover:bg-primary/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_20px_var(--accent-shadow)] relative overflow-hidden">
+                                    <div 
+                                      className = "absolute inset-0 bg-gradient-to-br from-transparent to-transparent group-hover:from-accent-default/10 group-hover:to-accent-default/5 transition-all duration-300"
+                                    ></div>
+                                    {React.cloneElement(skill.icon, {
+                                      className: "skill-icon"
+                                    })}
+                                    <span className = "font-medium text-base group-hover:text-accent-default transition-colors duration-300 relative z-10 text-center">
                                       {skill.title}
                                     </span>
                                   </div>
