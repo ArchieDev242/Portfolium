@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import kittyImage from "@/public/assets/kitty.jpg";
 
 const Photo = () => {
   return (
@@ -16,7 +17,7 @@ const Photo = () => {
         className = "w-[298px] h-[298px] xl:w-[498px] xl:h-[498px] rounded-full overflow-hidden absolute"
       >
         <Image
-          src = "./assets/kitty.jpg"
+          src = {kittyImage}
           priority
           quality = {100}
           fill
