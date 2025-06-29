@@ -1,0 +1,145 @@
+@import 'https://unpkg.com/98.css';
+
+.win98-container 
+{
+  min-height: 100vh;
+  font-family: 'MS Sans Serif', sans-serif !important;
+  background: #008080 !important;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+}
+
+.win98-container * 
+{
+  font-family: 'MS Sans Serif', sans-serif !important;
+  box-sizing: border-box;
+}
+
+body.win98-mode 
+{
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  font-family: 'MS Sans Serif', sans-serif !important;
+  background: #008080 !important;
+}
+
+.win98-container button:not(.win98-button),
+.win98-container input:not(.win98-input),
+.win98-container select:not(.win98-select),
+.win98-container textarea:not(.win98-textarea) 
+{
+  font-family: 'MS Sans Serif', sans-serif !important;
+  font-size: 11px;
+}
+
+body:not(.win98-mode) 
+{
+  font-family: var(--font-family-default) !important;
+  background: var(--background-default) !important;
+  overflow: auto !important;
+}
+
+.window { position: relative; }
+
+.desktop-icon:hover 
+{
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.start-menu div:hover 
+{
+  background: #316ac5 !important;
+  color: white !important;
+}
+
+button 
+{
+  font-family: 'MS Sans Serif', sans-serif;
+  font-size: 11px;
+}
+
+fieldset 
+{
+  margin: 0;
+  border: 2px groove #c0c0c0;
+  padding: 10px;
+}
+
+legend 
+{
+  font-weight: bold;
+  font-size: 11px;
+  padding: 0 5px;
+}
+
+.sunken-panel 
+{
+  border: 2px inset #c0c0c0;
+  background: #c0c0c0;
+}
+
+.field-row 
+{
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.title-bar 
+{
+  background: linear-gradient(90deg, #000080, #1084d0);
+  color: white;
+  padding: 2px;
+  font-size: 11px;
+  font-weight: normal;
+}
+
+.title-bar-text 
+{
+  padding: 2px 6px;
+  flex: 1;
+}
+
+.title-bar-controls 
+{
+  display: flex;
+  gap: 2px;
+}
+
+.title-bar-controls button 
+{
+  width: 16px;
+  height: 14px;
+  border: 1px outset #c0c0c0;
+  background: #c0c0c0;
+  font-size: 6px;
+  cursor: pointer;
+}
+
+.title-bar-controls button:active { border: 1px inset #c0c0c0; }
+
+.window-body 
+{
+  background: #c0c0c0;
+  border: 2px inset #c0c0c0;
+}
+
+.status-bar 
+{
+  display: flex;
+  background: #c0c0c0;
+  border-top: 1px solid #808080;
+  font-size: 11px;
+}
+
+.status-bar-field 
+{
+  padding: 2px 6px;
+  border-right: 1px solid #808080;
+  margin: 0;
+}

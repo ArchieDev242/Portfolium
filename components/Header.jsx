@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 
 // components
@@ -9,13 +12,39 @@ import MobileNav from "./MobileNav";
 // | our header stuff |
 
 const Header = () => {
+    const router = useRouter();
+
+    const handleWin98Click = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Windows 98 mode clicked!'); // debug log
+        router.push('/win98');
+    };
+
     return(
     <header className="py-8 xl:py-12 text-white">
         <div className="container mx-auto flex justify-between items-center">
             {/* our logo */}
-            <Link href="/"> 
-                <h1 className="text-4xl font-semibold">Archie242 <span className="text-accent-default animate-glow">.</span></h1>
-            </Link>
+            <div className="flex items-center">
+                <Link href="/"> 
+                    <h1 className="text-4xl font-semibold">
+                        Archie242
+                    </h1>
+                </Link>
+                <span 
+                    className="text-accent-default animate-glow cursor-pointer hover:scale-125 transition-transform duration-300 ml-2 text-6xl leading-none" 
+                    onClick={handleWin98Click}
+                    title="Enter Windows 98 mode 🪟"
+                    style={{
+                        fontSize: '2.5rem',
+                        lineHeight: '1',
+                        display: 'inline-block',
+                        transform: 'translateY(-0.2rem)'
+                    }}
+                >
+                    •
+                </span>
+            </div>
 
             {/* nav + btn hire */}
             <div className="hidden xl:flex items-center gap-8">
