@@ -1,10 +1,18 @@
-body.win98-mode 
-{
+body.win98-mode {
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden !important;
   font-family: 'MS Sans Serif', sans-serif !important;
   background: #008080 !important;
+}
+
+body:not(.win98-mode) 
+{
+  font-family: inherit !important;
+  background: inherit !important;
+  overflow: auto !important;
+  margin: inherit !important;
+  padding: inherit !important;
 }
 
 .win98-container 
@@ -72,8 +80,8 @@ body.win98-mode
   color: white !important;
 }
 
-.win98-container button {
-
+.win98-container button 
+{
   font-family: 'MS Sans Serif', sans-serif;
   font-size: 11px;
 }
