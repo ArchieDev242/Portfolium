@@ -71,7 +71,7 @@ const ProjectPageClient = ({ params }) => {
         <div className = "flex flex-wrap gap-4 mb-12">
           {project.links.github && (
             <a
-              href={project.links.github}
+              href = {project.links.github}
               target = "_blank"
               rel = "noopener noreferrer"
               className = "flex items-center gap-2 px-6 py-3 bg-[#232329] rounded-lg hover:bg-[#2a2a31] transition-colors duration-300"
@@ -82,7 +82,7 @@ const ProjectPageClient = ({ params }) => {
           )}
           {project.links.itch && (
             <a
-              href={project.links.itch}
+              href = {project.links.itch}
               target = "_blank"
               rel = "noopener noreferrer"
               className = "flex items-center gap-2 px-6 py-3 bg-[#232329] rounded-lg hover:bg-[#2a2a31] transition-colors duration-300"
@@ -93,7 +93,7 @@ const ProjectPageClient = ({ params }) => {
           )}
           {project.links.website && (
             <a
-              href={project.links.website}
+              href = {project.links.website}
               target = "_blank"
               rel = "noopener noreferrer"
               className = "flex items-center gap-2 px-6 py-3 bg-[#232329] rounded-lg hover:bg-[#2a2a31] transition-colors duration-300"
@@ -147,7 +147,7 @@ const ProjectPageClient = ({ params }) => {
             <h2 className = "text-2xl font-bold mb-6">Technologies Used</h2>
             <div className = "space-y-4">
               {project.technologies.map((tech, index) => (
-                <div key={index} className = "bg-[#232329] p-4 rounded-lg">
+                <div key = {index} className = "bg-[#232329] p-4 rounded-lg">
                   <h3 className = "font-semibold mb-2">{tech.name}</h3>
                   <p className = "text-white/60 text-sm">{tech.description}</p>
                 </div>

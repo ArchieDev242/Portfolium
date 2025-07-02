@@ -9,7 +9,7 @@ const ClientLayout = ({ children }) => {
     <>
       <PageTransition />
       <ThemeSettings />
-      <main className="relative z-10">{children}</main>
+      <main className = "relative z-10">{children}</main>
     </>
   );
 };

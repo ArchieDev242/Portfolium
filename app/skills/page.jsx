@@ -12,7 +12,6 @@ const Skills = () => {
   const [minigameScore, setMinigameScore] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
   
-  // Handler for minigame completion
   const handleMinigameComplete = (score) => {
     setMinigameScore(score);
     

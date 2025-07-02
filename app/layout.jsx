@@ -17,8 +17,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={press.variable}>
+    <html lang = "en">
+      <body className = {press.variable}>
         <ThemeProvider>
           <ClientLayout>
             {children}

@@ -45,7 +45,6 @@ import { useState } from "react";
 
 const About = {
   title: "About Me",
-  //text: "Hello, my name is Maksym. I'm a software engineer with a passion for creating engaging and user-friendly web applications. I recently graduated from the prestigious University of Helsinki with a degree in Computer Science and Engineering. I have a strong foundation in HTML, CSS, JavaScript, and React.js, alongside my knowledge of various front-end libraries such as Tailwind CSS and Next.js.",
   info: 
   [
     { fieldName: "Name", fieldValue: "Maksym Kopychko" },
@@ -55,8 +54,8 @@ const About = {
     { fieldName: "Email", fieldValue: "maksym.kopychko@gmail.com" },
     { fieldName: "Location", fieldValue: "Okhtyrka, Sumy Region, Ukraine" },
     { fieldName: "Nationality", fieldValue: "Ukrainian" },
-    { fieldName: "GameDev Experience", fieldValue: "2 Years" },
-    { fieldName: "Languages", fieldValue: "English, German, Russian, Ukrainian" },
+    { fieldName: "GameDev Experience", fieldValue: "1 Year" },
+    { fieldName: "Languages", fieldValue: "Ukrainian, English, German, Russian" },
   ],
 };
 
@@ -65,13 +64,7 @@ const Experience = {
   description: "Professional journey and accomplishments",
   items: 
   [
-    {
-      position: "Software Engineer",
-      company: "XYZ Corp.",
-      location: "Remote",
-      duration: "October 2021 - Present",
-      description: "Developed and maintained web applications using modern technologies.",
-    },
+    // no experience yet
   ],
 };
 
@@ -229,24 +222,78 @@ const Resume = () => {
             <TabsContent value = "experience" className = "w-full">
               <div className = "flex flex-col gap-8">
                 <h3 className = "text-4xl font-bold">{Experience.title}</h3>
-                <ScrollArea className = "h-[400px]">
-                  <ul className = "grid grid-cols-1 lg:grid-cols-2 gap-[30px]">
-                    {Experience.items.map((item, index) => (
-                      <li
-                        key = {index}
-                        className = "bg-[#232329] w-full p-6 rounded-xl flex flex-col justify-center items-center gap-4 text-center group hover:bg-[#2a2a31] transition-colors duration-300"
-                      >
-                        <span className = "text-accent-default lg:text-left">{item.duration}</span>
-                        <h3 className = "text-xl text-center">{item.position}</h3>
-                        <div className = "flex items-center gap-3">
-                          <span className = "w-[6px] h-[6px] rounded-full bg-accent-default"></span>
-                          <p className = "text-white/60">{item.company}</p>
-                        </div>
-                        <p className = "text-white/60 text-sm">{item.description}</p>
-                      </li>
-                    ))}
-                  </ul>
-                </ScrollArea>
+                {Experience.items.length > 0 ? (
+                  <ScrollArea className = "h-[400px]">
+                    <ul className = "grid grid-cols-1 lg:grid-cols-2 gap-[30px]">
+                      {Experience.items.map((item, index) => (
+                        <li
+                          key = {index}
+                          className = "bg-[#232329] w-full p-6 rounded-xl flex flex-col justify-center items-center gap-4 text-center group hover:bg-[#2a2a31] transition-colors duration-300"
+                        >
+                          <span className = "text-accent-default lg:text-left">{item.duration}</span>
+                          <h3 className = "text-xl text-center">{item.position}</h3>
+                          <div className = "flex items-center gap-3">
+                            <span className = "w-[6px] h-[6px] rounded-full bg-accent-default"></span>
+                            <p className = "text-white/60">{item.company}</p>
+                          </div>
+                          <p className = "text-white/60 text-sm">{item.description}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </ScrollArea>
+                ) : (
+                  <motion.div 
+                    initial = {{ opacity: 0, y: 30 }}
+                    animate = {{ opacity: 1, y: 0 }}
+                    transition = {{ duration: 0.6, ease: "easeOut" }}
+                    className = "flex flex-col items-center justify-center min-h-[400px] text-center"
+                  >
+                    <motion.div 
+                      initial = {{ scale: 0 }}
+                      animate = {{ scale: 1 }}
+                      transition = {{ duration: 0.5, delay: 0.2, type: "spring", bounce: 0.4 }}
+                      className = "text-9xl mb-8"
+                    >
+                      😔
+                    </motion.div>
+                    <motion.h4 
+                      initial = {{ opacity: 0 }}
+                      animate = {{ opacity: 1 }}
+                      transition = {{ duration: 0.5, delay: 0.4 }}
+                      className = "text-3xl font-bold text-white/90 mb-4"
+                    >
+                      No Professional Experience Yet
+                    </motion.h4>
+                    <motion.p 
+                      initial = {{ opacity: 0 }}
+                      animate = {{ opacity: 1 }}
+                      transition = {{ duration: 0.5, delay: 0.6 }}
+                      className = "text-lg text-white/70 max-w-lg mb-8 leading-relaxed"
+                    >
+                      But I'm actively learning, working on projects and developing my skills! 
+                      Every day is a new step towards my dream of becoming a professional developer.
+                    </motion.p>
+                    <motion.div 
+                      initial = {{ opacity: 0, y: 20 }}
+                      animate = {{ opacity: 1, y: 0 }}
+                      transition = {{ duration: 0.5, delay: 0.8 }}
+                      className = "flex flex-col gap-4"
+                    >
+                      <div className = "flex items-center gap-3 text-accent-default bg-accent-default/10 px-6 py-3 rounded-lg">
+                        <span className = "text-2xl">🚀</span>
+                        <span className = "font-semibold">Ready for new challenges</span>
+                      </div>
+                      <div className = "flex items-center gap-3 text-blue-400 bg-blue-400/10 px-6 py-3 rounded-lg">
+                        <span className = "text-2xl">💡</span>
+                        <span className = "font-semibold">Quick learner and adaptable</span>
+                      </div>
+                      <div className = "flex items-center gap-3 text-green-400 bg-green-400/10 px-6 py-3 rounded-lg">
+                        <span className = "text-2xl">⭐</span>
+                        <span className = "font-semibold">Motivated to achieve goals</span>
+                      </div>
+                    </motion.div>
+                  </motion.div>
+                )}
               </div>
             </TabsContent>
 
