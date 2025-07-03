@@ -48,14 +48,19 @@ const ProjectCard = ({ project, index }) => {
         <img
           src = {project.image}
           alt = {project.title}
-          className = "w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+          className = "w-full h-full object-contain bg-gray-800 transform group-hover:scale-110 transition-transform duration-500"
         />
       </div>
       <div className = "p-6">
         <h3 className ="text-xl font-semibold mb-2 group-hover:text-accent-default transition-colors duration-300">
           {project.title}
         </h3>
-        <p className = "text-white/60 mb-4">{project.description}</p>
+        <p className = "text-white/60 mb-4">
+          {project.description.length > 100 
+            ? `${project.description.substring(0, 100)}...` 
+            : project.description
+          }
+        </p>
         <div className = "flex flex-wrap gap-2 mb-4">
           {project.technologies.map((tech, i) => (
             <span

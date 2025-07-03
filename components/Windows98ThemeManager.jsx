@@ -228,9 +228,7 @@ const Windows98ThemeManager = ({ onClose }) => {
           Theme Manager
         </div>
         <div className = "title-bar-controls">
-          <button aria-label = "Close" onClick = {onClose}>
-            <span style = {{ fontFamily: 'Wingdings, monospace', fontSize: '10px' }}>r</span>
-          </button>
+          <button aria-label = "Close" onClick = {onClose}></button>
         </div>
       </div>
 

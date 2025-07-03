@@ -1,4 +1,4 @@
-import ProjectPageClient from './ProjectPageClient';
+import ProjectPageClient from './ProjectPageClient_new';
 import { getAllProjects } from '@/data/projects';
 
 export async function generateStaticParams() {
@@ -11,7 +11,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) 
 {
-  const project = getAllProjects().find(p => p.slug === params.slug);
+  const resolvedParams = await params;
+  const project = getAllProjects().find(p => p.slug === resolvedParams.slug);
   
   if(!project) 
     {
