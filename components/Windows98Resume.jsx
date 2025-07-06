@@ -49,7 +49,7 @@ const Windows98Resume = ({ onClose, onFocus, isActive, zIndex }) => {
   return (
     <Windows98Window
       title = "Resume - Maksym Kopychko"
-      icon = "https://win98icons.alexmeub.com/icons/png/user-4.png"
+      icon = "/icons/win98/png/users-0.png"
       onClose = {onClose}
       onFocus = {onFocus}
       isActive = {isActive}

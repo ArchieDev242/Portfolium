@@ -36,8 +36,8 @@ const Windows98Home = () => {
       id: 'theme-manager', 
       name: 'Theme Manager', 
       position: { x: 20, y: 20 },
-      icon: 'https://win98icons.alexmeub.com/icons/png/themes-4.png',
-      fallback: 'https://win98icons.alexmeub.com/icons/png/display_settings-4.png',
+      icon: '/icons/win98/png/themes-0.png',
+      fallback: '',
       emoji: '🎨',
       type: 'system',
       action: () => setThemeManagerOpen(true)
@@ -46,7 +46,7 @@ const Windows98Home = () => {
       id: 'resume',
       name: 'Resume',
       position: { x: 20, y: 120 },
-      icon: 'https://win98icons.alexmeub.com/icons/png/user-4.png',
+      icon: '/icons/win98/png/users-0.png',
       fallback: '',
       emoji: '📄',
       type: 'app',
@@ -56,7 +56,7 @@ const Windows98Home = () => {
       id: 'projects', 
       name: 'Projects',
       position: { x: 20, y: 220 },
-      icon: 'https://win98icons.alexmeub.com/icons/png/folder_open-4.png',
+      icon: '/icons/win98/png/directory_open_file_mydocs-0.png',
       fallback: '',
       emoji: '📁',
       type: 'app',
@@ -66,7 +66,7 @@ const Windows98Home = () => {
       id: 'contact',
       name: 'Contact',
       position: { x: 20, y: 320 },
-      icon: 'https://win98icons.alexmeub.com/icons/png/mail-4.png',
+      icon: '/icons/win98/png/envelope_closed-0.png',
       fallback: '',
       emoji: '📧',
       type: 'app',
@@ -76,7 +76,7 @@ const Windows98Home = () => {
       id: 'recycle-bin',
       name: 'Recycle Bin',
       position: { x: 20, y: 420 },
-      icon: 'https://win98icons.alexmeub.com/icons/png/recycle_bin_empty-4.png',
+      icon: '/icons/win98/png/recycle_bin_empty-0.png',
       fallback: '',
       emoji: '🗑️',
       type: 'recycle-bin',
@@ -86,7 +86,7 @@ const Windows98Home = () => {
       id: 'my-computer',
       name: 'My Computer',
       position: { x: 20, y: 520 },
-      icon: 'https://win98icons.alexmeub.com/icons/png/computer-3.png',
+      icon: '/icons/win98/png/computer-0.png',
       fallback: '',
       emoji: '💻',
       type: 'system',
@@ -366,7 +366,7 @@ const Windows98Home = () => {
             icon.id === 'recycle-bin' 
               ? { 
                   ...icon, 
-                  icon: 'https://win98icons.alexmeub.com/icons/png/recycle_bin_full-4.png',
+                  icon: '/icons/win98/png/recycle_bin_full-0.png',
                   emoji: '🗑️'
                 }
               : icon
@@ -383,28 +383,28 @@ const Windows98Home = () => {
     const file_types = {
       'text': 
       {
-        icon: 'https://win98icons.alexmeub.com/icons/png/notepad-4.png',
+        icon: '/icons/win98/png/notepad-0.png',
         emoji: '📄',
         extension: '.txt'
       },
 
       'folder': 
       {
-        icon: 'https://win98icons.alexmeub.com/icons/png/folder_closed-4.png',
+        icon: '/icons/win98/png/directory_closed-0.png',
         emoji: '📁',
         extension: ''
       },
 
       'image': 
       {
-        icon: 'https://win98icons.alexmeub.com/icons/png/image-4.png',
+        icon: '/icons/win98/png/image_old_gif-0.png',
         emoji: '🖼️',
         extension: '.bmp'
       },
 
       'exe': 
       {
-        icon: 'https://win98icons.alexmeub.com/icons/png/executable-4.png',
+        icon: '/icons/win98/png/executable-0.png',
         emoji: '⚙️',
         extension: '.exe'
       }
@@ -451,7 +451,7 @@ const Windows98Home = () => {
       icon.id === 'recycle-bin' 
         ? { 
             ...icon, 
-            icon: 'https://win98icons.alexmeub.com/icons/png/recycle_bin_empty-4.png',
+            icon: '/icons/win98/png/recycle_bin_empty-0.png',
             emoji: '🗑️'
           }
         : icon
@@ -542,7 +542,7 @@ const Windows98Home = () => {
         >
           <div className = "title-bar-text">
             <img 
-              src="https://98.js.org/images/icons/folder-file-16x16.png" 
+              src="/icons/win98/png/directory_open_file_mydocs-0.png" 
               alt="Portfolio"
               style={{
                 width: '16px',
@@ -550,6 +550,10 @@ const Windows98Home = () => {
                 imageRendering: 'pixelated',
                 marginRight: '4px',
                 verticalAlign: 'middle'
+              }}
+              onError={(e) => {
+                e.target.style.display = 'none';
+                e.target.insertAdjacentHTML('afterend', '<span style="margin-right: 4px;">📁</span>');
               }}
             />
             Maksym Kopychko - Portfolio.exe
@@ -717,12 +721,16 @@ const Windows98Home = () => {
           }}
         >
           <img 
-            src="https://98.js.org/images/start.png" 
+            src="/icons/win98/png/start_menu_shortcuts.png" 
             alt="Start"
             style={{
               width: '16px',
               height: '16px',
               imageRendering: 'pixelated'
+            }}
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.insertAdjacentHTML('afterend', '<span>🪟</span>');
             }}
           />
           Start
@@ -758,12 +766,16 @@ const Windows98Home = () => {
             }}
           >
             <img 
-              src="https://98.js.org/images/icons/folder-file-16x16.png" 
+              src="/icons/win98/png/directory_open_file_mydocs-0.png" 
               alt="Portfolio"
               style={{
                 width: '12px',
                 height: '12px',
                 imageRendering: 'pixelated'
+              }}
+              onError={(e) => {
+                e.target.style.display = 'none';
+                e.target.insertAdjacentHTML('afterend', '<span>📁</span>');
               }}
             />
             Portfolio
@@ -772,9 +784,9 @@ const Windows98Home = () => {
           {/* Other windows */}
           {active_windows.map((windowId) => {
             const windowInfo = {
-              resume: { title: 'Resume', icon: 'https://win98icons.alexmeub.com/icons/png/user-4.png' },
-              projects: { title: 'Projects', icon: 'https://win98icons.alexmeub.com/icons/png/folder_open-4.png' },
-              contact: { title: 'Contact', icon: 'https://win98icons.alexmeub.com/icons/png/mail-4.png' }
+              resume: { title: 'Resume', icon: '/icons/win98/png/users-0.png', emoji: '📄' },
+              projects: { title: 'Projects', icon: '/icons/win98/png/directory_open_file_mydocs-0.png', emoji: '📁' },
+              contact: { title: 'Contact', icon: '/icons/win98/png/envelope_closed-0.png', emoji: '📧' }
             };
             
             const info = windowInfo[windowId];
@@ -804,6 +816,10 @@ const Windows98Home = () => {
                     width: '12px',
                     height: '12px',
                     imageRendering: 'pixelated'
+                  }}
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.insertAdjacentHTML('afterend', `<span>${info.emoji}</span>`);
                   }}
                 />
                 {info.title}
@@ -877,7 +893,7 @@ const Windows98Home = () => {
                   i.id === 'recycle-bin' 
                     ? { 
                         ...i, 
-                        icon: 'https://win98icons.alexmeub.com/icons/png/recycle_bin_full-4.png'
+                        icon: '/icons/win98/png/recycle_bin_full-0.png'
                       }
                     : i
                 ));
@@ -900,19 +916,18 @@ const Windows98Home = () => {
               pointerEvents: 'none'
             }}
             onError = {(e) => {
-              if (icon.fallback) {
-                e.target.src = icon.fallback;
-                e.target.onerror = () => {
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                };
-              } else {
-                e.target.style.display = 'none';
-                e.target.nextSibling.style.display = 'block';
-              }
+              // Always show emoji as fallback
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'block';
             }}
           />
-          <div style = {{ display: 'none', fontSize: '24px', pointerEvents: 'none' }}>
+          <div style = {{ 
+            display: 'none', 
+            fontSize: '32px', 
+            pointerEvents: 'none',
+            marginBottom: '4px',
+            lineHeight: 1
+          }}>
             {icon.emoji}
           </div>
           <span style = {{ 

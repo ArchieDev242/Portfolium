@@ -63,7 +63,7 @@ const Windows98Contact = ({ onClose, onFocus, isActive, zIndex }) => {
   return (
     <Windows98Window
       title = "Contact Form"
-      icon = "https://win98icons.alexmeub.com/icons/png/mail-4.png"
+      icon = "/icons/win98/png/envelope_closed-0.png"
       onClose = {onClose}
       onFocus = {onFocus}
       isActive = {isActive}
@@ -150,9 +150,13 @@ const Windows98Contact = ({ onClose, onFocus, isActive, zIndex }) => {
                   }}
                 >
                   <img 
-                    src = "https://win98icons.alexmeub.com/icons/png/send-4.png"
+                    src = "/icons/win98/png/envelope_open_sheet-0.png"
                     alt = "Send"
                     style = {{ width: '16px', height: '16px', imageRendering: 'pixelated' }}
+                    onError = {(e) => {
+                      e.target.style.display = 'none';
+                      e.target.insertAdjacentHTML('afterend', '<span>📧</span>');
+                    }}
                   />
                   {isSubmitting ? 'Sending...' : 'Send Message'}
                 </button>
@@ -169,9 +173,13 @@ const Windows98Contact = ({ onClose, onFocus, isActive, zIndex }) => {
                   }}
                 >
                   <img 
-                    src = "https://win98icons.alexmeub.com/icons/png/refresh-4.png"
+                    src = "/icons/win98/png/overlay_refresh-0.png"
                     alt = "Clear"
                     style = {{ width: '16px', height: '16px', imageRendering: 'pixelated' }}
+                    onError = {(e) => {
+                      e.target.style.display = 'none';
+                      e.target.insertAdjacentHTML('afterend', '<span>🔄</span>');
+                    }}
                   />
                   Clear
                 </button>
@@ -186,25 +194,37 @@ const Windows98Contact = ({ onClose, onFocus, isActive, zIndex }) => {
           <div style = {{ padding: '10px' }}>
             <div style = {{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
               <img 
-                src = "https://win98icons.alexmeub.com/icons/png/mail-4.png"
+                src = "/icons/win98/png/envelope_closed-0.png"
                 alt = "Email"
                 style = {{ width: '16px', height: '16px', imageRendering: 'pixelated', marginRight: '8px' }}
+                onError = {(e) => {
+                  e.target.style.display = 'none';
+                  e.target.insertAdjacentHTML('afterend', '<span>📧</span>');
+                }}
               />
               <strong>Email:</strong>&nbsp;maksym.kopychko@gmail.com
             </div>
             <div style = {{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
               <img 
-                src = "https://win98icons.alexmeub.com/icons/png/phone-4.png"
+                src = "/icons/win98/png/world_phonereceiver.png"
                 alt = "Phone"
                 style = {{ width: '16px', height: '16px', imageRendering: 'pixelated', marginRight: '8px' }}
+                onError = {(e) => {
+                  e.target.style.display = 'none';
+                  e.target.insertAdjacentHTML('afterend', '<span>📞</span>');
+                }}
               />
               <strong>Phone:</strong>&nbsp;+380669702817
             </div>
             <div style = {{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
               <img 
-                src = "https://win98icons.alexmeub.com/icons/png/globe-4.png"
+                src = "/icons/win98/png/globe_map-0.png"
                 alt = "Location"
                 style = {{ width: '16px', height: '16px', imageRendering: 'pixelated', marginRight: '8px' }}
+                onError = {(e) => {
+                  e.target.style.display = 'none';
+                  e.target.insertAdjacentHTML('afterend', '<span>🌍</span>');
+                }}
               />
               <strong>Location:</strong>&nbsp;Okhtyrka, Sumy Region, Ukraine
             </div>

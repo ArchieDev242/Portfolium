@@ -214,7 +214,7 @@ const Win98_theme_manager = ({ onClose }) => {
       >
         <div className = "title-bar-text">
           <img 
-            src = "https://win98icons.alexmeub.com/icons/png/themes-4.png" 
+            src = "/icons/win98/png/themes-0.png" 
             alt = "Themes"
             style = {{
               width: '16px',
@@ -223,7 +223,10 @@ const Win98_theme_manager = ({ onClose }) => {
               marginRight: '4px',
               verticalAlign: 'middle'
             }}
-            onError = {(e) => e.target.style.display = 'none'}
+            onError = {(e) => {
+              e.target.style.display = 'none';
+              e.target.insertAdjacentHTML('afterend', '<span>🎨</span>');
+            }}
           />
           Theme Manager
         </div>
@@ -237,7 +240,7 @@ const Win98_theme_manager = ({ onClose }) => {
         <fieldset style = {{ marginBottom: '15px' }}>
           <legend>
             <img 
-              src = "https://win98icons.alexmeub.com/icons/png/colors-4.png"
+              src = "/icons/win98/png/color_profile-0.png"
               alt = "Colors"
               style = {{
                 width: '16px',
@@ -248,7 +251,7 @@ const Win98_theme_manager = ({ onClose }) => {
               }}
               onError = {(e) => {
                 e.target.style.display = 'none';
-                e.target.nextSibling.style.display = 'inline';
+                e.target.insertAdjacentHTML('afterend', '<span>🎨</span>');
               }}
             />
             <span style = {{ display: 'none' }}>🎨</span>
@@ -347,7 +350,7 @@ const Win98_theme_manager = ({ onClose }) => {
         <fieldset style = {{ marginBottom: '15px' }}>
           <legend>
             <img 
-              src = "https://win98icons.alexmeub.com/icons/png/clipboard-4.png"
+              src = "/icons/win98/png/notepad_file-0.png"
               alt = "Info"
               style = {{
                 width: '16px',
@@ -358,7 +361,7 @@ const Win98_theme_manager = ({ onClose }) => {
               }}
               onError = {(e) => {
                 e.target.style.display = 'none';
-                e.target.nextSibling.style.display = 'inline';
+                e.target.insertAdjacentHTML('afterend', '<span>📋</span>');
               }}
             />
             <span style = {{ display: 'none' }}>📋</span>
@@ -415,7 +418,7 @@ const Win98_theme_manager = ({ onClose }) => {
               style = {{ minWidth: '80px', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center' }}
             >
               <img 
-                src = "https://win98icons.alexmeub.com/icons/png/dice-4.png"
+                src = "/icons/win98/png/gears-0.png"
                 alt = "Random"
                 style = {{
                   width: '16px',
@@ -424,7 +427,7 @@ const Win98_theme_manager = ({ onClose }) => {
                 }}
                 onError = {(e) => {
                   e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'inline';
+                  e.target.insertAdjacentHTML('afterend', '<span>🎲</span>');
                 }}
               />
               <span style = {{ display: 'none' }}>🎲</span>
@@ -445,7 +448,7 @@ const Win98_theme_manager = ({ onClose }) => {
               }}
             >
               <img 
-                src = "https://win98icons.alexmeub.com/icons/png/check-4.png"
+                src = "/icons/win98/png/check-0.png"
                 alt = "Apply"
                 style = {{
                   width: '16px',
@@ -455,7 +458,7 @@ const Win98_theme_manager = ({ onClose }) => {
                 }}
                 onError = {(e) => {
                   e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'inline';
+                  e.target.insertAdjacentHTML('afterend', '<span>✅</span>');
                 }}
               />
               <span style = {{ display: 'none' }}>✓</span>

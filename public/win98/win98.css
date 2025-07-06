@@ -2,7 +2,7 @@ body.win98-mode {
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden !important;
-  font-family: 'MS Sans Serif', sans-serif !important;
+  font-family: 'MS Sans Serif', 'Segoe UI', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif !important;
   background: #008080 !important;
 }
 
@@ -18,7 +18,7 @@ body:not(.win98-mode)
 .win98-container 
 {
   min-height: 100vh;
-  font-family: 'MS Sans Serif', sans-serif !important;
+  font-family: 'MS Sans Serif', 'Segoe UI', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif !important;
   background: #008080 !important;
   margin: 0;
   padding: 0;
@@ -30,7 +30,7 @@ body:not(.win98-mode)
 
 .win98-container * 
 {
-  font-family: 'MS Sans Serif', sans-serif !important;
+  font-family: 'MS Sans Serif', 'Segoe UI', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif !important;
   box-sizing: border-box;
 }
 
@@ -39,8 +39,23 @@ body:not(.win98-mode)
 .win98-container select,
 .win98-container textarea 
 {
-  font-family: 'MS Sans Serif', sans-serif !important;
+  font-family: 'MS Sans Serif', 'Segoe UI', sans-serif !important;
   font-size: 11px;
+}
+
+/* Emoji fallback styling */
+.win98-container .emoji-fallback {
+  font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Android Emoji', 'EmojiSymbols', sans-serif !important;
+  font-size: 16px;
+  line-height: 1;
+  font-variant-emoji: emoji;
+}
+
+/* Icon styling */
+.win98-container img {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
 }
 
 .win98-container .window { position: relative; }

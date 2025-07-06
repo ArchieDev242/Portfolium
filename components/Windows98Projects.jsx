@@ -10,7 +10,7 @@ const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
   return (
     <Windows98Window
       title = "Projects Portfolio"
-      icon = "https://win98icons.alexmeub.com/icons/png/folder_open-4.png"
+      icon = "/icons/win98/png/directory_open_file_mydocs-0.png"
       onClose = {onClose}
       onFocus = {onFocus}
       isActive = {isActive}
@@ -64,9 +64,13 @@ const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
               <div key = {index} className = "sunken-panel" style = {{ padding: '10px', background: 'white' }}>
                 <div style = {{ fontWeight: 'bold', fontSize: '12px', marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
                   <img 
-                    src = "https://win98icons.alexmeub.com/icons/png/file-4.png" 
+                    src = "/icons/win98/png/file_lines-0.png" 
                     alt  ="Project"
                     style = {{ width: '16px', height: '16px', marginRight: '5px', imageRendering: 'pixelated' }}
+                    onError = {(e) => {
+                      e.target.style.display = 'none';
+                      e.target.insertAdjacentHTML('afterend', '<span style="margin-right: 5px;">📁</span>');
+                    }}
                   />
                   {project.title}
                   {project.year && (
@@ -173,9 +177,13 @@ const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
                       }}
                     >
                       <img 
-                        src = "https://win98icons.alexmeub.com/icons/png/globe-4.png"
+                        src = "/icons/win98/png/globe_map-0.png"
                         alt = "GameBanana"
                         style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }}
+                        onError = {(e) => {
+                          e.target.style.display = 'none';
+                          e.target.insertAdjacentHTML('afterend', '<span>🌐</span>');
+                        }}
                       />
                       GameBanana
                     </button>
@@ -192,9 +200,13 @@ const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
                       }}
                     >
                       <img 
-                        src = "https://win98icons.alexmeub.com/icons/png/code-4.png"
+                        src = "/icons/win98/png/executable-0.png"
                         alt = "Code"
                         style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }}
+                        onError = {(e) => {
+                          e.target.style.display = 'none';
+                          e.target.insertAdjacentHTML('afterend', '<span>💻</span>');
+                        }}
                       />
                       GitHub
                     </button>
@@ -211,9 +223,13 @@ const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
                       }}
                     >
                       <img 
-                        src = "https://win98icons.alexmeub.com/icons/png/download-4.png"
+                        src = "/icons/win98/png/download.png"
                         alt = "Download"
                         style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }}
+                        onError = {(e) => {
+                          e.target.style.display = 'none';
+                          e.target.insertAdjacentHTML('afterend', '<span>📥</span>');
+                        }}
                       />
                       Download
                     </button>
@@ -232,9 +248,13 @@ const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
               color: '#666' 
             }}>
               <img 
-                src = "https://win98icons.alexmeub.com/icons/png/info-4.png"
+                src = "/icons/win98/png/msg_information-0.png"
                 alt = "Info"
                 style = {{ width: '32px', height: '32px', imageRendering: 'pixelated', marginBottom: '10px' }}
+                onError = {(e) => {
+                  e.target.style.display = 'none';
+                  e.target.insertAdjacentHTML('afterend', '<span style="font-size: 32px; margin-bottom: 10px;">ℹ️</span>');
+                }}
               />
               <br />
               No projects in this category yet.

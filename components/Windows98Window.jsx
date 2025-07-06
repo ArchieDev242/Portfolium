@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 const Windows98Window = ({ 
   title = "Windows 98 Application", 
-  icon = "https://win98icons.alexmeub.com/icons/png/window-4.png",
+  icon = "/icons/win98/png/windows-0.png",
   children, 
   onClose, 
   onFocus,
@@ -121,7 +121,20 @@ const Windows98Window = ({
               imageRendering: 'pixelated',
               marginRight: '6px'
             }}
-            onError = {(e) => e.target.style.display = 'none'}
+            onError = {(e) => {
+              e.target.style.display = 'none';
+              // Add emoji fallback based on title
+              const emojiMap = {
+                'Resume': '📄',
+                'Projects': '📁',
+                'Contact': '📧',
+                'Portfolio': '💼'
+              };
+              const emoji = Object.keys(emojiMap).find(key => title.includes(key));
+              if (emoji) {
+                e.target.insertAdjacentHTML('afterend', `<span style="margin-right: 6px;">${emojiMap[emoji]}</span>`);
+              }
+            }}
           />
           {title}
         </div>
