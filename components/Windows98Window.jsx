@@ -7,6 +7,9 @@ const Windows98Window = ({
   icon = "https://win98icons.alexmeub.com/icons/png/window-4.png",
   children, 
   onClose, 
+  onFocus,
+  isActive = false,
+  zIndex = 1000,
   width = 600, 
   height = 400,
   resizable = false,
@@ -20,9 +23,11 @@ const Windows98Window = ({
   const [previous_position, setPreviousPosition] = useState({ x: 100, y: 100 });
   const [window_size, setWindowSize] = useState({ width, height });
 
-  const handleMouseDown = (e) => {
+  const handle_mouse_down = (e) => {
     if(e.target.closest('button') || e.target.closest('.window-control')) return;
     if(is_maximized) return;
+    
+    if(onFocus) onFocus();
     
     setIsDragging(true);
     setDragOffset({
@@ -31,25 +36,33 @@ const Windows98Window = ({
     });
   };
 
-  const handleMouseMove = (e) => {
+  const handle_mouse_move = (e) => {
     if(!is_dragging || is_maximized) return;
     
-    setPosition({
-      x: e.clientX - drag_offset.x,
-      y: e.clientY - drag_offset.y
-    });
+    const newX = e.clientX - drag_offset.x;
+    const newY = e.clientY - drag_offset.y;
+    
+    const maxX = window.innerWidth - 200;
+    const maxY = window.innerHeight - 100;
+    
+    const bounded_x = Math.max(-width + 200, Math.min(newX, maxX));
+    const bounded_y = Math.max(0, Math.min(newY, maxY));
+    
+    setPosition({ x: bounded_x, y: bounded_y });
   };
 
-  const handleMouseUp = () => {
+  const handle_mouse_up = () => {
     setIsDragging(false);
   };
 
-  const handleMaximize = () => {
-    if(is_maximized) {
+  const handle_maximize = () => {
+    if(is_maximized) 
+      {
       setIsMaximized(false);
       setPosition(previous_position);
       setWindowSize({ width, height });
-    } else {
+    } else 
+    {
       setPreviousPosition(position);
       setIsMaximized(true);
       setPosition({ x: 0, y: 0 });
@@ -61,13 +74,14 @@ const Windows98Window = ({
   };
 
   useEffect(() => {
-    if(is_dragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+    if(is_dragging) 
+      {
+      document.addEventListener('mousemove', handle_mouse_move);
+      document.addEventListener('mouseup', handle_mouse_up);
       
       return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
+        document.removeEventListener('mousemove', handle_mouse_move);
+        document.removeEventListener('mouseup', handle_mouse_up);
       };
     }
   }, [is_dragging, drag_offset]);
@@ -81,16 +95,20 @@ const Windows98Window = ({
         top: `${position.y}px`,
         width: `${window_size.width}px`,
         height: `${window_size.height}px`,
-        zIndex: 10000,
+        zIndex: zIndex,
         cursor: is_dragging ? 'grabbing' : 'default',
         maxWidth: is_maximized ? '100vw' : 'none',
         maxHeight: is_maximized ? '100vh' : 'none'
+      }}
+      onClick = {(e) => {
+        e.stopPropagation();
+        if(onFocus) onFocus();
       }}
     >
       {/* Title Bar */}
       <div 
         className = "title-bar"
-        onMouseDown = {handleMouseDown}
+        onMouseDown = {handle_mouse_down}
         style = {{ cursor: is_dragging ? 'grabbing' : 'grab' }}
       >
         <div className = "title-bar-text" style = {{ display: 'flex', alignItems: 'center' }}>
@@ -114,7 +132,7 @@ const Windows98Window = ({
           {maximizable && (
             <button 
               aria-label = {is_maximized ? "Restore" : "Maximize"} 
-              onClick = {handleMaximize}
+              onClick = {handle_maximize}
             ></button>
           )}
           <button aria-label = "Close" onClick = {onClose}></button>

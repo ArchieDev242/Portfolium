@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-const Windows98ThemeManager = ({ onClose }) => {
+const Win98_theme_manager = ({ onClose }) => {
   const [selected_theme, setSelectedTheme] = useState('classic');
   const [is_dragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({ x: 100, y: 100 });
@@ -139,10 +139,10 @@ const Windows98ThemeManager = ({ onClose }) => {
   useEffect(() => {
     const saved_theme = localStorage.getItem('win98-theme') || 'classic';
     setSelectedTheme(saved_theme);
-    applyTheme(themes[saved_theme]);
+    apply_theme(themes[saved_theme]);
   }, []);
 
-  const applyTheme = (theme) => {
+  const apply_theme = (theme) => {
     const root = document.documentElement;
     root.style.setProperty('--win98-primary', theme.colors.primary);
     root.style.setProperty('--win98-secondary', theme.colors.secondary);
@@ -152,13 +152,13 @@ const Windows98ThemeManager = ({ onClose }) => {
     root.style.setProperty('--win98-highlight', theme.colors.highlight);
   };
 
-  const handleThemeSelect = (theme_key) => {
+  const handle_theme_select = (theme_key) => {
     setSelectedTheme(theme_key);
     localStorage.setItem('win98-theme', theme_key);
-    applyTheme(themes[theme_key]);
+    apply_theme(themes[theme_key]);
   };
 
-  const handleMouseDown = (e) => {
+  const handle_mouse_down = (e) => {
     if(e.target.closest('button') || e.target.closest('.theme-item')) return;
     
     setIsDragging(true);
@@ -168,7 +168,7 @@ const Windows98ThemeManager = ({ onClose }) => {
     });
   };
 
-  const handleMouseMove = (e) => {
+  const handle_mouse_move = (e) => {
     if(!is_dragging) return;
     
     setPosition({
@@ -184,11 +184,11 @@ const Windows98ThemeManager = ({ onClose }) => {
   useEffect(() => {
     if(is_dragging) 
       {
-      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mousemove', handle_mouse_move);
       document.addEventListener('mouseup', handleMouseUp);
       
       return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mousemove', handle_mouse_move);
         document.removeEventListener('mouseup', handleMouseUp);
       };
     }
@@ -209,7 +209,7 @@ const Windows98ThemeManager = ({ onClose }) => {
       {/* Title Bar */}
       <div 
         className = "title-bar"
-        onMouseDown = {handleMouseDown}
+        onMouseDown = {handle_mouse_down}
         style = {{ cursor: is_dragging ? 'grabbing' : 'grab' }}
       >
         <div className = "title-bar-text">
@@ -265,7 +265,7 @@ const Windows98ThemeManager = ({ onClose }) => {
               <div
                 key = {key}
                 className = {`theme-item ${selected_theme === key ? 'selected' : ''}`}
-                onClick = {() => handleThemeSelect(key)}
+                onClick = {() => handle_theme_select(key)}
                 style = {{
                   border: selected_theme === key ? '2px solid #000080' : '1px solid #808080',
                   borderRadius: '4px',
@@ -385,7 +385,7 @@ const Windows98ThemeManager = ({ onClose }) => {
           marginTop: '15px'
         }}>
           <button 
-            onClick = {() => handleThemeSelect('classic')}
+            onClick = {() => handle_theme_select('classic')}
             style = {{ minWidth: '100px', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center' }}
           >
             <img 
@@ -410,7 +410,7 @@ const Windows98ThemeManager = ({ onClose }) => {
               onClick = {() => {
                 const random_themes = Object.keys(themes);
                 const random_theme = random_themes[Math.floor(Math.random() * random_themes.length)];
-                handleThemeSelect(random_theme);
+                handle_theme_select(random_theme);
               }}
               style = {{ minWidth: '80px', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center' }}
             >
@@ -468,4 +468,4 @@ const Windows98ThemeManager = ({ onClose }) => {
   );
 };
 
-export default Windows98ThemeManager;
+export default Win98_theme_manager;

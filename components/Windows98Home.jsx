@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Windows98Loader from './Windows98Loader';
-import Windows98ThemeManager from './Windows98ThemeManager';
+import Win98_theme_manager from './Windows98ThemeManager';
 import Windows98WindowManager from './Windows98WindowManager';
 
 const Windows98Home = () => {
@@ -21,6 +21,14 @@ const Windows98Home = () => {
   
   // windows management
   const [active_windows, setActiveWindows] = useState([]);
+  const [window_z_index, setWindowZIndex] = useState(1000);
+  const [active_window_id, setActiveWindowId] = useState('portfolio');
+  const [window_z_indexes, setWindowZIndexes] = useState({
+    portfolio: 1000,
+    resume: 1000,
+    projects: 1000,
+    contact: 1000
+  });
   
   // desktop icons state
   const [desktop_icons, setDesktopIcons] = useState([
@@ -94,14 +102,33 @@ const Windows98Home = () => {
   const [context_menu, setContextMenu] = useState({ visible: false, x: 0, y: 0 });
 
   const openWindow = (windowId) => {
-    if(!active_windows.includes(windowId)) 
-      {
+    if(!active_windows.includes(windowId)) {
       setActiveWindows(prev => [...prev, windowId]);
     }
+    setActiveWindowId(windowId);
+    const newZIndex = window_z_index + 10;
+    setWindowZIndex(newZIndex);
+    setWindowZIndexes(prev => ({
+      ...prev,
+      [windowId]: newZIndex
+    }));
   };
 
   const closeWindow = (windowId) => {
     setActiveWindows(prev => prev.filter(id => id !== windowId));
+    if (active_window_id === windowId) {
+      setActiveWindowId('portfolio');
+    }
+  };
+
+  const focusWindow = (windowId) => {
+    setActiveWindowId(windowId);
+    const newZIndex = window_z_index + 10;
+    setWindowZIndex(newZIndex);
+    setWindowZIndexes(prev => ({
+      ...prev,
+      [windowId]: newZIndex
+    }));
   };
 
   const handleLoaderComplete = () => {
@@ -176,22 +203,25 @@ const Windows98Home = () => {
   }, []);
 
   const handle_pointer_down = (e) => {
-    if(e.target.closest('button')) 
-      {
+    if(e.target.closest('button')) {
       return;
     }
 
     e.preventDefault();
     e.stopPropagation();
     
+    focusWindow('portfolio');
+    
     const windowEl = window_ref.current;
+
+    if(!windowEl) return;
+    
     const rect = windowEl.getBoundingClientRect();
     
-    setDragOffset({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    });
-
+    const offsetX = e.clientX - rect.left;
+    const offsetY = e.clientY - rect.top;
+    
+    setDragOffset({ x: offsetX, y: offsetY });
     setIsDragging(true);
     document.body.style.userSelect = 'none';
     
@@ -201,9 +231,16 @@ const Windows98Home = () => {
       const client_x = moveEvent.clientX || (moveEvent.touches && moveEvent.touches[0]?.clientX) || 0;
       const client_y = moveEvent.clientY || (moveEvent.touches && moveEvent.touches[0]?.clientY) || 0;
 
-      const new_x = client_x - (e.clientX - rect.left);
-      const new_y = Math.max(0, client_y - (e.clientY - rect.top));
-      setWindowPosition({ x: new_x, y: new_y });
+      const new_x = client_x - offsetX;
+      const new_y = client_y - offsetY;
+      
+      const maxX = window.innerWidth - 200;
+      const maxY = window.innerHeight - 100;
+      
+      const bounded_x = Math.max(-windowEl.offsetWidth + 200, Math.min(new_x, maxX));
+      const bounded_y = Math.max(0, Math.min(new_y, maxY));
+      
+      setWindowPosition({ x: bounded_x, y: bounded_y });
     };
 
     const handle_up = () => {
@@ -219,17 +256,6 @@ const Windows98Home = () => {
     document.addEventListener('pointerup', handle_up);
     document.addEventListener('mousemove', handle_move, { passive: false });
     document.addEventListener('mouseup', handle_up);
-    
-    if(titlebar_ref.current && titlebar_ref.current.setPointerCapture && e.pointerId) 
-      {
-      try 
-      {
-        titlebar_ref.current.setPointerCapture(e.pointerId);
-      } catch(err) 
-      {
-        console.warn('Could not capture pointer:', err);
-      }
-    }
   };
 
   const handle_minimize = () => {
@@ -249,12 +275,12 @@ const Windows98Home = () => {
     }
   };
 
-  // icon dragging functions
   const handle_icon_mouse_down = (e, iconId) => {
     e.preventDefault();
     e.stopPropagation();
     
     const icon = desktop_icons.find(i => i.id === iconId);
+
     if(!icon) return;
     
     const rect = e.currentTarget.getBoundingClientRect();
@@ -495,8 +521,12 @@ const Windows98Home = () => {
           left: is_maximized ? '0px' : `${window_position.x}px`,
           top: is_maximized ? '0px' : `${window_position.y}px`,
           cursor: is_dragging ? 'grabbing' : 'default',
-          zIndex: is_dragging ? 2000 : 1500,
+          zIndex: window_z_indexes.portfolio,
           display: is_minimized ? 'none' : 'block'
+        }}
+        onClick = {(e) => {
+          e.stopPropagation();
+          focusWindow('portfolio');
         }}
       >
         <div 
@@ -625,13 +655,13 @@ const Windows98Home = () => {
 
           {/* Navigation Buttons */}
           <div style = {{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button onClick = {() => router.push('/projects')} style = {{ minWidth: '120px' }}>
+            <button onClick = {() => openWindow('projects')} style = {{ minWidth: '120px' }}>
               📁 View Projects
             </button>
-            <button onClick = {() => router.push('/contact')} style = {{ minWidth: '120px' }}>
+            <button onClick = {() => openWindow('contact')} style = {{ minWidth: '120px' }}>
               📧 Contact Me
             </button>
-            <button onClick = {() => router.push('/resume')} style = {{ minWidth: '120px' }}>
+            <button onClick = {() => openWindow('resume')} style = {{ minWidth: '120px' }}>
               📄 Resume
             </button>
             <button 
@@ -706,17 +736,21 @@ const Windows98Home = () => {
           background: '#c0c0c0',
           display: 'flex',
           alignItems: 'center',
-          padding: '0 4px'
+          padding: '0 4px',
+          gap: '2px'
         }}>
           <button
-            onClick={() => setIsMinimized(false)}
+            onClick={() => {
+              setIsMinimized(false);
+              focusWindow('portfolio');
+            }}
             style = {{ 
               height: '18px', 
               fontSize: '10px',
               padding: '0 8px',
-              background: is_minimized ? '#316ac5' : '#c0c0c0',
-              color: is_minimized ? 'white' : 'black',
-              border: is_minimized ? '1px inset #316ac5' : '1px outset #c0c0c0',
+              background: active_window_id === 'portfolio' ? '#316ac5' : '#c0c0c0',
+              color: active_window_id === 'portfolio' ? 'white' : 'black',
+              border: active_window_id === 'portfolio' ? '1px inset #316ac5' : '1px outset #c0c0c0',
               display: 'flex',
               alignItems: 'center',
               gap: '4px',
@@ -734,6 +768,48 @@ const Windows98Home = () => {
             />
             Portfolio
           </button>
+          
+          {/* Other windows */}
+          {active_windows.map((windowId) => {
+            const windowInfo = {
+              resume: { title: 'Resume', icon: 'https://win98icons.alexmeub.com/icons/png/user-4.png' },
+              projects: { title: 'Projects', icon: 'https://win98icons.alexmeub.com/icons/png/folder_open-4.png' },
+              contact: { title: 'Contact', icon: 'https://win98icons.alexmeub.com/icons/png/mail-4.png' }
+            };
+            
+            const info = windowInfo[windowId];
+            if (!info) return null;
+            
+            return (
+              <button
+                key={windowId}
+                onClick={() => focusWindow(windowId)}
+                style = {{ 
+                  height: '18px', 
+                  fontSize: '10px',
+                  padding: '0 8px',
+                  background: active_window_id === windowId ? '#316ac5' : '#c0c0c0',
+                  color: active_window_id === windowId ? 'white' : 'black',
+                  border: active_window_id === windowId ? '1px inset #316ac5' : '1px outset #c0c0c0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                <img 
+                  src={info.icon}
+                  alt={info.title}
+                  style={{
+                    width: '12px',
+                    height: '12px',
+                    imageRendering: 'pixelated'
+                  }}
+                />
+                {info.title}
+              </button>
+            );
+          })}
         </div>
 
         {/* Clock */}
@@ -958,7 +1034,7 @@ const Windows98Home = () => {
 
       {/* Theme Manager Window */}
       {theme_manager_open && (
-        <Windows98ThemeManager 
+        <Win98_theme_manager 
           onClose = {() => setThemeManagerOpen(false)}
         />
       )}
@@ -967,6 +1043,9 @@ const Windows98Home = () => {
       <Windows98WindowManager 
         activeWindows = {active_windows}
         onCloseWindow = {closeWindow}
+        onFocusWindow = {focusWindow}
+        activeWindowId = {active_window_id}
+        windowZIndexes = {window_z_indexes}
       />
     </div>
   );

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Windows98Window from './Windows98Window';
 import { projectsData } from '@/data/projects';
 
-const Windows98Projects = ({ onClose }) => {
+const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
   const [selectedCategory, setSelectedCategory] = useState(0);
 
   return (
@@ -12,6 +12,9 @@ const Windows98Projects = ({ onClose }) => {
       title = "Projects Portfolio"
       icon = "https://win98icons.alexmeub.com/icons/png/folder_open-4.png"
       onClose = {onClose}
+      onFocus = {onFocus}
+      isActive = {isActive}
+      zIndex = {zIndex}
       width = {800}
       height = {600}
       resizable = {true}

@@ -3,7 +3,7 @@
 import React from 'react';
 import Windows98Window from './Windows98Window';
 
-const Windows98Resume = ({ onClose }) => {
+const Windows98Resume = ({ onClose, onFocus, isActive, zIndex }) => {
   const About = {
     title: "About Me",
     info: 
@@ -51,6 +51,9 @@ const Windows98Resume = ({ onClose }) => {
       title = "Resume - Maksym Kopychko"
       icon = "https://win98icons.alexmeub.com/icons/png/user-4.png"
       onClose = {onClose}
+      onFocus = {onFocus}
+      isActive = {isActive}
+      zIndex = {zIndex}
       width = {700}
       height = {500}
       resizable = {true}

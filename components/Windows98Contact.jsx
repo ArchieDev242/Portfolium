@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Windows98Window from './Windows98Window';
 
-const Windows98Contact = ({ onClose }) => {
+const Windows98Contact = ({ onClose, onFocus, isActive, zIndex }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -65,6 +65,9 @@ const Windows98Contact = ({ onClose }) => {
       title = "Contact Form"
       icon = "https://win98icons.alexmeub.com/icons/png/mail-4.png"
       onClose = {onClose}
+      onFocus = {onFocus}
+      isActive = {isActive}
+      zIndex = {zIndex}
       width = {600}
       height = {500}
       resizable = {true}
