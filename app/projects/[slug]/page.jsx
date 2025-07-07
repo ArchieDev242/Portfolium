@@ -1,7 +1,8 @@
 import ProjectPageClient from './ProjectPageClient_new';
 import { getAllProjects } from '@/data/projects';
 
-export async function generateStaticParams() {
+export async function generateStaticParams() 
+{
   const projects = getAllProjects();
   
   return projects.map((project) => ({
@@ -11,14 +12,12 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) 
 {
-  const resolvedParams = await params;
-  const project = getAllProjects().find(p => p.slug === resolvedParams.slug);
+  const resolved_params = await params;
+  const project = getAllProjects().find(p => p.slug === resolved_params.slug);
   
   if(!project) 
     {
-    return {
-      title: 'Project Not Found',
-    };
+    return { title: 'Project Not Found', };
   }
   
   return {
@@ -27,8 +26,6 @@ export async function generateMetadata({ params })
   };
 }
 
-const ProjectPage = ({ params }) => {
-  return <ProjectPageClient params={params} />;
-};
+const ProjectPage = ({ params }) => { return <ProjectPageClient params = {params} />; };
 
 export default ProjectPage;

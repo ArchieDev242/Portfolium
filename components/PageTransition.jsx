@@ -16,25 +16,25 @@ const PageTransition = () => {
     return () => clearTimeout(timer);
   }, [pathname]);
 
-  // Створюємо масив для 8 сходинок
+  // create an array of 8 steps for the animation
   const steps = Array.from({ length: 8 });
 
   return (
     <AnimatePresence mode="wait">
       {isAnimating && (
         <motion.div
-          key={pathname}
-          className="fixed inset-0 z-[9999] pointer-events-none"
+          key = {pathname}
+          className = "fixed inset-0 z-[9999] pointer-events-none"
         >
           {steps.map((_, index) => (
             <motion.div
-              key={index}
-              className="absolute left-0 w-full h-[12.5%] bg-accent-default"
-              style={{ top: `${index * 12.5}%` }}
-              initial={{ x: "-100%" }}
-              animate={{ x: "0%" }}
-              exit={{ x: "100%" }}
-              transition={{
+              key = {index}
+              className = "absolute left-0 w-full h-[12.5%] bg-accent-default"
+              style = {{ top: `${index * 12.5}%` }}
+              initial = {{ x: "-100%" }}
+              animate = {{ x: "0%" }}
+              exit = {{ x: "100%" }}
+              transition = {{
                 duration: 0.3,
                 delay: index * 0.05,
                 ease: [0.4, 0, 0.2, 1]

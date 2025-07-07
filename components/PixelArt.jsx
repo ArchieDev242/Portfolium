@@ -3,9 +3,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-// Компонент для створення блоків Minecraft
+// minecraft-style блоки
 export const MinecraftBlock = ({ type = "stone", className = "", children, onClick }) => {
-  // Кольори та текстури для різних типів блоків
   const blockStyles = {
     stone: "bg-gray-500 border-gray-400 border-b-gray-700 border-r-gray-700",
     dirt: "bg-amber-800 border-amber-700 border-b-amber-900 border-r-amber-900",
@@ -33,9 +32,8 @@ export const MinecraftBlock = ({ type = "stone", className = "", children, onCli
   );
 };
 
-// Компонент для створення текстурованих блоків з зображеннями
 export const TexturedBlock = ({ type = "stone", className = "", children, onClick }) => {
-  // Замість зображень використовуємо кольори
+  // замість зображень використовуємо кольори
   const blockStyles = {
     stone: "bg-gray-500",
     dirt: "bg-amber-800",
@@ -57,7 +55,7 @@ export const TexturedBlock = ({ type = "stone", className = "", children, onClic
   );
 };
 
-// Компонент для створення крафтінг-столу
+// компонент для створення крафтінг-столу
 export const CraftingTable = ({ children, className = "" }) => {
   return (
     <div className = {`bg-amber-800 border-4 border-amber-900 p-4 pixelated ${className}`}>
@@ -77,7 +75,7 @@ export const CraftingTable = ({ children, className = "" }) => {
   );
 };
 
-// Компонент для створення інвентарю
+// компонент для створення інвентарю
 export const Inventory = ({ children, className = "" }) => {
   return (
     <div className = {`bg-gray-900/80 border-4 border-gray-800 p-6 pixelated ${className}`}>
@@ -86,7 +84,7 @@ export const Inventory = ({ children, className = "" }) => {
   );
 };
 
-// Компонент для створення кнопки в стилі Minecraft
+// компонент для створення кнопки в стилі Minecraft
 export const MinecraftButton = ({ text, onClick, type = "button", disabled = false, className = "" }) => {
   return (
     <motion.button
@@ -102,9 +100,9 @@ export const MinecraftButton = ({ text, onClick, type = "button", disabled = fal
   );
 };
 
-// Компонент для створення поля вводу в стилі Minecraft
+// компонент для створення поля вводу в стилі Minecraft
 export const MinecraftInput = ({ type = "text", name, value, onChange, placeholder, required = false, rows = "1", className = "" }) => {
-  if (type === "textarea") {
+  if(type === "textarea") {
     return (
       <textarea
         name = {name}
@@ -131,7 +129,7 @@ export const MinecraftInput = ({ type = "text", name, value, onChange, placehold
   );
 };
 
-// Компонент для створення предметів Minecraft (кирка, меч, сокира)
+// компонент для створення предметів Minecraft (кирка, меч, сокира)
 export const MinecraftItem = ({ type = "pickaxe", animate = false, className = "" }) => {
   const itemStyles = {
     pickaxe: "border-l-transparent border-r-transparent border-b-transparent border-t-8 border-l-8 border-r-8 border-b-8 border-t-gray-500 border-l-gray-500 border-r-gray-700 border-b-gray-700 after:content-[''] after:absolute after:w-4 after:h-12 after:bg-amber-800 after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:translate-y-1",
@@ -151,9 +149,9 @@ export const MinecraftItem = ({ type = "pickaxe", animate = false, className = "
   );
 };
 
-// Компонент для відображення інтерфейсу гравця (здоров'я, голод, досвід)
+// компонент для відображення інтерфейсу гравця (здоров'я, голод, досвід)
 export const PlayerInterface = ({ health = 10, hunger = 10, xp = 0, className = "" }) => {
-  // Максимальні значення
+  // максимальні значення
   const maxHealth = 10;
   const maxHunger = 10;
   const maxXp = 100;
@@ -199,17 +197,17 @@ export const PlayerInterface = ({ health = 10, hunger = 10, xp = 0, className = 
   );
 };
 
-// Компонент для анімації розбивання блоку
+// компонент для анімації розбивання блоку
 export const BreakingBlock = ({ type = "stone", stage = 0, onComplete, className = "" }) => {
-  const maxStage = 10;
-  const [currentStage, setCurrentStage] = useState(stage);
+  const max_stage = 10;
+  const [current_stage, setCurrentStage] = useState(stage);
 
   useEffect(() => {
-    if (stage > 0 && currentStage < maxStage) {
+    if(stage > 0 && current_stage < max_stage) {
       const timer = setTimeout(() => {
         setCurrentStage(prev => {
           const newStage = prev + 1;
-          if (newStage >= maxStage && onComplete) {
+          if (newStage >= max_stage && onComplete) {
             onComplete();
           }
           return newStage;
@@ -218,14 +216,13 @@ export const BreakingBlock = ({ type = "stone", stage = 0, onComplete, className
 
       return () => clearTimeout(timer);
     }
-  }, [currentStage, stage, onComplete]);
+  }, [current_stage, stage, onComplete]);
 
   useEffect(() => {
     setCurrentStage(stage);
   }, [stage]);
 
-  // Стилі для різних стадій розбивання (використовуємо CSS замість зображень)
-  const breakingStyles = [
+  const breaking_styles = [
     "", // 0 - немає тріщин
     "after:content-[''] after:absolute after:inset-0 after:bg-black after:opacity-10",
     "after:content-[''] after:absolute after:inset-0 after:bg-black after:opacity-20",
@@ -242,21 +239,20 @@ export const BreakingBlock = ({ type = "stone", stage = 0, onComplete, className
   return (
     <MinecraftBlock
       type = {type}
-      className = {`w-16 h-16 ${breakingStyles[Math.min(currentStage, maxStage)]} ${className}`}
+      className = {`w-16 h-16 ${breaking_styles[Math.min(current_stage, max_stage)]} ${className}`}
     />
   );
 };
 
-// Компонент для створення зоряного фону
 export const StarField = ({ count = 100, className = "" }) => {
   const stars = Array(count).fill(0).map((_, index) => {
     const size = Math.random() * 3 + 1; // від 1px до 4px
     const x = Math.random() * 100; // позиція по X (0-100%)
     const y = Math.random() * 100; // позиція по Y (0-100%)
     const opacity = Math.random() * 0.5 + 0.5; // прозорість (0.5-1)
-    const animationDelay = Math.random() * 5; // затримка анімації (0-5s)
+    const animation_delay = Math.random() * 5; // затримка анімації (0-5s)
     
-    return { size, x, y, opacity, animationDelay, id: index };
+    return { size, x, y, opacity, animationDelay: animation_delay, id: index };
   });
 
   return (

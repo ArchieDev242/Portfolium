@@ -102,6 +102,7 @@ const Windows98Window = ({
       }}
       onClick = {(e) => {
         e.stopPropagation();
+
         if(onFocus) onFocus();
       }}
     >
@@ -123,15 +124,17 @@ const Windows98Window = ({
             }}
             onError = {(e) => {
               e.target.style.display = 'none';
-              // Add emoji fallback based on title
+              // emojis for specific titles
               const emojiMap = {
                 'Resume': '📄',
                 'Projects': '📁',
                 'Contact': '📧',
                 'Portfolio': '💼'
               };
+              
               const emoji = Object.keys(emojiMap).find(key => title.includes(key));
-              if (emoji) {
+              if(emoji) 
+                {
                 e.target.insertAdjacentHTML('afterend', `<span style="margin-right: 6px;">${emojiMap[emoji]}</span>`);
               }
             }}
