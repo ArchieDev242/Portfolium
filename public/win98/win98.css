@@ -1,4 +1,5 @@
-body.win98-mode {
+body.win98-mode 
+{
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden !important;
@@ -43,16 +44,16 @@ body:not(.win98-mode)
   font-size: 11px;
 }
 
-/* Emoji fallback styling */
-.win98-container .emoji-fallback {
+.win98-container .emoji-fallback 
+{
   font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Android Emoji', 'EmojiSymbols', sans-serif !important;
   font-size: 16px;
   line-height: 1;
   font-variant-emoji: emoji;
 }
 
-/* Icon styling */
-.win98-container img {
+.win98-container img 
+{
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;

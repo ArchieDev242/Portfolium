@@ -542,16 +542,16 @@ const Windows98Home = () => {
         >
           <div className = "title-bar-text">
             <img 
-              src="/icons/win98/png/directory_open_file_mydocs-0.png" 
-              alt="Portfolio"
-              style={{
+              src = "./icons/win98/png/directory_open_file_mydocs-0.png" 
+              alt = "Portfolio"
+              style = {{
                 width: '16px',
                 height: '16px',
                 imageRendering: 'pixelated',
                 marginRight: '4px',
                 verticalAlign: 'middle'
               }}
-              onError={(e) => {
+              onError = {(e) => {
                 e.target.style.display = 'none';
                 e.target.insertAdjacentHTML('afterend', '<span style="margin-right: 4px;">📁</span>');
               }}
@@ -721,14 +721,14 @@ const Windows98Home = () => {
           }}
         >
           <img 
-            src="/icons/win98/png/start_menu_shortcuts.png" 
-            alt="Start"
-            style={{
+            src = "./icons/win98/png/start_menu_shortcuts.png" 
+            alt = "Start"
+            style = {{
               width: '16px',
               height: '16px',
               imageRendering: 'pixelated'
             }}
-            onError={(e) => {
+            onError = {(e) => {
               e.target.style.display = 'none';
               e.target.insertAdjacentHTML('afterend', '<span>🪟</span>');
             }}
@@ -766,14 +766,14 @@ const Windows98Home = () => {
             }}
           >
             <img 
-              src="/icons/win98/png/directory_open_file_mydocs-0.png" 
-              alt="Portfolio"
-              style={{
+              src = "./icons/win98/png/directory_open_file_mydocs-0.png" 
+              alt = "Portfolio"
+              style = {{
                 width: '12px',
                 height: '12px',
                 imageRendering: 'pixelated'
               }}
-              onError={(e) => {
+              onError = {(e) => {
                 e.target.style.display = 'none';
                 e.target.insertAdjacentHTML('afterend', '<span>📁</span>');
               }}
@@ -810,14 +810,14 @@ const Windows98Home = () => {
                 }}
               >
                 <img 
-                  src={info.icon}
-                  alt={info.title}
-                  style={{
+                  src = {info.icon}
+                  alt = {info.title}
+                  style = {{
                     width: '12px',
                     height: '12px',
                     imageRendering: 'pixelated'
                   }}
-                  onError={(e) => {
+                  onError = {(e) => {
                     e.target.style.display = 'none';
                     e.target.insertAdjacentHTML('afterend', `<span>${info.emoji}</span>`);
                   }}

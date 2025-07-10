@@ -33,9 +33,10 @@ const projects_data = {
           title: "ShortToLongFilename",
           description: "A powerful Windows-only C++ utility that bridges the gap between FAT32's legacy 8.3 filenames and modern long filenames. This Windows-specific tool searches for files with short names and displays their full long names along with complete file paths.",
           fullDescription: "This Windows-exclusive C++ program was developed as a coursework project to demonstrate file system operations and Windows API usage. It specifically works with FAT32 file systems on Windows operating systems, which still use the legacy 8.3 naming convention alongside long filenames. The program provides an efficient way to locate files using their short names and retrieve their corresponding long filenames. Important: This code works only on Windows systems.",
-          image: "/projects/short-to-long-filename/output.jpg",
-          additionalImages: [
-            "/projects/short-to-long-filename/check_ifexist.jpg"
+          image: "./projects/short-to-long-filename/output.jpg",
+          additionalImages: 
+          [
+            "./projects/short-to-long-filename/check_ifexist.jpg"
           ],
           technologies: ["C++", "Windows API", "FAT32", "Visual Studio", "Shlwapi"],
           slug: "short-to-long-filename",

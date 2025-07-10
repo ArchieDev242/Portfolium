@@ -920,7 +920,7 @@ const Windows98Loader = ({ onComplete }) => {
           overflow: 'hidden'
         }}>
           <img 
-            src = "/icons/win98/png/windows-0.png" 
+            src = "./icons/win98/png/windows-0.png" 
             alt = "Windows 98"
             style = {{
               width: '48px',
@@ -1032,45 +1032,45 @@ const Windows98Loader = ({ onComplete }) => {
         backdropFilter: 'blur(5px)'
       }}>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <img src="/icons/win98/png/computer-0.png" 
-               style={{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
-               onError={(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>💻</span>'); }} />
+          <img src = "./icons/win98/png/computer-0.png" 
+               style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
+               onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>💻</span>'); }} />
           System: Windows 98 Portfolio Edition
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <img src="/icons/win98/png/cd_audio_cd_a-0.png" 
-               style={{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
-               onError={(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>💿</span>'); }} />
+          <img src = "./icons/win98/png/cd_audio_cd_a-0.png" 
+               style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
+               onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>💿</span>'); }} />
           Version: 4.10.1998 Build 1998
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <img src="/icons/win98/png/users-0.png" 
-               style={{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
-               onError={(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>👤</span>'); }} />
+          <img src = "./icons/win98/png/users-0.png" 
+               style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
+               onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>👤</span>'); }} />
           Owner: Maksym Kopychko
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <img src="/icons/win98/png/monitor_blue_grad-0.png" 
-               style={{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
-               onError={(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>🖥️</span>'); }} />
+          <img src = "./icons/win98/png/monitor_blue_grad-0.png" 
+               style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
+               onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>🖥️</span>'); }} />
           Resolution: {windowSize.width}x{windowSize.height}
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <img src="/icons/win98/png/memory-0.png" 
-               style={{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
-               onError={(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>💾</span>'); }} />
+          <img src = "./icons/win98/png/memory-0.png" 
+               style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
+               onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>💾</span>'); }} />
           Memory: 128 MB RAM
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <img src="/icons/win98/png/network-0.png" 
-               style={{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
-               onError={(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>🌐</span>'); }} />
+          <img src = "./icons/win98/png/network-0.png" 
+               style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
+               onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>🌐</span>'); }} />
           Network: Connected
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <img src="/icons/win98/png/battery.png" 
-               style={{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
-               onError={(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>⚡</span>'); }} />
+          <img src = "./icons/win98/png/battery.png" 
+               style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
+               onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>⚡</span>'); }} />
           Status: Optimized
         </div>
       </div>
@@ -1092,7 +1092,7 @@ const Windows98Loader = ({ onComplete }) => {
         gap: '5px'
       }}>
         <img 
-          src="/icons/win98/png/application_hourglass-0.png" 
+          src="./icons/win98/png/application_hourglass-0.png" 
           style={{ width: '12px', height: '12px', imageRendering: 'pixelated' }}
           onError={(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>⏳</span>'); }} 
         />

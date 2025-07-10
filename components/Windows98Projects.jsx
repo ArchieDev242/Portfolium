@@ -10,7 +10,7 @@ const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
   return (
     <Windows98Window
       title = "Projects Portfolio"
-      icon = "/icons/win98/png/directory_open_file_mydocs-0.png"
+      icon = "./icons/win98/png/directory_open_file_mydocs-0.png"
       onClose = {onClose}
       onFocus = {onFocus}
       isActive = {isActive}
@@ -64,7 +64,7 @@ const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
               <div key = {index} className = "sunken-panel" style = {{ padding: '10px', background: 'white' }}>
                 <div style = {{ fontWeight: 'bold', fontSize: '12px', marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
                   <img 
-                    src = "/icons/win98/png/file_lines-0.png" 
+                    src = "./icons/win98/png/file_lines-0.png" 
                     alt  ="Project"
                     style = {{ width: '16px', height: '16px', marginRight: '5px', imageRendering: 'pixelated' }}
                     onError = {(e) => {
@@ -177,7 +177,7 @@ const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
                       }}
                     >
                       <img 
-                        src = "/icons/win98/png/globe_map-0.png"
+                        src = "./icons/win98/png/globe_map-0.png"
                         alt = "GameBanana"
                         style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }}
                         onError = {(e) => {
@@ -200,7 +200,7 @@ const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
                       }}
                     >
                       <img 
-                        src = "/icons/win98/png/executable-0.png"
+                        src = "./icons/win98/png/executable-0.png"
                         alt = "Code"
                         style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }}
                         onError = {(e) => {
@@ -223,7 +223,7 @@ const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
                       }}
                     >
                       <img 
-                        src = "/icons/win98/png/download.png"
+                        src = "./icons/win98/png/download.png"
                         alt = "Download"
                         style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }}
                         onError = {(e) => {
@@ -248,7 +248,7 @@ const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
               color: '#666' 
             }}>
               <img 
-                src = "/icons/win98/png/msg_information-0.png"
+                src = "./icons/win98/png/msg_information-0.png"
                 alt = "Info"
                 style = {{ width: '32px', height: '32px', imageRendering: 'pixelated', marginBottom: '10px' }}
                 onError = {(e) => {

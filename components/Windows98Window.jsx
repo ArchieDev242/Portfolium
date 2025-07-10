@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 const Windows98Window = ({ 
   title = "Windows 98 Application", 
-  icon = "/icons/win98/png/windows-0.png",
+  icon = "./icons/win98/png/windows-0.png",
   children, 
   onClose, 
   onFocus,
@@ -125,17 +125,18 @@ const Windows98Window = ({
             onError = {(e) => {
               e.target.style.display = 'none';
               // emojis for specific titles
-              const emojiMap = {
+              const emoji_map = {
                 'Resume': '📄',
                 'Projects': '📁',
                 'Contact': '📧',
                 'Portfolio': '💼'
               };
               
-              const emoji = Object.keys(emojiMap).find(key => title.includes(key));
+              const emoji = Object.keys(emoji_map).find(key => title.includes(key));
+
               if(emoji) 
                 {
-                e.target.insertAdjacentHTML('afterend', `<span style="margin-right: 6px;">${emojiMap[emoji]}</span>`);
+                e.target.insertAdjacentHTML('afterend', `<span style="margin-right: 6px;">${emoji_map[emoji]}</span>`);
               }
             }}
           />

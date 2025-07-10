@@ -214,7 +214,7 @@ const Win98_theme_manager = ({ onClose }) => {
       >
         <div className = "title-bar-text">
           <img 
-            src = "/icons/win98/png/themes-0.png" 
+            src = "./icons/win98/png/themes-0.png" 
             alt = "Themes"
             style = {{
               width: '16px',
@@ -240,7 +240,7 @@ const Win98_theme_manager = ({ onClose }) => {
         <fieldset style = {{ marginBottom: '15px' }}>
           <legend>
             <img 
-              src = "/icons/win98/png/color_profile-0.png"
+              src = "./icons/win98/png/color_profile-0.png"
               alt = "Colors"
               style = {{
                 width: '16px',
@@ -350,7 +350,7 @@ const Win98_theme_manager = ({ onClose }) => {
         <fieldset style = {{ marginBottom: '15px' }}>
           <legend>
             <img 
-              src = "/icons/win98/png/notepad_file-0.png"
+              src = "./icons/win98/png/notepad_file-0.png"
               alt = "Info"
               style = {{
                 width: '16px',
@@ -418,7 +418,7 @@ const Win98_theme_manager = ({ onClose }) => {
               style = {{ minWidth: '80px', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center' }}
             >
               <img 
-                src = "/icons/win98/png/gears-0.png"
+                src = "./icons/win98/png/gears-0.png"
                 alt = "Random"
                 style = {{
                   width: '16px',
@@ -448,7 +448,7 @@ const Win98_theme_manager = ({ onClose }) => {
               }}
             >
               <img 
-                src = "/icons/win98/png/check-0.png"
+                src = "./icons/win98/png/check-0.png"
                 alt = "Apply"
                 style = {{
                   width: '16px',

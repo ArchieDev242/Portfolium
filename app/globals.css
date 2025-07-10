@@ -214,7 +214,6 @@ body
     pointer-events: none;
   }
 
-  /* Піксельні елементи */
   .pixelated 
   {
     @apply overflow-hidden;
@@ -223,7 +222,6 @@ body
     image-rendering: crisp-edges;
   }
 
-  /* Неонове світіння для тексту */
   .neon-text-cyan 
   {
     color: #06b6d4;
