@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import Windows98Window from './Windows98Window';
 import { projectsData } from '@/data/projects';
 
-const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
-  const [selectedCategory, setSelectedCategory] = useState(0);
+const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
+  const [selected_category, set_selected_category] = useState(0);
 
   return (
     <Windows98Window
@@ -22,21 +22,21 @@ const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
     >
       <div style = {{ fontFamily: 'MS Sans Serif, sans-serif', fontSize: '11px', height: '100%' }}>
         {/* Tabs */}
-        <div style={{ marginBottom: '10px' }}>
+        <div style = {{ marginBottom: '10px' }}>
           <menu role = "tablist" style = {{ margin: 0, padding: 0 }}>
             {projectsData.categories.map((category, index) => (
               <li 
                 key = {index}
                 role = "tab" 
-                aria-selected = {selectedCategory === index}
-                onClick = {() => setSelectedCategory(index)}
+                aria-selected = {selected_category === index}
+                onClick = {() => set_selected_category(index)}
                 style = {{ 
                   display: 'inline-block', 
                   padding: '4px 12px', 
-                  background: selectedCategory === index ? '#c0c0c0' : '#f0f0f0', 
+                  background: selected_category === index ? '#c0c0c0' : '#f0f0f0', 
                   border: '1px solid #808080', 
-                  borderBottom: selectedCategory === index ? 'none' : '1px solid #808080',
-                  borderTop: selectedCategory === index ? '1px solid #808080' : 'none',
+                  borderBottom: selected_category === index ? 'none' : '1px solid #808080',
+                  borderTop: selected_category === index ? '1px solid #808080' : 'none',
                   marginRight: '2px',
                   cursor: 'pointer'
                 }}
@@ -51,16 +51,16 @@ const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
         <div className = "sunken-panel" style = {{ padding: '10px', height: 'calc(100% - 80px)', overflow: 'auto' }}>
           <fieldset style = {{ marginBottom: '15px' }}>
             <legend style = {{ fontWeight: 'bold' }}>
-              📁 {projectsData.categories[selectedCategory].name}
+              📁 {projectsData.categories[selected_category].name}
             </legend>
             <div style = {{ padding: '10px', fontSize: '11px', fontStyle: 'italic' }}>
-              {projectsData.categories[selectedCategory].description}
+              {projectsData.categories[selected_category].description}
             </div>
           </fieldset>
 
           {/* Projects List */}
           <div style = {{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '15px' }}>
-            {projectsData.categories[selectedCategory].projects.map((project, index) => (
+            {projectsData.categories[selected_category].projects.map((project, index) => (
               <div key = {index} className = "sunken-panel" style = {{ padding: '10px', background: 'white' }}>
                 <div style = {{ fontWeight: 'bold', fontSize: '12px', marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
                   <img 
@@ -165,6 +165,29 @@ const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
 
                 {/* Project Actions */}
                 <div style = {{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
+                  {project.links?.playGame && (
+                    <button 
+                      onClick = {() => window.open(project.links.playGame, '_blank')}
+                      style = {{ 
+                        fontSize: '10px', 
+                        padding: '2px 8px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '3px'
+                      }}
+                    >
+                      <img 
+                        src = "./icons/win98/png/media_play-4.png"
+                        alt = "Play Game"
+                        style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }}
+                        onError = {(e) => {
+                          e.target.style.display = 'none';
+                          e.target.insertAdjacentHTML('afterend', '<span>🎮</span>');
+                        }}
+                      />
+                      Play Game
+                    </button>
+                  )}
                   {project.links?.gamebanana && (
                     <button 
                       onClick = {() => window.open(project.links.gamebanana, '_blank')}
@@ -240,7 +263,7 @@ const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
           </div>
 
           {/* Empty State */}
-          {projectsData.categories[selectedCategory].projects.length === 0 && (
+          {projectsData.categories[selected_category].projects.length === 0 && (
             <div style = {{ 
               textAlign: 'center', 
               padding: '40px', 
@@ -267,7 +290,7 @@ const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
         {/* Status Bar */}
         <div className = "status-bar" style={{ marginTop: '10px' }}>
           <div className = "status-bar-field">
-            {projectsData.categories[selectedCategory].projects.length} project(s) in {projectsData.categories[selectedCategory].name}
+            {projectsData.categories[selected_category].projects.length} project(s) in {projectsData.categories[selected_category].name}
           </div>
           <div className = "status-bar-field">Ready</div>
         </div>
@@ -276,4 +299,4 @@ const Windows98Projects = ({ onClose, onFocus, isActive, zIndex }) => {
   );
 };
 
-export default Windows98Projects;
+export default Win98_projects;

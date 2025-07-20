@@ -10,11 +10,11 @@ import { usePathname } from "next/navigation";
 const ClientLayout = ({ children }) => {
   const pathname = usePathname();
 
-  const isWin98Mode = pathname === '/win98' || pathname.startsWith('/win98/');
+  const is_Win98_mode = pathname === '/win98' || pathname.startsWith('/win98/');
   
-  console.log('Current pathname:', pathname, 'isWin98Mode:', isWin98Mode);
+  console.log('Current pathname:', pathname, 'isWin98Mode:', is_Win98_mode);
 
-  if(isWin98Mode) 
+  if(is_Win98_mode) 
     {
     return (
       <>

@@ -1,24 +1,21 @@
 import ProjectPageClient from './ProjectPageClient_new';
-import { getAllProjects } from '@/data/projects';
+import { getAllProjects as get_all_projects } from '@/data/projects';
 
 export async function generateStaticParams() 
 {
-  const projects = getAllProjects();
+  const projects = get_all_projects();
   
   return projects.map((project) => ({
     slug: project.slug,
   }));
 }
 
-export async function generateMetadata({ params }) 
+export async function generate_metadata({ params }) 
 {
   const resolved_params = await params;
-  const project = getAllProjects().find(p => p.slug === resolved_params.slug);
+  const project = get_all_projects().find(p => p.slug === resolved_params.slug);
   
-  if(!project) 
-    {
-    return { title: 'Project Not Found', };
-  }
+  if(!project) return { title: 'Project Not Found', };
   
   return {
     title: `${project.title} | My Projects`,
@@ -26,6 +23,6 @@ export async function generateMetadata({ params })
   };
 }
 
-const ProjectPage = ({ params }) => { return <ProjectPageClient params = {params} />; };
+const project_page = ({ params }) => { return <ProjectPageClient params = {params} />; };
 
-export default ProjectPage;
+export default project_page;

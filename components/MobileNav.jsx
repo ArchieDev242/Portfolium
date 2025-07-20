@@ -39,7 +39,7 @@ const MobileNav = () => {
         
         {/* our logo */}
         <div className = "mt-32 mb-40 text-center text-2xl">
-            <Link href="/">
+            <Link href = "/">
                 <h1 className = "text-2xl font-semibold">Archie242<span className = "text-accent-default">.</span></h1>
             </Link>
         </div>
@@ -47,11 +47,16 @@ const MobileNav = () => {
         {/* nav */}
         <nav className = "flex flex-col justify-center items-center gap-8">
             {links.map((link, index) => {
+                // Check if current page matches the link
+                const isActive = link.path === "/" 
+                    ? pathname === "/" 
+                    : pathname.startsWith(link.path);
+                
                 return <Link 
                 href = {link.path} 
                 key = {index} 
                 className = {`
-                    ${link.path === pathname ? "text-accent-default border-b-2 border-accent-default" : "text-white"} 
+                    ${isActive ? "text-accent-default border-b-2 border-accent-default" : "text-white"} 
                     text-xl capitalize hover:text-accent-hover transition-all`}
                     >
                 {link.name}

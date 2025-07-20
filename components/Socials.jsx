@@ -9,7 +9,7 @@ const socials = [
     { icon: <FaTwitter />, url: "https://x.com/ArchieDev242" },
     { icon: <FaDiscord />, url: "https://discordapp.com/users/593002022068944905" },
     { icon: <FaTelegram />, url: "https://t.me/Archie242" },
-    { icon: <FaInstagram />, url: "https://www.instagram.com/gametopluss?igsh=eW4zdGlreGJhdTR5" }
+    { icon: <FaInstagram />, url: "https://www.instagram.com/archiedev242?igsh=eW4zdGlreGJhdTR5" }
 ]
 
 const Socials = ({ containerStyles, iconStyles }) => {

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 const PageTransition = () => {
   const pathname = usePathname();
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [is_animating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     setIsAnimating(true);
@@ -21,7 +21,7 @@ const PageTransition = () => {
 
   return (
     <AnimatePresence mode="wait">
-      {isAnimating && (
+      {is_animating && (
         <motion.div
           key = {pathname}
           className = "fixed inset-0 z-[9999] pointer-events-none"

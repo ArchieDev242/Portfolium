@@ -3,18 +3,18 @@
 import React, { useState } from 'react';
 import Windows98Window from './Windows98Window';
 
-const Windows98Contact = ({ onClose, onFocus, isActive, zIndex }) => {
-  const [formData, setFormData] = useState({
+const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
+  const [form_data, set_form_data] = useState({
     name: "",
     email: "",
     message: ""
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState("");
+  const [is_submitting, set_is_submitting] = useState(false);
+  const [submit_status, set_submit_status] = useState("");
 
   const handle_change = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    set_form_data(prev => ({
       ...prev,
       [name]: value
     }));
@@ -22,8 +22,8 @@ const Windows98Contact = ({ onClose, onFocus, isActive, zIndex }) => {
 
   const handle_submit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus("Sending message...");
+    set_is_submitting(true);
+    set_submit_status("Sending message...");
     
     try 
     {
@@ -35,28 +35,28 @@ const Windows98Contact = ({ onClose, onFocus, isActive, zIndex }) => {
         },
 
         body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
+          name: form_data.name,
+          email: form_data.email,
+          message: form_data.message,
         }),
       });
       
       if(response.ok) 
         {
-        setSubmitStatus("Message sent successfully!");
-        setFormData({ name: "", email: "", message: "" });
-        setTimeout(() => setSubmitStatus(""), 3000);
+        set_submit_status("Message sent successfully!");
+        set_form_data({ name: "", email: "", message: "" });
+        setTimeout(() => set_submit_status(""), 3000);
       } else 
       {
         throw new Error("Failed to send message");
       }
     } catch(error) 
     {
-      setSubmitStatus("Error sending message. Please try again.");
-      setTimeout(() => setSubmitStatus(""), 3000);
+      set_submit_status("Error sending message. Please try again.");
+      setTimeout(() => set_submit_status(""), 3000);
     } finally 
     {
-      setIsSubmitting(false);
+      set_is_submitting(false);
     }
   };
 
@@ -87,7 +87,7 @@ const Windows98Contact = ({ onClose, onFocus, isActive, zIndex }) => {
                   type = "text"
                   id = "name"
                   name = "name"
-                  value = {formData.name}
+                  value = {form_data.name}
                   onChange = {handle_change}
                   required
                   style = {{ width: '100%', padding: '4px', fontSize: '11px' }}
@@ -104,7 +104,7 @@ const Windows98Contact = ({ onClose, onFocus, isActive, zIndex }) => {
                   type = "email"
                   id = "email"
                   name = "email"
-                  value = {formData.email}
+                  value = {form_data.email}
                   onChange = {handle_change}
                   required
                   style = {{ width: '100%', padding: '4px', fontSize: '11px' }}
@@ -120,7 +120,7 @@ const Windows98Contact = ({ onClose, onFocus, isActive, zIndex }) => {
                 <textarea
                   id = "message"
                   name = "message"
-                  value = {formData.message}
+                  value = {form_data.message}
                   onChange = {handle_change}
                   required
                   rows = {8}
@@ -139,8 +139,8 @@ const Windows98Contact = ({ onClose, onFocus, isActive, zIndex }) => {
               <div style = {{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <button 
                   type = "submit"
-                  disabled = {isSubmitting}
-                  className = {isSubmitting ? "" : "default"}
+                  disabled = {is_submitting}
+                  className = {is_submitting ? "" : "default"}
                   style = {{ 
                     minWidth: '100px',
                     display: 'flex',
@@ -158,12 +158,12 @@ const Windows98Contact = ({ onClose, onFocus, isActive, zIndex }) => {
                       e.target.insertAdjacentHTML('afterend', '<span>📧</span>');
                     }}
                   />
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                  {is_submitting ? 'Sending...' : 'Send Message'}
                 </button>
 
                 <button 
                   type = "button"
-                  onClick = {() => setFormData({ name: "", email: "", message: "" })}
+                  onClick = {() => set_form_data({ name: "", email: "", message: "" })}
                   style = {{ 
                     minWidth: '80px',
                     display: 'flex',
@@ -234,10 +234,10 @@ const Windows98Contact = ({ onClose, onFocus, isActive, zIndex }) => {
         {/* Status Bar */}
         <div className = "status-bar">
           <div className = "status-bar-field">
-            {submitStatus || "Ready to send your message"}
+            {submit_status || "Ready to send your message"}
           </div>
           <div className = "status-bar-field">
-            {submitStatus ? (submitStatus.includes("success") ? "✓" : submitStatus.includes("Error") ? "✗" : "⏳") : "📧"}
+            {submit_status ? (submit_status.includes("success") ? "✓" : submit_status.includes("Error") ? "✗" : "⏳") : "📧"}
           </div>
         </div>
       </div>
@@ -245,4 +245,4 @@ const Windows98Contact = ({ onClose, onFocus, isActive, zIndex }) => {
   );
 };
 
-export default Windows98Contact;
+export default Win98_contact;

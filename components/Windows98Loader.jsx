@@ -3,52 +3,52 @@
 import { useEffect, useState } from 'react';
 
 const Windows98Loader = ({ onComplete }) => {
-  const [progress, setProgress] = useState(0);
-  const [loadingText, setLoadingText] = useState('Starting Windows...');
-  const [dots, setDots] = useState('');
-  const [systemMessage, setSystemMessage] = useState('');
-  const [isBeeping, setIsBeeping] = useState(false);
-  const [windowSize, setWindowSize] = useState({ width: 1024, height: 768 });
-  const [glitchEffect, setGlitchEffect] = useState(false);
-  const [matrixRain, setMatrixRain] = useState([]);
-  const [scanlines, setScanlines] = useState(true);
-  const [crtEffect, setCrtEffect] = useState(true);
-  const [particles, setParticles] = useState([]);
-  const [hackingEffect, setHackingEffect] = useState(false);
-  const [neonEffect, setNeonEffect] = useState(false);
-  const [rippleEffect, setRippleEffect] = useState(false);
-  const [hologramEffect, setHologramEffect] = useState(false);
-  const [dataStream, setDataStream] = useState([]);
-  const [circuitEffect, setCircuitEffect] = useState(false);
-  const [waveform, setWaveform] = useState([]);
-  const [laserEffect, setLaserEffect] = useState(false);
-  const [cyberpunkMode, setCyberpunkMode] = useState(false);
-  const [terminalHack, setTerminalHack] = useState([]);
-  const [digitalRain, setDigitalRain] = useState([]);
-  const [energyField, setEnergyField] = useState(false);
-  const [quantumEffect, setQuantumEffect] = useState(false);
-  const [sparkles, setSparkles] = useState([]);
-  const [fireworks, setFireworks] = useState([]);
-  const [isClient, setIsClient] = useState(false);
+  const [progress, set_progress] = useState(0);
+  const [loading_text, set_loading_text] = useState('Starting Windows...');
+  const [dots, set_dots] = useState('');
+  const [system_message, set_system_message] = useState('');
+  const [is_beeping, set_is_beeping] = useState(false);
+  const [window_size, set_window_size] = useState({ width: 1024, height: 768 });
+  const [glitch_effect, set_glitch_effect] = useState(false);
+  const [matrix_rain, set_matrix_rain] = useState([]);
+  const [scanlines, set_scanlines] = useState(true);
+  const [crt_effect, set_crt_effect] = useState(true);
+  const [particles, set_particles] = useState([]);
+  const [hacking_effect, set_hacking_effect] = useState(false);
+  const [neon_effect, set_neon_effect] = useState(false);
+  const [ripple_effect, set_ripple_effect] = useState(false);
+  const [hologram_effect, setHologramEffect] = useState(false);
+  const [data_stream, set_data_stream] = useState([]);
+  const [circuit_effect, set_circuit_effect] = useState(false);
+  const [waveform, set_waveform] = useState([]);
+  const [laser_effect, set_laser_effect] = useState(false);
+  const [cyberpunk_mode, set_cyberpunk_mode] = useState(false);
+  const [terminal_hack, set_terminal_hack] = useState([]);
+  const [digital_rain, set_digital_rain] = useState([]);
+  const [energy_field, set_energy_field] = useState(false);
+  const [quantum_effect, set_quantum_effect] = useState(false);
+  const [sparkles, set_sparkles] = useState([]);
+  const [fireworks, set_fireworks] = useState([]);
+  const [is_client, set_is_client] = useState(false);
   
-  const [dnaHelix, setDnaHelix] = useState([]);
-  const [vortex, setVortex] = useState(false);
-  const [prismaticWave, setPrismaticWave] = useState(false);
-  const [cosmicDust, setCosmicDust] = useState([]);
-  const [timeWarp, setTimeWarp] = useState(false);
-  const [dimensionalRift, setDimensionalRift] = useState(false);
-  const [kaleidoscope, setKaleidoscope] = useState(false);
-  const [magneticField, setMagneticField] = useState([]);
-  const [plasmaStorm, setPlasmaStorm] = useState(false);
-  const [blackHole, setBlackHole] = useState(false);
-  const [crystalFormation, setCrystalFormation] = useState([]);
-  const [neuralNetwork, setNeuralNetwork] = useState([]);
-  const [particleAccelerator, setParticleAccelerator] = useState(false);
-  const [fractalZoom, setFractalZoom] = useState(false);
-  const [auroraBorealis, setAuroraBorealis] = useState(false);
+  const [dna_helix, set_dna_helix] = useState([]);
+  const [vortex, set_vortex] = useState(false);
+  const [prismatic_wave, set_prismatic_wave] = useState(false);
+  const [cosmic_dust, set_cosmic_dust] = useState([]);
+  const [time_warp, set_time_warp] = useState(false);
+  const [dimensional_rift, set_dimensional_rift] = useState(false);
+  const [kaleidoscope, set_kaleidoscope] = useState(false);
+  const [magnetic_field, set_magnetic_field] = useState([]);
+  const [plasma_storm, set_plasma_storm] = useState(false);
+  const [black_hole, set_black_hole] = useState(false);
+  const [crystal_formation, set_crystal_formation] = useState([]);
+  const [neural_network, set_neural_network] = useState([]);
+  const [particle_accelerator, set_particle_accelerator] = useState(false);
+  const [fractal_zoom, set_fractal_zoom] = useState(false);
+  const [aurora_borealis, set_aurora_borealis] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
+    set_is_client(true);
     
     const link98 = document.createElement('link');
     link98.rel = 'stylesheet';
@@ -56,14 +56,14 @@ const Windows98Loader = ({ onComplete }) => {
     link98.id = 'win98-loader-css';
     document.head.appendChild(link98);
 
-    const customLink = document.createElement('link');
-    customLink.rel = 'stylesheet';
-    customLink.href = '/win98/win98.css';
-    customLink.id = 'win98-loader-custom-css';
-    document.head.appendChild(customLink);
+    const custom_link = document.createElement('link');
+    custom_link.rel = 'stylesheet';
+    custom_link.href = '/win98/win98.css';
+    custom_link.id = 'win98-loader-custom-css';
+    document.head.appendChild(custom_link);
 
     // matrix rain
-    const generateMatrixRain = () => {
+    const generate_matrix_rain = () => {
       const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
       const drops = [];
 
@@ -78,15 +78,15 @@ const Windows98Loader = ({ onComplete }) => {
           opacity: Math.random()
         });
       }
-      setMatrixRain(drops);
+      set_matrix_rain(drops);
     };
 
-    const generateParticles = () => {
-      const newParticles = [];
+    const generate_particles = () => {
+      const new_particles = [];
 
       for(let i = 0; i < 30; i++) 
         {
-        newParticles.push({
+        new_particles.push({
           id: i,
           x: Math.random() * 100,
           y: Math.random() * 100,
@@ -96,10 +96,10 @@ const Windows98Loader = ({ onComplete }) => {
           color: ['#00ff00', '#0080ff', '#ff8000', '#ff0080'][Math.floor(Math.random() * 4)]
         });
       }
-      setParticles(newParticles);
+      set_particles(new_particles);
     };
 
-    const generateDigitalRain = () => {
+    const generate_digital_rain = () => {
       const chars = '01ABCDEF</>[]{}()±×÷√∞∆∑∏∫∂∇';
       const drops = [];
       for(let i = 0; i < 80; i++) 
@@ -114,10 +114,10 @@ const Windows98Loader = ({ onComplete }) => {
           color: ['#00ff00', '#ff0080', '#0080ff', '#ffff00'][Math.floor(Math.random() * 4)]
         });
       }
-      setDigitalRain(drops);
+      set_digital_rain(drops);
     };
 
-    const generateTerminalHack = () => {
+    const generate_terminal_hack = () => {
       const commands = [
         'ACCESSING PORTFOLIO DATABASE...',
         'DECRYPTING USER DATA...',
@@ -130,10 +130,10 @@ const Windows98Loader = ({ onComplete }) => {
         'OPTIMIZING PERFORMANCE...',
         'SYSTEM INTEGRATION COMPLETE'
       ];
-      setTerminalHack(commands);
+      set_terminal_hack(commands);
     };
 
-    const generateDataStream = () => {
+    const generate_data_stream = () => {
       const data = [];
 
       for(let i = 0; i < 50; i++) 
@@ -146,10 +146,10 @@ const Windows98Loader = ({ onComplete }) => {
           speed: Math.random() * 2 + 0.5
         });
       }
-      setDataStream(data);
+      set_data_stream(data);
     };
 
-    const generateWaveform = () => {
+    const generate_wave_form = () => {
       const wave = [];
 
       for(let i = 0; i < 100; i++) 
@@ -160,40 +160,40 @@ const Windows98Loader = ({ onComplete }) => {
           x: i
         });
       }
-      setWaveform(wave);
+      set_waveform(wave);
     };
 
-    const generateSparkles = () => {
-      const newSparkles = [];
+    const generate_sparkles = () => {
+      const new_sparkles = [];
 
       for(let i = 0; i < 20; i++) 
         {
-        newSparkles.push({
+        new_sparkles.push({
           id: i,
           left: Math.random() * 100,
           top: Math.random() * 100,
           delay: Math.random() * 2
         });
       }
-      setSparkles(newSparkles);
+      set_sparkles(new_sparkles);
     };
 
-    const generateFireworks = () => {
-      const newFireworks = [];
+    const generate_fireworks = () => {
+      const new_fireworks = [];
 
       for(let i = 0; i < 5; i++) 
         {
-        newFireworks.push({
+        new_fireworks.push({
           id: i,
           left: 20 + i * 15,
           top: 20 + i * 10,
           delay: i * 0.3
         });
       }
-      setFireworks(newFireworks);
+      set_fireworks(new_fireworks);
     };
 
-    const generateDnaHelix = () => {
+    const generate_dna_helix = () => {
       const helix = [];
 
       for(let i = 0; i < 50; i++) 
@@ -207,11 +207,11 @@ const Windows98Loader = ({ onComplete }) => {
           color: i % 2 === 0 ? '#00ff88' : '#ff0088'
         });
       }
-      setDnaHelix(helix);
+      set_dna_helix(helix);
     };
 
     // cosmic dust
-    const generateCosmicDust = () => {
+    const generate_cosmic_dust = () => {
       const dust = [];
 
       for(let i = 0; i < 100; i++) {
@@ -224,11 +224,11 @@ const Windows98Loader = ({ onComplete }) => {
           speed: Math.random() * 3 + 1
         });
       }
-      setCosmicDust(dust);
+      set_cosmic_dust(dust);
     };
 
     // magnetic field
-    const generateMagneticField = () => {
+    const generate_magnetic_field = () => {
       const field = [];
 
       for(let i = 0; i < 15; i++) 
@@ -241,11 +241,11 @@ const Windows98Loader = ({ onComplete }) => {
           polarity: Math.random() > 0.5 ? 'positive' : 'negative'
         });
       }
-      setMagneticField(field);
+      set_magnetic_field(field);
     };
 
     // crystals
-    const generateCrystalFormation = () => {
+    const generate_crystal_formation = () => {
       const crystals = [];
 
       for(let i = 0; i < 12; i++) 
@@ -259,11 +259,11 @@ const Windows98Loader = ({ onComplete }) => {
           color: ['#00ffff', '#ff00ff', '#ffff00', '#00ff00'][Math.floor(Math.random() * 4)]
         });
       }
-      setCrystalFormation(crystals);
+      set_crystal_formation(crystals);
     };
 
     
-    const generateNeuralNetwork = () => {
+    const generate_neural_network = () => {
       const neurons = [];
 
       for(let i = 0; i < 25; i++) 
@@ -276,74 +276,74 @@ const Windows98Loader = ({ onComplete }) => {
           activity: Math.random()
         });
       }
-      setNeuralNetwork(neurons);
+      set_neural_network(neurons);
     };
 
-    generateMatrixRain();
-    generateParticles();
-    generateDigitalRain();
-    generateTerminalHack();
-    generateDataStream();
-    generateWaveform();
-    generateSparkles();
-    generateFireworks();
-    generateDnaHelix();
-    generateCosmicDust();
-    generateMagneticField();
-    generateCrystalFormation();
-    generateNeuralNetwork();
+    generate_matrix_rain();
+    generate_particles();
+    generate_digital_rain();
+    generate_terminal_hack();
+    generate_data_stream();
+    generate_wave_form();
+    generate_sparkles();
+    generate_fireworks();
+    generate_dna_helix();
+    generate_cosmic_dust();
+    generate_magnetic_field();
+    generate_crystal_formation();
+    generate_neural_network();
 
     if(typeof window !== 'undefined') 
         {
-      setWindowSize({
+      set_window_size({
         width: window.innerWidth,
         height: window.innerHeight
       });
 
-      const handleResize = () => {
-        setWindowSize({
+      const handle_resize = () => {
+        set_window_size({
           width: window.innerWidth,
           height: window.innerHeight
         });
       };
 
-      window.addEventListener('resize', handleResize);
+      window.addEventListener('resize', handle_resize);
       
       return () => {
-        window.removeEventListener('resize', handleResize);
-        const existingLink = document.getElementById('win98-loader-css');
+        window.removeEventListener('resize', handle_resize);
+        const existing_link = document.getElementById('win98-loader-css');
         
-        if(existingLink) 
+        if(existing_link) 
             {
-          document.head.removeChild(existingLink);
+          document.head.removeChild(existing_link);
         }
-        const existingCustomLink = document.getElementById('win98-loader-custom-css');
+        const existing_custom_link = document.getElementById('win98-loader-custom-css');
         
-        if(existingCustomLink) 
+        if(existing_custom_link) 
             {
-          document.head.removeChild(existingCustomLink);
+          document.head.removeChild(existing_custom_link);
         }
       };
     }
 
     return () => {
-      const existingLink = document.getElementById('win98-loader-css');
+      const existing_link = document.getElementById('win98-loader-css');
       
-      if(existingLink) 
+      if(existing_link) 
         {
-        document.head.removeChild(existingLink);
+        document.head.removeChild(existing_link);
       }
-      const existingCustomLink = document.getElementById('win98-loader-custom-css');
+      const existing_custom_link = document.getElementById('win98-loader-custom-css');
       
-      if(existingCustomLink) 
+      if(existing_custom_link) 
         {
-        document.head.removeChild(existingCustomLink);
+        document.head.removeChild(existing_custom_link);
       }
     };
   }, []);
 
   useEffect(() => {
-    const loadingSteps = [
+    const loading_steps = [
       { progress: 3, text: 'Initializing quantum core...', message: 'POST: Power-On Self Test OK', effect: 'quantum' },
       { progress: 8, text: 'Generating DNA helix...', message: 'Loading genetic algorithms', effect: 'dna' },
       { progress: 15, text: 'Creating cosmic dust...', message: 'Rendering stellar particles', effect: 'cosmic' },
@@ -364,39 +364,39 @@ const Windows98Loader = ({ onComplete }) => {
 
     let current_step = 0;
     const timer = setInterval(() => {
-      if(current_step < loadingSteps.length) 
+      if(current_step < loading_steps.length) 
         {
-        const step = loadingSteps[current_step];
-        setProgress(step.progress);
-        setLoadingText(step.text);
-        setSystemMessage(step.message);
+        const step = loading_steps[current_step];
+        set_progress(step.progress);
+        set_loading_text(step.text);
+        set_system_message(step.message);
         
         switch(step.effect) 
         {
-          case 'quantum': setQuantumEffect(true); setTimeout(() => setQuantumEffect(false), 1500); break;
-          case 'dna': setVortex(true); setTimeout(() => setVortex(false), 2000); break;
-          case 'cosmic': setPrismaticWave(true); setTimeout(() => setPrismaticWave(false), 1800); break;
+          case 'quantum': set_quantum_effect(true); setTimeout(() => set_quantum_effect(false), 1500); break;
+          case 'dna': set_vortex(true); setTimeout(() => set_vortex(false), 2000); break;
+          case 'cosmic': set_prismatic_wave(true); setTimeout(() => set_prismatic_wave(false), 1800); break;
           case 'neural': break;
-          case 'digital': setDigitalRain(prev => [...prev]); break;// re-trigger digital rain
-          case 'rift': setDimensionalRift(true); setTimeout(() => setDimensionalRift(false), 2200); break;
-          case 'magnetic': setTimeWarp(true); setTimeout(() => setTimeWarp(false), 2000); break;
+          case 'digital': set_digital_rain(prev => [...prev]); break;// re-trigger digital rain
+          case 'rift': set_dimensional_rift(true); setTimeout(() => set_dimensional_rift(false), 2200); break;
+          case 'magnetic': set_time_warp(true); setTimeout(() => set_time_warp(false), 2000); break;
           case 'crystal': break; // crystals
           case 'hologram': setHologramEffect(true); setTimeout(() => setHologramEffect(false), 2000); break;
-          case 'plasma': setPlasmaStorm(true); setTimeout(() => setPlasmaStorm(false), 1800); break;
-          case 'accelerator': setParticleAccelerator(true); setTimeout(() => setParticleAccelerator(false), 2000); break;
-          case 'blackhole': setBlackHole(true); setTimeout(() => setBlackHole(false), 2500); break;
-          case 'aurora': setAuroraBorealis(true); setTimeout(() => setAuroraBorealis(false), 2000); break;
-          case 'fractal': setFractalZoom(true); setTimeout(() => setFractalZoom(false), 1800); break;
-          case 'kaleidoscope': setKaleidoscope(true); setTimeout(() => setKaleidoscope(false), 2000); break;
-          case 'complete': setGlitchEffect(true); setNeonEffect(true); setVortex(true); setPrismaticWave(true);
-            setTimeout(() => { setGlitchEffect(false); setNeonEffect(false); setVortex(false); setPrismaticWave(false); }, 1000); break;
+          case 'plasma': set_plasma_storm(true); setTimeout(() => set_plasma_storm(false), 1800); break;
+          case 'accelerator': set_particle_accelerator(true); setTimeout(() => set_particle_accelerator(false), 2000); break;
+          case 'blackhole': set_black_hole(true); setTimeout(() => set_black_hole(false), 2500); break;
+          case 'aurora': set_aurora_borealis(true); setTimeout(() => set_aurora_borealis(false), 2000); break;
+          case 'fractal': set_fractal_zoom(true); setTimeout(() => set_fractal_zoom(false), 1800); break;
+          case 'kaleidoscope': set_kaleidoscope(true); setTimeout(() => set_kaleidoscope(false), 2000); break;
+          case 'complete': set_glitch_effect(true); set_neon_effect(true); set_vortex(true); set_prismatic_wave(true);
+            setTimeout(() => { set_glitch_effect(false); set_neon_effect(false); set_vortex(false); set_prismatic_wave(false); }, 1000); break;
         }
         
         // beep
         if([0, 3, 6, 9, 11].includes(current_step)) 
             {
-          setIsBeeping(true);
-          setTimeout(() => setIsBeeping(false), 200);
+          set_is_beeping(true);
+          setTimeout(() => set_is_beeping(false), 200);
         }
         
         current_step++;
@@ -413,18 +413,18 @@ const Windows98Loader = ({ onComplete }) => {
   }, [onComplete]);
 
   useEffect(() => {
-    const dotsTimer = setInterval(() => {
-      setDots(prev => {
+    const dots_timer = setInterval(() => {
+      set_dots(prev => {
         if(prev.length >= 3) return '';
         return prev + '.';
       });
     }, 500);
 
-    return () => clearInterval(dotsTimer);
+    return () => clearInterval(dots_timer);
   }, []);
 
   return (
-    <div className = {`win98-loader ${isBeeping ? 'beep' : ''} ${glitchEffect ? 'glitch' : ''} ${crtEffect ? 'crt' : ''} ${hackingEffect ? 'hacking' : ''} ${neonEffect ? 'neon' : ''} ${cyberpunkMode ? 'cyberpunk' : ''} ${quantumEffect ? 'quantum' : ''}`} 
+    <div className = {`win98-loader ${is_beeping ? 'beep' : ''} ${glitch_effect ? 'glitch' : ''} ${crt_effect ? 'crt' : ''} ${hacking_effect ? 'hacking' : ''} ${neon_effect ? 'neon' : ''} ${cyberpunk_mode ? 'cyberpunk' : ''} ${quantum_effect ? 'quantum' : ''}`} 
     style = {{
       display: 'flex',
       flexDirection: 'column',
@@ -432,13 +432,13 @@ const Windows98Loader = ({ onComplete }) => {
       justifyContent: 'center',
       fontSize: '11px',
       minHeight: '100vh',
-      background: cyberpunkMode ? 'linear-gradient(45deg, #0a0a0a, #1a0033, #330066)' : '#008080',
+      background: cyberpunk_mode ? 'linear-gradient(45deg, #0a0a0a, #1a0033, #330066)' : '#008080',
       overflow: 'hidden',
       position: 'relative'
     }}>
       {/* Matrix Rain Background */}
       <div className = "matrix-rain">
-        {matrixRain.map(drop => (
+        {matrix_rain.map(drop => (
           <div
             key = {drop.id}
             className = "matrix-drop"
@@ -455,9 +455,9 @@ const Windows98Loader = ({ onComplete }) => {
       </div>
 
       {/* Digital Rain */}
-      {digitalRain.length > 0 && (
+      {digital_rain.length > 0 && (
         <div className = "digital-rain">
-          {digitalRain.map(drop => (
+          {digital_rain.map(drop => (
             <div
               key = {drop.id}
               className = "digital-drop"
@@ -494,9 +494,9 @@ const Windows98Loader = ({ onComplete }) => {
       </div>
 
       {/* Data Stream */}
-      {dataStream.length > 0 && (
+      {data_stream.length > 0 && (
         <div className = "data-stream">
-          {dataStream.map(data => (
+          {data_stream.map(data => (
             <div
               key = {data.id}
               className = "data-chunk"
@@ -516,16 +516,16 @@ const Windows98Loader = ({ onComplete }) => {
       {scanlines && <div className = "scanlines" />}
 
       {/* CRT Effect */}
-      {crtEffect && <div className = "crt-overlay" />}
+      {crt_effect && <div className = "crt-overlay" />}
 
       {/* Hologram Effect */}
-      {hologramEffect && <div className = "hologram-overlay" />}
+      {hologram_effect && <div className = "hologram-overlay" />}
 
       {/* Energy Field */}
-      {energyField && <div className = "energy-field" />}
+      {energy_field && <div className = "energy-field" />}
 
       {/* Circuit Effect */}
-      {circuitEffect && (
+      {circuit_effect && (
         <div className = "circuit-overlay">
           <svg width = "100%" height = "100%" style = {{ position: 'absolute', top: 0, left: 0 }}>
             {[...Array(20)].map((_, i) => (
@@ -554,7 +554,7 @@ const Windows98Loader = ({ onComplete }) => {
       )}
 
       {/* Laser Effect */}
-      {laserEffect && (
+      {laser_effect && (
         <div className = "laser-overlay">
           {[...Array(10)].map((_, i) => (
             <div
@@ -570,7 +570,7 @@ const Windows98Loader = ({ onComplete }) => {
       )}
 
       {/* Ripple Effect */}
-      {rippleEffect && (
+      {ripple_effect && (
         <div className = "ripple-overlay">
           {[...Array(5)].map((_, i) => (
             <div
@@ -585,9 +585,9 @@ const Windows98Loader = ({ onComplete }) => {
       )}
 
       {/* DNA Helix */}
-      {isClient && dnaHelix.length > 0 && (
+      {is_client && dna_helix.length > 0 && (
         <div className = "dna-helix">
-          {dnaHelix.map(helix => (
+          {dna_helix.map(helix => (
             <div
               key = {helix.id}
               className = "dna-strand"
@@ -603,9 +603,9 @@ const Windows98Loader = ({ onComplete }) => {
       )}
 
       {/* Cosmic Dust */}
-      {isClient && cosmicDust.length > 0 && (
+      {is_client && cosmic_dust.length > 0 && (
         <div className = "cosmic-dust">
-          {cosmicDust.map(dust => (
+          {cosmic_dust.map(dust => (
             <div
               key = {dust.id}
               className = "dust-particle"
@@ -623,9 +623,9 @@ const Windows98Loader = ({ onComplete }) => {
       )}
 
       {/* Magnetic Field */}
-      {isClient && magneticField.length > 0 && (
+      {is_client && magnetic_field.length > 0 && (
         <div className = "magnetic-field">
-          {magneticField.map(field => (
+          {magnetic_field.map(field => (
             <div
               key = {field.id}
               className = {`magnetic-node ${field.polarity}`}
@@ -640,9 +640,9 @@ const Windows98Loader = ({ onComplete }) => {
       )}
 
       {/* Crystal Formation */}
-      {isClient && crystalFormation.length > 0 && (
+      {is_client && crystal_formation.length > 0 && (
         <div className = "crystal-formation">
-          {crystalFormation.map(crystal => (
+          {crystal_formation.map(crystal => (
             <div
               key = {crystal.id}
               className = "crystal"
@@ -665,10 +665,10 @@ const Windows98Loader = ({ onComplete }) => {
       )}
 
       {/* Neural Network */}
-      {isClient && neuralNetwork.length > 0 && (
+      {is_client && neural_network.length > 0 && (
         <div className = "neural-network">
           <svg width = "100%" height = "100%" style = {{ position: 'absolute', top: 0, left: 0 }}>
-            {neuralNetwork.map(neuron => (
+            {neural_network.map(neuron => (
               <g key = {neuron.id}>
                 <circle
                   cx = {`${neuron.x}%`}
@@ -679,15 +679,15 @@ const Windows98Loader = ({ onComplete }) => {
                   opacity = {neuron.activity}
                 />
                 {[...Array(neuron.connections)].map((_, i) => {
-                  const targetNeuron = neuralNetwork[Math.floor(Math.random() * neuralNetwork.length)];
+                  const target_neuron = neural_network[Math.floor(Math.random() * neural_network.length)];
                   return (
                     <line
                       key = {i}
                       x1 = {`${neuron.x}%`}
                       y1 = {`${neuron.y}%`}
-                      x2 = {`${targetNeuron.x}%`}
-                      y2 = {`${targetNeuron.y}%`}
-                      stroke = {`hsl(${(neuron.activity + targetNeuron.activity) * 180}, 100%, 50%)`}
+                      x2 = {`${target_neuron.x}%`}
+                      y2 = {`${target_neuron.y}%`}
+                      stroke = {`hsl(${(neuron.activity + target_neuron.activity) * 180}, 100%, 50%)`}
                       strokeWidth = "1"
                       opacity = "0.3"
                       className = "neural-connection"
@@ -717,7 +717,7 @@ const Windows98Loader = ({ onComplete }) => {
       )}
 
       {/* Prismatic Wave */}
-      {prismaticWave && (
+      {prismatic_wave && (
         <div className = "prismatic-wave">
           {[...Array(7)].map((_, i) => (
             <div
@@ -733,7 +733,7 @@ const Windows98Loader = ({ onComplete }) => {
       )}
 
       {/* Time Warp */}
-      {timeWarp && (
+      {time_warp && (
         <div className = "time-warp">
           <div className = "warp-field" />
           <div className = "time-particles">
@@ -753,7 +753,7 @@ const Windows98Loader = ({ onComplete }) => {
       )}
 
       {/* Dimensional Rift */}
-      {dimensionalRift && (
+      {dimensional_rift && (
         <div className = "dimensional-rift">
           <div className = "rift-core" />
           <div className = "rift-energy">
@@ -788,7 +788,7 @@ const Windows98Loader = ({ onComplete }) => {
       )}
 
       {/* Plasma Storm */}
-      {plasmaStorm && (
+      {plasma_storm && (
         <div className = "plasma-storm">
           {[...Array(30)].map((_, i) => (
             <div
@@ -805,7 +805,7 @@ const Windows98Loader = ({ onComplete }) => {
       )}
 
       {/* Black Hole */}
-      {blackHole && (
+      {black_hole && (
         <div className = "black-hole">
           <div className = "event-horizon" />
           <div className = "accretion-disk">
@@ -824,7 +824,7 @@ const Windows98Loader = ({ onComplete }) => {
       )}
 
       {/* Particle Accelerator */}
-      {particleAccelerator && (
+      {particle_accelerator && (
         <div className = "particle-accelerator">
           <div className = "accelerator-ring" />
           {[...Array(40)].map((_, i) => (
@@ -840,7 +840,7 @@ const Windows98Loader = ({ onComplete }) => {
       )}
 
       {/* Fractal Zoom */}
-      {fractalZoom && (
+      {fractal_zoom && (
         <div className = "fractal-zoom">
           {[...Array(8)].map((_, i) => (
             <div
@@ -856,7 +856,7 @@ const Windows98Loader = ({ onComplete }) => {
       )}
 
       {/* Aurora Borealis */}
-      {auroraBorealis && (
+      {aurora_borealis && (
         <div className = "aurora-borealis">
           {[...Array(6)].map((_, i) => (
             <div
@@ -949,7 +949,7 @@ const Windows98Loader = ({ onComplete }) => {
           fontSize: '11px',
           color: '#666666'
         }}>
-          Copyright © 1998 Maksym Kopychko
+          Copyright © 1998 Archie242
         </div>
       </div>
 
@@ -970,7 +970,7 @@ const Windows98Loader = ({ onComplete }) => {
           fontSize: '12px',
           color: '#000000'
         }}>
-          {loadingText}
+          {loading_text}
         </div>
 
         {/* Progress Bar */}
@@ -1008,9 +1008,9 @@ const Windows98Loader = ({ onComplete }) => {
           minHeight: '16px',
           width: '100%',
           borderRadius: '2px'
-        }}>        {systemMessage && (
+        }}>        {system_message && (
           <span className = "typing-effect">
-            {'>'}  {systemMessage}
+            {'>'}  {system_message}
             <span className = "cursor">█</span>
           </span>
         )}
@@ -1053,7 +1053,7 @@ const Windows98Loader = ({ onComplete }) => {
           <img src = "./icons/win98/png/monitor_blue_grad-0.png" 
                style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
                onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>🖥️</span>'); }} />
-          Resolution: {windowSize.width}x{windowSize.height}
+          Resolution: {window_size.width}x{window_size.height}
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
           <img src = "./icons/win98/png/memory-0.png" 
@@ -1092,15 +1092,15 @@ const Windows98Loader = ({ onComplete }) => {
         gap: '5px'
       }}>
         <img 
-          src="./icons/win98/png/application_hourglass-0.png" 
-          style={{ width: '12px', height: '12px', imageRendering: 'pixelated' }}
-          onError={(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>⏳</span>'); }} 
+          src = "./icons/win98/png/application_hourglass-0.png" 
+          style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }}
+          onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>⏳</span>'); }} 
         />
         Loading{dots}
       </div>
 
       {/* Loading Sparkles */}
-      {isClient && (
+      {is_client && (
         <div className = "sparkles">
           {sparkles.map((sparkle) => (
             <div
@@ -1119,7 +1119,7 @@ const Windows98Loader = ({ onComplete }) => {
       )}
 
       {/* Progress Fireworks */}
-      {progress > 80 && isClient && (
+      {progress > 80 && is_client && (
         <div className = "fireworks">
           {fireworks.map((firework) => (
             <div

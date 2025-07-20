@@ -440,12 +440,9 @@ const SkillTree = () => {
     ]
   };
 
-  // Generate SVG paths for tree branches
   const generateBranchPath = (startX, startY, endX, endY) => {
-    // Calculate control points for curved path
     const midY = (startY + endY) / 2;
     
-    // Create a curved path that looks like a tree branch
     return `M ${startX} ${startY} C ${startX} ${midY}, ${endX} ${midY}, ${endX} ${endY}`;
   };
 

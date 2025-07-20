@@ -206,11 +206,13 @@ export const BreakingBlock = ({ type = "stone", stage = 0, onComplete, className
     if(stage > 0 && current_stage < max_stage) {
       const timer = setTimeout(() => {
         setCurrentStage(prev => {
-          const newStage = prev + 1;
-          if (newStage >= max_stage && onComplete) {
+          const new_stage = prev + 1;
+
+          if(new_stage >= max_stage && onComplete) 
+            {
             onComplete();
           }
-          return newStage;
+          return new_stage;
         });
       }, 300);
 
@@ -246,11 +248,11 @@ export const BreakingBlock = ({ type = "stone", stage = 0, onComplete, className
 
 export const StarField = ({ count = 100, className = "" }) => {
   const stars = Array(count).fill(0).map((_, index) => {
-    const size = Math.random() * 3 + 1; // від 1px до 4px
-    const x = Math.random() * 100; // позиція по X (0-100%)
-    const y = Math.random() * 100; // позиція по Y (0-100%)
-    const opacity = Math.random() * 0.5 + 0.5; // прозорість (0.5-1)
-    const animation_delay = Math.random() * 5; // затримка анімації (0-5s)
+    const size = Math.random() * 3 + 1;
+    const x = Math.random() * 100;
+    const y = Math.random() * 100;
+    const opacity = Math.random() * 0.5 + 0.5;
+    const animation_delay = Math.random() * 5;
     
     return { size, x, y, opacity, animationDelay: animation_delay, id: index };
   });

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { FaGithub, FaItchIo, FaGlobe, FaArrowLeft } from "react-icons/fa";
 import Link from "next/link";
 
-const ProjectPageClient = ({ params }) => {
+const project_page_client = ({ params }) => {
   const project = {
     title: "Project Title",
     description: "Detailed description of the project and its purpose. This section can contain multiple paragraphs explaining the project's goals, challenges, and solutions.",
@@ -16,25 +16,29 @@ const ProjectPageClient = ({ params }) => {
     • The development process and methodology
     • Future improvements and plans`,
     
-    features: [
+    features: 
+    [
       "Feature 1: Description of the first main feature",
       "Feature 2: Description of the second main feature",
       "Feature 3: Description of the third main feature",
     ],
     
-    technologies: [
+    technologies: 
+    [
       { name: "Technology 1", description: "How this technology was used in the project" },
       { name: "Technology 2", description: "How this technology was used in the project" },
       { name: "Technology 3", description: "How this technology was used in the project" },
     ],
     
-    links: {
+    links: 
+    {
       github: "https://github.com/yourusername/project",
       itch: "https://yourusername.itch.io/project",
       website: "https://project-website.com",
     },
     
-    images: [
+    images: 
+    [
       "/projects/project1.jpg",
       "/projects/project2.jpg",
       "/projects/project3.jpg",
@@ -170,4 +174,4 @@ const ProjectPageClient = ({ params }) => {
   );
 };
 
-export default ProjectPageClient;
+export default project_page_client;

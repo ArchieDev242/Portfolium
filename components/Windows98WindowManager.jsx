@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from 'react';
-import Windows98Resume from './Windows98Resume';
-import Windows98Projects from './Windows98Projects';
-import Windows98Contact from './Windows98Contact';
+import Win98_resume from './Windows98Resume';
+import Win98_projects from './Windows98Projects';
+import Win98_contact from './Windows98Contact';
 
-const Windows98WindowManager = ({ 
+const Win98_window_manager = ({ 
   activeWindows, 
   onCloseWindow, 
   onFocusWindow,
@@ -15,7 +15,7 @@ const Windows98WindowManager = ({
   return (
     <>
       {activeWindows.includes('resume') && (
-        <Windows98Resume 
+        <Win98_resume 
           onClose = {() => onCloseWindow('resume')}
           onFocus = {() => onFocusWindow('resume')}
           isActive = {activeWindowId === 'resume'}
@@ -23,7 +23,7 @@ const Windows98WindowManager = ({
         />
       )}
       {activeWindows.includes('projects') && (
-        <Windows98Projects 
+        <Win98_projects 
           onClose = {() => onCloseWindow('projects')}
           onFocus = {() => onFocusWindow('projects')}
           isActive = {activeWindowId === 'projects'}
@@ -31,7 +31,7 @@ const Windows98WindowManager = ({
         />
       )}
       {activeWindows.includes('contact') && (
-        <Windows98Contact 
+        <Win98_contact 
           onClose = {() => onCloseWindow('contact')}
           onFocus = {() => onFocusWindow('contact')}
           isActive = {activeWindowId === 'contact'}
@@ -42,4 +42,4 @@ const Windows98WindowManager = ({
   );
 };
 
-export default Windows98WindowManager;
+export default Win98_window_manager;

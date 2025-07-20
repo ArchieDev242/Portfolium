@@ -14,8 +14,8 @@ const Achievement = ({ title, description, icon, unlocked, progress = 100 }) => 
       {/* Lock icon for locked achievements */}
       {!unlocked && (
         <div className = "absolute top-2 right-2 text-gray-500">
-          <svg xmlns="http://www.w3.org/2000/svg" className = "h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          <svg xmlns = "http://www.w3.org/2000/svg" className = "h-5 w-5" fill="none" viewBox = "0 0 24 24" stroke = "currentColor">
+            <path strokeLinecap = "round" strokeLinejoin = "round" strokeWidth = {2} d = "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
           </svg>
         </div>
       )}
@@ -142,15 +142,15 @@ const SkillAchievements = () => {
   ];
   
   // Split achievements into unlocked and locked
-  const unlockedAchievements = achievements.filter(a => a.unlocked);
-  const lockedAchievements = achievements.filter(a => !a.unlocked);
-  
+  const unlocked_achievements = achievements.filter(a => a.unlocked);
+  const locked_achievements = achievements.filter(a => !a.unlocked);
+
   return (
     <div className = "w-full">
       <div className = "mb-6">
         <h3 className = "pixel-text text-xl text-cyan-400 mb-4">Unlocked Achievements</h3>
         <div className = "grid grid-cols-1 md:grid-cols-2 gap-4">
-          {unlockedAchievements.map(achievement => (
+          {unlocked_achievements.map(achievement => (
             <Achievement 
               key = {achievement.id}
               title = {achievement.title}

@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { useMemo } from "react";
 
 const Background = () => {
-  // Створюємо фіксовані позиції для частинок
   const particles = useMemo(() => {
     return Array.from({ length: 20 }, (_, i) => ({
       left: `${(i * 37 + 13) % 100}%`,
@@ -14,10 +13,8 @@ const Background = () => {
 
   return (
     <div className = "fixed inset-0 -z-10">
-      {/* Основний градієнт */}
       <div className = "absolute inset-0 bg-gradient-to-b from-primary via-primary to-black opacity-95" />
 
-      {/* Анімована сітка */}
       <div 
         className = "absolute inset-0" 
         style = {{
@@ -29,12 +26,12 @@ const Background = () => {
         }}
       />
 
-      {/* Світлові ефекти */}
       <div className = "absolute inset-0">
         <motion.div
           className = "absolute top-0 left-0 w-full h-full"
           animate = {{
-            background: [
+            background: 
+            [
               "radial-gradient(circle at 20% 20%, var(--accent-shadow, rgba(0,255,153,0.15)) 0%, rgba(0,0,0,0) 50%)",
               "radial-gradient(circle at 80% 80%, var(--accent-shadow, rgba(0,255,153,0.15)) 0%, rgba(0,0,0,0) 50%)",
               "radial-gradient(circle at 20% 80%, var(--accent-shadow, rgba(0,255,153,0.15)) 0%, rgba(0,0,0,0) 50%)",
@@ -50,7 +47,6 @@ const Background = () => {
         />
       </div>
 
-      {/* Анімовані частинки */}
       <div className = "absolute inset-0 overflow-hidden">
         {particles.map((position, i) => (
           <motion.div
@@ -72,7 +68,6 @@ const Background = () => {
         ))}
       </div>
 
-      {/* Розмитий оверлей */}
       <div className = "absolute inset-0 backdrop-blur-[100px]" />
     </div>
   );

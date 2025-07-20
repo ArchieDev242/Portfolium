@@ -4,26 +4,26 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Windows98Loader from './Windows98Loader';
 import Win98_theme_manager from './Windows98ThemeManager';
-import Windows98WindowManager from './Windows98WindowManager';
+import Win98_window_manager from './Windows98WindowManager';
 
 const Windows98Home = () => {
   const router = useRouter();
   const window_ref = useRef(null);
   const titlebar_ref = useRef(null);
-  const [is_dragging, setIsDragging] = useState(false);
-  const [drag_offset, setDragOffset] = useState({ x: 0, y: 0 });
-  const [window_position, setWindowPosition] = useState({ x: 0, y: 0 });
-  const [is_minimized, setIsMinimized] = useState(false);
-  const [is_maximized, setIsMaximized] = useState(false);
-  const [previous_position, setPreviousPosition] = useState({ x: 0, y: 0 });
-  const [is_loading, setIsLoading] = useState(true);
-  const [theme_manager_open, setThemeManagerOpen] = useState(false);
+  const [is_dragging, set_is_dragging] = useState(false);
+  const [drag_offset, set_drag_offset] = useState({ x: 0, y: 0 });
+  const [window_position, set_window_position] = useState({ x: 0, y: 0 });
+  const [is_minimized, set_is_minimized] = useState(false);
+  const [is_maximized, set_is_maximized] = useState(false);
+  const [previous_position, set_previous_position] = useState({ x: 0, y: 0 });
+  const [is_loading, set_is_loading] = useState(true);
+  const [theme_manager_open, set_theme_manager_open] = useState(false);
   
   // windows management
-  const [active_windows, setActiveWindows] = useState([]);
-  const [window_z_index, setWindowZIndex] = useState(1000);
-  const [active_window_id, setActiveWindowId] = useState('portfolio');
-  const [window_z_indexes, setWindowZIndexes] = useState({
+  const [active_windows, set_active_windows] = useState([]);
+  const [window_z_index, set_window_z_index] = useState(1000);
+  const [active_window_id, set_active_window_id] = useState('portfolio');
+  const [window_z_indexes, set_window_z_indexes] = useState({
     portfolio: 1000,
     resume: 1000,
     projects: 1000,
@@ -31,7 +31,7 @@ const Windows98Home = () => {
   });
   
   // desktop icons state
-  const [desktop_icons, setDesktopIcons] = useState([
+  const [desktop_icons, set_desktop_icons] = useState([
     { 
       id: 'theme-manager', 
       name: 'Theme Manager', 
@@ -40,7 +40,7 @@ const Windows98Home = () => {
       fallback: '',
       emoji: '🎨',
       type: 'system',
-      action: () => setThemeManagerOpen(true)
+      action: () => set_theme_manager_open(true)
     },
     {
       id: 'resume',
@@ -50,7 +50,7 @@ const Windows98Home = () => {
       fallback: '',
       emoji: '📄',
       type: 'app',
-      action: () => openWindow('resume')
+      action: () => open_window('resume')
     },
     {
       id: 'projects', 
@@ -60,7 +60,7 @@ const Windows98Home = () => {
       fallback: '',
       emoji: '📁',
       type: 'app',
-      action: () => openWindow('projects')
+      action: () => open_window('projects')
     },
     {
       id: 'contact',
@@ -70,7 +70,7 @@ const Windows98Home = () => {
       fallback: '',
       emoji: '📧',
       type: 'app',
-      action: () => openWindow('contact')
+      action: () => open_window('contact')
     },
     {
       id: 'recycle-bin',
@@ -93,47 +93,47 @@ const Windows98Home = () => {
       action: () => {}
     }
   ]);
-  const [dragging_icon, setDraggingIcon] = useState(null);
-  const [drag_icon_offset, setDragIconOffset] = useState({ x: 0, y: 0 });
+  const [dragging_icon, set_dragging_icon] = useState(null);
+  const [drag_icon_offset, set_drag_icon_offset] = useState({ x: 0, y: 0 });
   
-  const [user_files, setUserFiles] = useState([]);
-  const [recycle_bin_files, setRecycleBinFiles] = useState([]);
-  const [file_counter, setFileCounter] = useState(1);
-  const [context_menu, setContextMenu] = useState({ visible: false, x: 0, y: 0 });
+  const [user_files, set_user_files] = useState([]);
+  const [recycle_bin_files, set_recycle_bin_files] = useState([]);
+  const [file_counter, set_file_counter] = useState(1);
+  const [context_menu, set_context_menu] = useState({ visible: false, x: 0, y: 0 });
 
-  const openWindow = (windowId) => {
+  const open_window = (windowId) => {
     if(!active_windows.includes(windowId)) {
-      setActiveWindows(prev => [...prev, windowId]);
+      set_active_windows(prev => [...prev, windowId]);
     }
-    setActiveWindowId(windowId);
-    const newZIndex = window_z_index + 10;
-    setWindowZIndex(newZIndex);
-    setWindowZIndexes(prev => ({
+    set_active_window_id(windowId);
+
+    const new_z_index = window_z_index + 10;
+
+    set_window_z_index(new_z_index);
+    set_window_z_indexes(prev => ({
       ...prev,
-      [windowId]: newZIndex
+      [windowId]: new_z_index
     }));
   };
 
   const closeWindow = (windowId) => {
-    setActiveWindows(prev => prev.filter(id => id !== windowId));
+    set_active_windows(prev => prev.filter(id => id !== windowId));
     if (active_window_id === windowId) {
-      setActiveWindowId('portfolio');
+      set_active_window_id('portfolio');
     }
   };
 
   const focusWindow = (windowId) => {
-    setActiveWindowId(windowId);
+    set_active_window_id(windowId);
     const newZIndex = window_z_index + 10;
-    setWindowZIndex(newZIndex);
-    setWindowZIndexes(prev => ({
+    set_window_z_index(newZIndex);
+    set_window_z_indexes(prev => ({
       ...prev,
       [windowId]: newZIndex
     }));
   };
 
-  const handleLoaderComplete = () => {
-    setIsLoading(false);
-  };
+  const handleLoaderComplete = () => { set_is_loading(false); };
 
   useEffect(() => {
     document.body.classList.add('win98-mode');
@@ -182,7 +182,7 @@ const Windows98Home = () => {
       const rect = window_el.getBoundingClientRect();
       const center_x = (window.innerWidth - rect.width) / 2;
       const center_y = (window.innerHeight - rect.height) / 2;
-      setWindowPosition({ x: center_x, y: center_y });
+      set_window_position({ x: center_x, y: center_y });
     }
   }, []);
 
@@ -221,8 +221,8 @@ const Windows98Home = () => {
     const offsetX = e.clientX - rect.left;
     const offsetY = e.clientY - rect.top;
     
-    setDragOffset({ x: offsetX, y: offsetY });
-    setIsDragging(true);
+    set_drag_offset({ x: offsetX, y: offsetY });
+    set_is_dragging(true);
     document.body.style.userSelect = 'none';
     
     const handle_move = (moveEvent) => {
@@ -240,11 +240,11 @@ const Windows98Home = () => {
       const bounded_x = Math.max(-windowEl.offsetWidth + 200, Math.min(new_x, maxX));
       const bounded_y = Math.max(0, Math.min(new_y, maxY));
       
-      setWindowPosition({ x: bounded_x, y: bounded_y });
+      set_window_position({ x: bounded_x, y: bounded_y });
     };
 
     const handle_up = () => {
-      setIsDragging(false);
+      set_is_dragging(false);
       document.body.style.userSelect = '';
       document.removeEventListener('pointermove', handle_move);
       document.removeEventListener('pointerup', handle_up);
@@ -259,19 +259,19 @@ const Windows98Home = () => {
   };
 
   const handle_minimize = () => {
-    setIsMinimized(!is_minimized);
+    set_is_minimized(!is_minimized);
   };
 
   const handle_maximize = () => {
     if(is_maximized) 
       {
-      setWindowPosition(previous_position);
-      setIsMaximized(false);
+      set_window_position(previous_position);
+      set_is_maximized(false);
     } else 
     {
-      setPreviousPosition(window_position);
-      setWindowPosition({ x: 0, y: 0 });
-      setIsMaximized(true);
+      set_previous_position(window_position);
+      set_window_position({ x: 0, y: 0 });
+      set_is_maximized(true);
     }
   };
 
@@ -284,24 +284,24 @@ const Windows98Home = () => {
     if(!icon) return;
     
     const rect = e.currentTarget.getBoundingClientRect();
-    setDragIconOffset({
+    set_drag_icon_offset({
       x: e.clientX - icon.position.x,
       y: e.clientY - icon.position.y
     });
     
-    setDraggingIcon(iconId);
+    set_dragging_icon(iconId);
     document.body.style.userSelect = 'none';
   };
 
-  const handleIconMouseMove = (e) => {
+  const handle_icon_mouse_move = (e) => {
     if(!dragging_icon) return;
     
     e.preventDefault();
-    const newX = e.clientX - drag_icon_offset.x;
-    const newY = e.clientY - drag_icon_offset.y;
+    const new_x = e.clientX - drag_icon_offset.x;
+    const new_y = e.clientY - drag_icon_offset.y;
     
-    const boundedX = Math.max(0, Math.min(newX, window.innerWidth - 80));
-    const boundedY = Math.max(0, Math.min(newY, window.innerHeight - 100));
+    const bounded_x = Math.max(0, Math.min(new_x, window.innerWidth - 80));
+    const bounded_y = Math.max(0, Math.min(new_y, window.innerHeight - 100));
     
     const draggedIcon = desktop_icons.find(icon => icon.id === dragging_icon);
     
@@ -311,58 +311,59 @@ const Windows98Home = () => {
       if(recyclebin) 
         {
         const distance = Math.sqrt(
-          Math.pow(boundedX - recyclebin.position.x, 2) + 
-          Math.pow(boundedY - recyclebin.position.y, 2)
+          Math.pow(bounded_x - recyclebin.position.x, 2) + 
+          Math.pow(bounded_y - recyclebin.position.y, 2)
         );
         
-        const recycleBinElement = document.querySelector('[data-id="recycle-bin"]');
+        const recycle_bin_element = document.querySelector('[data-id="recycle-bin"]');
 
-        if(recycleBinElement) 
+        if(recycle_bin_element) 
           {
           if(distance < 80) 
             {
-            recycleBinElement.classList.add('drop-hover');
+            recycle_bin_element.classList.add('drop-hover');
           } else 
           {
-            recycleBinElement.classList.remove('drop-hover');
+            recycle_bin_element.classList.remove('drop-hover');
           }
         }
       }
     }
     
-    setDesktopIcons(prev => prev.map(icon => 
+    set_desktop_icons(prev => prev.map(icon => 
       icon.id === dragging_icon 
-        ? { ...icon, position: { x: boundedX, y: boundedY }}
+        ? { ...icon, position: { x: bounded_x, y: bounded_y }}
         : icon
     ));
   };
 
-  const handleIconMouseUp = () => {
-    const recycleBinElement = document.querySelector('[data-id="recycle-bin"]');
+  const handle_icon_mouse_up = () => {
+    const recycle_bin_element = document.querySelector('[data-id="recycle-bin"]');
 
-    if(recycleBinElement) 
+    if(recycle_bin_element) 
       {
-      recycleBinElement.classList.remove('drop-hover');
+      recycle_bin_element.classList.remove('drop-hover');
     }
     
     if(dragging_icon) 
       {
-      const recyclebin = desktop_icons.find(icon => icon.id === 'recycle-bin');
-      const draggedIcon = desktop_icons.find(icon => icon.id === dragging_icon);
+      const recycle_bin = desktop_icons.find(icon => icon.id === 'recycle-bin');
+      const dragged_icon = desktop_icons.find(icon => icon.id === dragging_icon);
       
-      if(recyclebin && draggedIcon && draggedIcon.type === 'file') {
+      if(recycle_bin && dragged_icon && dragged_icon.type === 'file') 
+        {
         const distance = Math.sqrt(
-          Math.pow(draggedIcon.position.x - recyclebin.position.x, 2) + 
-          Math.pow(draggedIcon.position.y - recyclebin.position.y, 2)
+          Math.pow(dragged_icon.position.x - recycle_bin.position.x, 2) + 
+          Math.pow(dragged_icon.position.y - recycle_bin.position.y, 2)
         );
         
         if(distance < 80) 
           {
-          setRecycleBinFiles(prev => [...prev, draggedIcon]);
-          setDesktopIcons(prev => prev.filter(icon => icon.id !== dragging_icon));
-          setUserFiles(prev => prev.filter(file => file.id !== dragging_icon));
+          set_recycle_bin_files(prev => [...prev, dragged_icon]);
+          set_desktop_icons(prev => prev.filter(icon => icon.id !== dragging_icon));
+          set_user_files(prev => prev.filter(file => file.id !== dragging_icon));
           
-          setDesktopIcons(prev => prev.map(icon => 
+          set_desktop_icons(prev => prev.map(icon => 
             icon.id === 'recycle-bin' 
               ? { 
                   ...icon, 
@@ -375,7 +376,7 @@ const Windows98Home = () => {
       }
     }
     
-    setDraggingIcon(null);
+    set_dragging_icon(null);
     document.body.style.userSelect = '';
   };
 
@@ -423,31 +424,31 @@ const Windows98Home = () => {
       action: () => {}
     };
 
-    setUserFiles(prev => [...prev, new_file]);
-    setDesktopIcons(prev => [...prev, new_file]);
-    setFileCounter(prev => prev + 1);
+    set_user_files(prev => [...prev, new_file]);
+    set_desktop_icons(prev => [...prev, new_file]);
+    set_file_counter(prev => prev + 1);
   };
 
   // context menu functions
-  const handleDesktopRightClick = (e) => {
+  const handle_desktop_right_click = (e) => {
     e.preventDefault();
     e.stopPropagation();
     
-    setContextMenu({
+    set_context_menu({
       visible: true,
       x: e.clientX,
       y: e.clientY
     });
   };
 
-  const hideContextMenu = () => {
-    setContextMenu({ visible: false, x: 0, y: 0 });
+  const hide_context_menu = () => {
+    set_context_menu({ visible: false, x: 0, y: 0 });
   };
 
   // empty recycle bin function
-  const emptyRecycleBin = () => {
-    setRecycleBinFiles([]);
-    setDesktopIcons(prev => prev.map(icon => 
+  const empty_recycle_bin = () => {
+    set_recycle_bin_files([]);
+    set_desktop_icons(prev => prev.map(icon => 
       icon.id === 'recycle-bin' 
         ? { 
             ...icon, 
@@ -460,14 +461,16 @@ const Windows98Home = () => {
 
   // update recycle bin icon action
   useEffect(() => {
-    setDesktopIcons(prev => prev.map(icon => 
+    set_desktop_icons(prev => prev.map(icon => 
       icon.id === 'recycle-bin' 
         ? { 
             ...icon,
             action: () => {
-              if(recycle_bin_files.length > 0) {
+              if(recycle_bin_files.length > 0) 
+                {
                 alert(`Recycle Bin contains ${recycle_bin_files.length} file(s):\n${recycle_bin_files.map(f => f.name).join('\n')}\n\nRight-click to empty.`);
-              } else {
+              } else 
+              {
                 alert('Recycle Bin is empty');
               }
             }
@@ -479,19 +482,19 @@ const Windows98Home = () => {
   useEffect(() => {
     if(dragging_icon) 
       {
-      document.addEventListener('mousemove', handleIconMouseMove);
-      document.addEventListener('mouseup', handleIconMouseUp);
+      document.addEventListener('mousemove', handle_icon_mouse_move);
+      document.addEventListener('mouseup', handle_icon_mouse_up);
       
       return () => {
-        document.removeEventListener('mousemove', handleIconMouseMove);
-        document.removeEventListener('mouseup', handleIconMouseUp);
+        document.removeEventListener('mousemove', handle_icon_mouse_move);
+        document.removeEventListener('mouseup', handle_icon_mouse_up);
       };
     }
   }, [dragging_icon, drag_icon_offset]);
 
   if(is_loading) 
     {
-    return <Windows98Loader onComplete={handleLoaderComplete} />;
+    return <Windows98Loader onComplete = {handleLoaderComplete} />;
   }
 
   return (
@@ -506,8 +509,8 @@ const Windows98Home = () => {
         overflow: 'hidden',
         position: 'relative'
       }}
-      onContextMenu = {handleDesktopRightClick}
-      onClick = {hideContextMenu}
+      onContextMenu = {handle_desktop_right_click}
+      onClick = {hide_context_menu}
     >
       {/* Main Content Window */}
       <div 
@@ -659,13 +662,13 @@ const Windows98Home = () => {
 
           {/* Navigation Buttons */}
           <div style = {{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button onClick = {() => openWindow('projects')} style = {{ minWidth: '120px' }}>
+            <button onClick = {() => open_window('projects')} style = {{ minWidth: '120px' }}>
               📁 View Projects
             </button>
-            <button onClick = {() => openWindow('contact')} style = {{ minWidth: '120px' }}>
+            <button onClick = {() => open_window('contact')} style = {{ minWidth: '120px' }}>
               📧 Contact Me
             </button>
-            <button onClick = {() => openWindow('resume')} style = {{ minWidth: '120px' }}>
+            <button onClick = {() => open_window('resume')} style = {{ minWidth: '120px' }}>
               📄 Resume
             </button>
             <button 
@@ -748,8 +751,8 @@ const Windows98Home = () => {
           gap: '2px'
         }}>
           <button
-            onClick={() => {
-              setIsMinimized(false);
+            onClick = {() => {
+              set_is_minimized(false);
               focusWindow('portfolio');
             }}
             style = {{ 
@@ -790,7 +793,8 @@ const Windows98Home = () => {
             };
             
             const info = windowInfo[windowId];
-            if (!info) return null;
+            
+            if(!info) return null;
             
             return (
               <button
@@ -869,27 +873,30 @@ const Windows98Home = () => {
           onMouseDown = {(e) => handle_icon_mouse_down(e, icon.id)}
           onClick = {(e) => {
             e.stopPropagation();
-            if (!dragging_icon && e.detail === 1) {
-              // Single click - select icon
+            if(!dragging_icon && e.detail === 1) 
+              {
             }
           }}
           onDoubleClick = {(e) => {
             e.stopPropagation();
-            if (!dragging_icon) {
+            if(!dragging_icon) 
+              {
               icon.action();
             }
           }}
           onContextMenu = {(e) => {
             e.preventDefault();
             e.stopPropagation();
-            if(icon.type === 'file') {
-              if(confirm(`Delete "${icon.name}"?`)) {
-                setRecycleBinFiles(prev => [...prev, icon]);
-                setDesktopIcons(prev => prev.filter(i => i.id !== icon.id));
-                setUserFiles(prev => prev.filter(f => f.id !== icon.id));
+
+            if(icon.type === 'file') 
+              {
+              if(confirm(`Delete "${icon.name}"?`)) 
+                {
+                set_recycle_bin_files(prev => [...prev, icon]);
+                set_desktop_icons(prev => prev.filter(i => i.id !== icon.id));
+                set_user_files(prev => prev.filter(f => f.id !== icon.id));
                 
-                // Update recycle bin icon
-                setDesktopIcons(prev => prev.map(i => 
+                set_desktop_icons(prev => prev.map(i => 
                   i.id === 'recycle-bin' 
                     ? { 
                         ...i, 
@@ -898,9 +905,11 @@ const Windows98Home = () => {
                     : i
                 ));
               }
-            } else if(icon.id === 'recycle-bin' && recycle_bin_files.length > 0) {
-              if(confirm('Empty Recycle Bin?')) {
-                emptyRecycleBin();
+            } else if(icon.id === 'recycle-bin' && recycle_bin_files.length > 0) 
+              {
+              if(confirm('Empty Recycle Bin?')) 
+                {
+                empty_recycle_bin();
               }
             }
           }}
@@ -916,7 +925,6 @@ const Windows98Home = () => {
               pointerEvents: 'none'
             }}
             onError = {(e) => {
-              // Always show emoji as fallback
               e.target.style.display = 'none';
               e.target.nextSibling.style.display = 'block';
             }}
@@ -969,7 +977,7 @@ const Windows98Home = () => {
               <button 
                 onClick = {() => {
                   create_new_file('text', context_menu.x + 20, context_menu.y + 20);
-                  hideContextMenu();
+                  hide_context_menu();
                 }}
                 style = {{ 
                   padding: '4px 8px', 
@@ -984,7 +992,7 @@ const Windows98Home = () => {
               <button 
                 onClick = {() => {
                   create_new_file('folder', context_menu.x + 20, context_menu.y + 20);
-                  hideContextMenu();
+                  hide_context_menu();
                 }}
                 style = {{ 
                   padding: '4px 8px', 
@@ -999,7 +1007,7 @@ const Windows98Home = () => {
               <button 
                 onClick = {() => {
                   create_new_file('image', context_menu.x + 20, context_menu.y + 20);
-                  hideContextMenu();
+                  hide_context_menu();
                 }}
                 style = {{ 
                   padding: '4px 8px', 
@@ -1014,7 +1022,7 @@ const Windows98Home = () => {
               <button 
                 onClick = {() => {
                   create_new_file('exe', context_menu.x + 20, context_menu.y + 20);
-                  hideContextMenu();
+                  hide_context_menu();
                 }}
                 style = {{ 
                   padding: '4px 8px', 
@@ -1028,10 +1036,7 @@ const Windows98Home = () => {
               </button>
               <hr style = {{ margin: '4px 0', borderColor: '#808080' }} />
               <button 
-                onClick = {() => {
-                  // Refresh desktop
-                  hideContextMenu();
-                }}
+                onClick = {() => { hide_context_menu(); }}
                 style = {{ 
                   padding: '4px 8px', 
                   textAlign: 'left',
@@ -1050,12 +1055,12 @@ const Windows98Home = () => {
       {/* Theme Manager Window */}
       {theme_manager_open && (
         <Win98_theme_manager 
-          onClose = {() => setThemeManagerOpen(false)}
+          onClose = {() => set_theme_manager_open(false)}
         />
       )}
 
       {/* Window Manager */}
-      <Windows98WindowManager 
+      <Win98_window_manager 
         activeWindows = {active_windows}
         onCloseWindow = {closeWindow}
         onFocusWindow = {focusWindow}

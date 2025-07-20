@@ -20,7 +20,7 @@ const IconComponent = ({ name }) => {
 };
 
 // icons for categorys
-const categoryIcons = {
+const category_icons = {
   'Game Development': 'FaGamepad',
   'Software Development': 'FaCode',
   'Game Modding': 'FaPuzzlePiece',
@@ -30,7 +30,7 @@ const categoryIcons = {
 const Projects = {
   categories: projectsData.categories.map(category => ({
     ...category,
-    icon: categoryIcons[category.name] || 'FaCode'
+    icon: category_icons[category.name] || 'FaCode'
   })),
 
 };
@@ -95,9 +95,9 @@ const ProjectCard = ({ project, index }) => {
 };
 
 const ProjectsPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState(Projects.categories[0]?.name || '');
+  const [selected_category, set_selected_category] = useState(Projects.categories[0]?.name || '');
   
-  const currentCategory = Projects.categories.find(cat => cat.name === selectedCategory) || Projects.categories[0];
+  const current_category = Projects.categories.find(cat => cat.name === selected_category) || Projects.categories[0];
 
   if(Projects.categories.length === 0) 
     {
@@ -130,9 +130,9 @@ const ProjectsPage = () => {
             {Projects.categories.map((category, index) => (
               <button
                 key = {index}
-                onClick = {() => setSelectedCategory(category.name)}
+                onClick = {() => set_selected_category(category.name)}
                 className = {`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
-                  selectedCategory === category.name
+                  selected_category === category.name
                     ? "bg-accent-default text-black"
                     : "bg-muted hover:bg-primary/10"
                 }`}
@@ -145,21 +145,21 @@ const ProjectsPage = () => {
 
           {/* Category Description */}
           <motion.div
-            key = {selectedCategory}
+            key = {selected_category}
             initial = {{ opacity: 0, y: 20 }}
             animate = {{ opacity: 1, y: 0 }}
             exit = {{ opacity: 0, y: -20 }}
             className = "text-center text-white/60"
           >
-            {currentCategory?.description || 'No description available'}
+            {current_category?.description || 'No description available'}
           </motion.div>
 
           {/* Projects Grid */}
           <ScrollArea className = "h-[600px] w-full">
             <div className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4">
               <AnimatePresence mode = "wait">
-                {currentCategory?.projects?.length > 0 ? (
-                  currentCategory.projects.map((project, index) => (
+                {current_category?.projects?.length > 0 ? (
+                  current_category.projects.map((project, index) => (
                     <ProjectCard key = {project.slug || index} project = {project} index = {index} />
                   ))
                 ) : (

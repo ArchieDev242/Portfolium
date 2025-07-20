@@ -29,9 +29,9 @@ const Contact = () => {
     xp: 0
   });
   
-  // Ефект для збільшення XP при введенні даних
   useEffect(() => {
-    if (gameState === "active") {
+    if(gameState === "active") 
+      {
       const nameProgress = formData.name ? 20 : 0;
       const emailProgress = formData.email ? 30 : 0;
       const messageProgress = formData.message ? formData.message.length > 50 ? 50 : 30 : 0;
@@ -56,12 +56,11 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Імітуємо копання блоку
     setMiningStage(1);
     setIsSubmitting(true);
     
-    try {
-      // Використовуємо наданий ID Formspree
+    try 
+    {
       const response = await fetch("https://formspree.io/f/xovepgar", {
         method: "POST",
         headers: {
@@ -74,11 +73,10 @@ const Contact = () => {
         }),
       });
       
-      if (response.ok) {
-        // Успішно відправлено
+      if(response.ok) 
+        {
         setGameState("success");
         
-        // Повернення до початкового стану через 5 секунд
         setTimeout(() => {
           setGameState("idle");
           setFormData({ name: "", email: "", message: "" });
@@ -89,22 +87,21 @@ const Contact = () => {
             xp: 0
           });
         }, 5000);
-      } else {
-        // Помилка відправки
+      } else 
+      {
         const error = await response.json();
         throw new Error(error.message || "Помилка відправки форми");
       }
-    } catch (error) {
+    } catch(error) 
+    {
       setErrorMessage(error.message || "Щось пішло не так. Спробуйте ще раз.");
       setGameState("error");
       
-      // Зменшуємо здоров'я гравця при помилці
       setPlayerStats(prev => ({
         ...prev,
         health: Math.max(prev.health - 3, 0)
       }));
       
-      // Повернення до форми через 3 секунди
       setTimeout(() => {
         setGameState("active");
         setErrorMessage("");
@@ -116,7 +113,6 @@ const Contact = () => {
   };
 
   const handleStartGame = () => {
-    // Імітуємо початок гри
     setGameState("active");
   };
 

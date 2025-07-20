@@ -6,12 +6,13 @@ import { usePathname } from "next/navigation";
 const PixelTransition = () => {
   const pathname = usePathname();
   
-  // Create a grid of pixels
   const pixels = [];
-  const gridSize = 12;
+  const grid_size = 12;
   
-  for (let y = 0; y < gridSize; y++) {
-    for (let x = 0; x < gridSize; x++) {
+  for(let y = 0; y < grid_size; y++) 
+    {
+    for(let x = 0; x < grid_size; x++) 
+      {
       pixels.push({
         x,
         y,
@@ -33,8 +34,8 @@ const PixelTransition = () => {
               key = {i}
               className = "bg-accent-default"
               style = {{
-                width: `${100 / gridSize}%`,
-                height: `${100 / gridSize}%`
+                width: `${100 / grid_size}%`,
+                height: `${100 / grid_size}%`
               }}
               initial = {{
                 opacity: 0,

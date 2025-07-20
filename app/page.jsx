@@ -20,7 +20,7 @@ const Home = () => {
           <div className = "text-center xl:text-left order-2 xl:order-none">
             <span className = "text-xl">Game & Software Developer</span>
             <h1 className = "h1 mb-4">
-              Hello, I'm <br /> 
+              Hello, I'm <br />
               <span className = "text-accent-default">Maksym Kopychko</span>
             </h1>
             <p className = "prose prose-invert max-w-[500px] mb-6 text-white/80">

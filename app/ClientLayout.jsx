@@ -2,13 +2,13 @@
 
 import { motion } from "framer-motion";
 import PageTransition from "@/components/PageTransition";
-import ThemeSettings from "@/components/ThemeSettings";
+import theme_settings from "@/components/ThemeSettings";
 
 const ClientLayout = ({ children }) => {
   return (
     <>
       <PageTransition />
-      <ThemeSettings />
+      <theme_settings />
       <main className = "relative z-10">{children}</main>
     </>
   );

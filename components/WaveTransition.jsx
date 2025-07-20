@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 
-const WaveTransition = () => {
+const wave_transition = () => {
   const pathname = usePathname();
 
   return (
@@ -51,4 +51,4 @@ const WaveTransition = () => {
   );
 };
 
-export default WaveTransition; 
+export default wave_transition; 

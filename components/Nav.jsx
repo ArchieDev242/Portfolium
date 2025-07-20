@@ -31,9 +31,14 @@ const Nav = () => {
     const navigation = usePathname();
     console.log(navigation);
 
-    return <nav className="flex gap-8">
+    return <nav className = "flex gap-8">
         {links.map((link, index) => { 
-            return <Link href={link.path} key={index} className={`${link.path == navigation && "text-accent-default border-b-2 border-accent-default"
+            // Check if current page matches the link
+            const isActive = link.path === "/" 
+                ? navigation === "/" 
+                : navigation.startsWith(link.path);
+                
+            return <Link href = {link.path} key = {index} className = {`${isActive && "text-accent-default border-b-2 border-accent-default"
             } capitalize font-medium hover:text-accent-hover transition-all`}>
                 {link.name}
                    </Link>

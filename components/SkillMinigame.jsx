@@ -3,38 +3,33 @@ import { motion } from 'framer-motion';
 import SkillIcon from './SkillIcon';
 
 const SkillMinigame = ({ onComplete }) => {
-  const [gameStarted, setGameStarted] = useState(false);
-  const [gameOver, setGameOver] = useState(false);
+  const [game_started, setGameStarted] = useState(false);
+  const [game_over, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);
   const [targets, setTargets] = useState([]);
-  const gameAreaRef = useRef(null);
+  const game_area_ref = useRef(null);
   
-  // List of possible skills for the game
+  // list of possible skills
   const skills = [
     'html', 'css', 'js', 'react', 'nextjs', 
     'nodejs', 'express', 'mongodb', 'tailwind', 'figma'
   ];
   
-  // Function to create a new target
-  const createTarget = () => {
-    if (!gameAreaRef.current) return null;
+  const create_target = () => {
+    if(!game_area_ref.current) return null;
     
-    const gameArea = gameAreaRef.current.getBoundingClientRect();
+    const gameArea = game_area_ref.current.getBoundingClientRect();
     const size = Math.floor(Math.random() * 30) + 40; // Size from 40 to 70px
     
-    // Determine random position within game area
     const x = Math.floor(Math.random() * (gameArea.width - size));
     const y = Math.floor(Math.random() * (gameArea.height - size));
     
-    // Select random skill
     const skill = skills[Math.floor(Math.random() * skills.length)];
     
-    // Determine random speed
-    const speedX = (Math.random() - 0.5) * 4;
-    const speedY = (Math.random() - 0.5) * 4;
+    const speed_x = (Math.random() - 0.5) * 4;
+    const speed_y = (Math.random() - 0.5) * 4;
     
-    // Determine random point value (1-3)
     const points = Math.floor(Math.random() * 3) + 1;
     
     return {
@@ -43,43 +38,44 @@ const SkillMinigame = ({ onComplete }) => {
       y,
       size,
       skill,
-      speedX,
-      speedY,
+      speedX: speed_x,
+      speedY: speed_y,
       points,
       clicked: false
     };
   };
   
-  // Function to update target positions
-  const updateTargets = () => {
-    if (!gameAreaRef.current) return;
+  const update_targets = () => {
+    if(!game_area_ref.current) return;
     
-    const gameArea = gameAreaRef.current.getBoundingClientRect();
+    const game_area = game_area_ref.current.getBoundingClientRect();
     
     setTargets(prevTargets => {
       return prevTargets.map(target => {
-        if (target.clicked) return target;
+        if(target.clicked) return target;
         
-        let newX = target.x + target.speedX;
-        let newY = target.y + target.speedY;
+        let new_x = target.x + target.speedX;
+        let new_y = target.y + target.speedY;
         let newSpeedX = target.speedX;
         let newSpeedY = target.speedY;
         
-        // Check for collisions with edges
-        if (newX <= 0 || newX + target.size >= gameArea.width) {
+        // wall collisions check
+        if(new_x <= 0 || new_x + target.size >= game_area.width) 
+          {
           newSpeedX = -newSpeedX;
-          newX = newX <= 0 ? 0 : gameArea.width - target.size;
+          new_x = new_x <= 0 ? 0 : game_area.width - target.size;
         }
         
-        if (newY <= 0 || newY + target.size >= gameArea.height) {
+        if(new_y <= 0 || new_y + target.size >= game_area.height) 
+          {
           newSpeedY = -newSpeedY;
-          newY = newY <= 0 ? 0 : gameArea.height - target.size;
+          new_y = new_y <= 0 ? 0 : game_area.height - target.size;
         }
         
         return {
           ...target,
-          x: newX,
-          y: newY,
+          x: new_x,
+          y: new_y,
           speedX: newSpeedX,
           speedY: newSpeedY
         };
@@ -87,20 +83,17 @@ const SkillMinigame = ({ onComplete }) => {
     });
   };
   
-  // Function to handle clicking on a target
-  const handleTargetClick = (targetId) => {
+  const handle_target_click = (targetId) => {
     setTargets(prevTargets => {
       const updatedTargets = prevTargets.map(target => {
-        if (target.id === targetId && !target.clicked) {
-          // Increase score
+        if(target.id === targetId && !target.clicked) 
+          {
           setScore(prevScore => prevScore + target.points);
-          // Mark target as clicked
           return { ...target, clicked: true };
         }
         return target;
       });
       
-      // Remove clicked targets after 300ms
       setTimeout(() => {
         setTargets(prev => prev.filter(t => t.id !== targetId));
       }, 300);
@@ -109,8 +102,7 @@ const SkillMinigame = ({ onComplete }) => {
     });
   };
   
-  // Function to start the game
-  const startGame = () => {
+  const start_game = () => {
     setGameStarted(true);
     setGameOver(false);
     setScore(0);
@@ -118,26 +110,26 @@ const SkillMinigame = ({ onComplete }) => {
     setTargets([]);
   };
   
-  // Function to end the game
-  const endGame = () => {
+  const end_game = () => {
     setGameStarted(false);
     setGameOver(true);
     
-    // Call callback with result
-    if (onComplete) {
+    if(onComplete) 
+      {
       onComplete(score);
     }
   };
   
-  // Effect for updating timer
   useEffect(() => {
-    if (!gameStarted || gameOver) return;
+    if(!game_started || game_over) return;
     
     const timer = setInterval(() => {
       setTimeLeft(prevTime => {
-        if (prevTime <= 1) {
+        if(prevTime <= 1) 
+          {
           clearInterval(timer);
-          endGame();
+          end_game();
+
           return 0;
         }
         return prevTime - 1;
@@ -145,35 +137,37 @@ const SkillMinigame = ({ onComplete }) => {
     }, 1000);
     
     return () => clearInterval(timer);
-  }, [gameStarted, gameOver]);
+  }, [game_started, game_over]);
   
-  // Effect for creating new targets
   useEffect(() => {
-    if (!gameStarted || gameOver) return;
+    if(!game_started || game_over) return;
     
     const interval = setInterval(() => {
-      if (targets.length < 10) {
-        const newTarget = createTarget();
-        if (newTarget) {
-          setTargets(prev => [...prev, newTarget]);
+      if(targets.length < 10) 
+        {
+        const new_target = create_target();
+
+        if(new_target) 
+          {
+          setTargets(prev => [...prev, new_target]);
         }
       }
     }, 1000);
     
     return () => clearInterval(interval);
-  }, [gameStarted, gameOver, targets.length]);
+  }, [game_started, game_over, targets.length]);
   
-  // Effect for updating target positions
   useEffect(() => {
-    if (!gameStarted || gameOver) return;
+    if(!game_started || game_over) return;
     
-    const animationFrame = requestAnimationFrame(function animate() {
-      updateTargets();
+    const animation_frame = requestAnimationFrame(function animate() 
+    {
+      update_targets();
       requestAnimationFrame(animate);
     });
     
-    return () => cancelAnimationFrame(animationFrame);
-  }, [gameStarted, gameOver]);
+    return () => cancelAnimationFrame(animation_frame);
+  }, [game_started, game_over]);
   
   return (
     <div className = "w-full max-w-2xl mx-auto">
@@ -197,24 +191,24 @@ const SkillMinigame = ({ onComplete }) => {
       
       {/* Game area */}
       <div 
-        ref = {gameAreaRef}
+        ref = {game_area_ref}
         className = "relative w-full h-[300px] bg-slate-900 border-2 border-slate-700 rounded-lg overflow-hidden"
       >
-        {!gameStarted && !gameOver && (
+        {!game_started && !game_over && (
           <div className = "absolute inset-0 flex flex-col items-center justify-center bg-slate-900/80">
             <h3 className = "pixel-text text-xl text-cyan-400 mb-4">Ready to play?</h3>
             <motion.button
               className = "pixel-text px-6 py-2 bg-cyan-600 text-white rounded-lg"
               whileHover = {{ scale: 1.05 }}
               whileTap = {{ scale: 0.95 }}
-              onClick = {startGame}
+              onClick = {start_game}
             >
               Start Game
             </motion.button>
           </div>
         )}
         
-        {gameOver && (
+        {game_over && (
           <div className = "absolute inset-0 flex flex-col items-center justify-center bg-slate-900/80">
             <h3 className = "pixel-text text-xl text-cyan-400 mb-2">Game Over!</h3>
             <p className = "pixel-text text-lg text-white mb-4">Your score: {score}</p>
@@ -222,7 +216,7 @@ const SkillMinigame = ({ onComplete }) => {
               className = "pixel-text px-6 py-2 bg-cyan-600 text-white rounded-lg"
               whileHover = {{ scale: 1.05 }}
               whileTap = {{ scale: 0.95 }}
-              onClick = {startGame}
+              onClick = {start_game}
             >
               Play Again
             </motion.button>
@@ -241,7 +235,7 @@ const SkillMinigame = ({ onComplete }) => {
               height: `${target.size}px`,
             }}
             animate = {target.clicked ? { scale: 0, opacity: 0 } : {}}
-            onClick = {() => handleTargetClick(target.id)}
+            onClick = {() => handle_target_click(target.id)}
           >
             <div className = "w-full h-full flex items-center justify-center">
               <div className = "relative">

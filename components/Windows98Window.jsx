@@ -25,6 +25,7 @@ const Windows98Window = ({
 
   const handle_mouse_down = (e) => {
     if(e.target.closest('button') || e.target.closest('.window-control')) return;
+    
     if(is_maximized) return;
     
     if(onFocus) onFocus();
@@ -39,14 +40,14 @@ const Windows98Window = ({
   const handle_mouse_move = (e) => {
     if(!is_dragging || is_maximized) return;
     
-    const newX = e.clientX - drag_offset.x;
-    const newY = e.clientY - drag_offset.y;
+    const new_x = e.clientX - drag_offset.x;
+    const new_y = e.clientY - drag_offset.y;
     
-    const maxX = window.innerWidth - 200;
-    const maxY = window.innerHeight - 100;
+    const max_x = window.innerWidth - 200;
+    const max_y = window.innerHeight - 100;
     
-    const bounded_x = Math.max(-width + 200, Math.min(newX, maxX));
-    const bounded_y = Math.max(0, Math.min(newY, maxY));
+    const bounded_x = Math.max(-width + 200, Math.min(new_x, max_x));
+    const bounded_y = Math.max(0, Math.min(new_y, max_y));
     
     setPosition({ x: bounded_x, y: bounded_y });
   };

@@ -13,17 +13,17 @@ const colors = [
   { name: "cyan", value: "#00ffff" },
 ];
 
-const ThemeSettings = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentColor, setCurrentColor] = useState("green");
+const theme_settings = () => {
+  const [is_open, setIsOpen] = useState(false);
+  const [current_color, setCurrentColor] = useState("green");
 
   useEffect(() => {
-    const savedColor = localStorage.getItem("theme-color") || "green";
-    setCurrentColor(savedColor);
-    updateThemeColors(colors.find(c => c.name === savedColor)?.value || "#00ff99");
+    const saved_color = localStorage.getItem("theme-color") || "green";
+    setCurrentColor(saved_color);
+    update_theme_colors(colors.find(c => c.name === saved_color)?.value || "#00ff99");
   }, []);
 
-  const updateThemeColors = (color) => {
+  const update_theme_colors = (color) => {
     document.documentElement.style.setProperty("--accent-default", color);
     document.documentElement.style.setProperty("--accent-hover", `${color}dd`);
     document.documentElement.style.setProperty("--accent-active", `${color}aa`);
@@ -35,9 +35,9 @@ const ThemeSettings = () => {
     document.documentElement.style.setProperty("--accent-gradient-end", `${color}11`);
   };
 
-  const handleColorChange = (color) => {
+  const handle_color_change = (color) => {
     setCurrentColor(color.name);
-    updateThemeColors(color.value);
+    update_theme_colors(color.value);
     localStorage.setItem("theme-color", color.name);
   };
 
@@ -51,7 +51,7 @@ const ThemeSettings = () => {
       </button>
 
       <AnimatePresence>
-        {isOpen && (
+        {is_open && (
           <>
             <motion.div
               initial = {{ opacity: 0 }}
@@ -83,9 +83,9 @@ const ThemeSettings = () => {
                   {colors.map((color) => (
                     <div key = {color.name} className = "flex flex-col items-center">
                       <button
-                        onClick = {() => handleColorChange(color)}
+                        onClick = {() => handle_color_change(color)}
                         className = {`w-full p-3 rounded-lg transition-all duration-300 flex flex-col items-center ${
-                          currentColor === color.name
+                          current_color === color.name
                             ? "bg-accent-default/20 ring-2 ring-accent-default"
                             : "bg-accent-default/10 hover:bg-accent-default/20"
                         }`}
@@ -110,4 +110,4 @@ const ThemeSettings = () => {
   );
 };
 
-export default ThemeSettings; 
+export default theme_settings; 

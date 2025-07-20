@@ -8,6 +8,95 @@ const projects_data = {
       projects: 
       [
         {
+          title: "Arkanoid JS",
+          description: "A modern reimagining of the classic arcade game, built from scratch using pure JavaScript, HTML5 Canvas, and CSS. This project was developed in 2020-2021 during my studies at IT-Start programming courses, marking my first major foray into game development and web technologies.",
+          fullDescription: "Arkanoid JS is a modern reimagining of the classic arcade game, built from scratch using pure JavaScript, HTML5 Canvas, and CSS. This project was developed in 2020-2021 during my studies at IT-Start programming courses, marking my first major foray into game development and web technologies. Experience the nostalgic gameplay with smooth controls, vibrant visuals, and challenging levels that will test your reflexes and strategy. Built entirely with vanilla JavaScript, HTML5 Canvas API, and CSS3, it demonstrates fundamental game development concepts including collision detection, game loops, object-oriented programming, and responsive design.",
+          image: "https://i.imghippo.com/files/DQU8777vmk.png",
+          additionalImages: 
+          [
+            "https://i.imghippo.com/files/RER3195WwA.png"
+          ],
+          technologies: ["JavaScript", "HTML5 Canvas", "CSS3", "Game Development"],
+          slug: "arkanoid-js",
+          year: "2020-2021",
+          status: "Completed",
+          category: "Arcade Game",
+          platform: "Web Browser",
+          license: "Open Source",
+          links: 
+          {
+            github: "https://github.com/ArchieDev242/arcanoid_js",
+            playGame: "https://archiedev242.github.io/arcanoid_js/",
+            download: "https://github.com/ArchieDev242/arcanoid_js/archive/refs/heads/main.zip"
+          },
+          features: 
+          [
+            "Classic Arkanoid gameplay mechanics",
+            "Smooth ball physics and collision detection",
+            "Responsive platform controls (keyboard and touch)",
+            "Progressive brick destruction system",
+            "Game over and win conditions",
+            "Clean, modern visual design",
+            "Cross-browser compatibility",
+            "Mobile-friendly touch controls",
+            "Fullscreen canvas rendering",
+            "Object-oriented code architecture"
+          ],
+          instructions: 
+          {
+            gameplay: 
+            [
+              "Use arrow keys (← →) to move the platform",
+              "Press SPACE to launch the ball",
+              "Destroy all bricks to win the level",
+              "Don't let the ball fall below the platform",
+              "Aim strategically to clear bricks efficiently"
+            ],
+            installation: 
+            [
+              "Clone or download the repository",
+              "Open index.html in any modern web browser",
+              "No additional setup or dependencies required",
+              "Play directly online at the demo link"
+            ],
+            requirements: 
+            [
+              "Modern web browser (Chrome, Firefox, Safari, Edge)",
+              "JavaScript enabled",
+              "Screen resolution: 1920x1080 recommended",
+              "Keyboard for desktop play or touchscreen for mobile"
+            ]
+          },
+          stats: 
+          {
+            complexity: "Beginner-Intermediate",
+            fileSize: "Small (~50KB)",
+            playTime: "5-15 minutes per game",
+            lastUpdate: "2021"
+          },
+          tags: ["javascript", "html5-canvas", "game-development", "arcade", "arkanoid", "breakout", "web-game", "vanilla-js"],
+          difficulty: "Beginner-Intermediate",
+          timeToImplement: "2-3 weeks",
+          supportedSystems: ["Web Browser", "Cross-platform"],
+          technicalDetails: 
+          {
+            gameLoop: "requestAnimationFrame",
+            collisionDetection: "AABB (Axis-Aligned Bounding Box)",
+            rendering: "HTML5 Canvas 2D Context",
+            controls: "Keyboard events + Touch events",
+            architecture: "Object-oriented JavaScript"
+          },
+          coursework: "Developed during IT-Start programming courses as a practical project to learn web technologies and game development fundamentals.",
+          achievements: 
+          [
+            "First major game development project",
+            "Demonstrates mastery of vanilla JavaScript",
+            "Successfully implements game physics",
+            "Cross-platform compatibility achieved",
+            "Clean, maintainable code structure"
+          ]
+        },
+        {
           title: "Project 1",
           description: "A 3D action game developed with Unity",
           image: "https://via.placeholder.com/400x300/0080FF/FFFFFF?text=Unity+Game",
@@ -33,10 +122,10 @@ const projects_data = {
           title: "ShortToLongFilename",
           description: "A powerful Windows-only C++ utility that bridges the gap between FAT32's legacy 8.3 filenames and modern long filenames. This Windows-specific tool searches for files with short names and displays their full long names along with complete file paths.",
           fullDescription: "This Windows-exclusive C++ program was developed as a coursework project to demonstrate file system operations and Windows API usage. It specifically works with FAT32 file systems on Windows operating systems, which still use the legacy 8.3 naming convention alongside long filenames. The program provides an efficient way to locate files using their short names and retrieve their corresponding long filenames. Important: This code works only on Windows systems.",
-          image: "./projects/short-to-long-filename/output.jpg",
+          image: "https://i.imghippo.com/files/coKS2929nUk.jpg",
           additionalImages: 
           [
-            "./projects/short-to-long-filename/check_ifexist.jpg"
+            "https://i.imghippo.com/files/xwd7946kss.jpg"
           ],
           technologies: ["C++", "Windows API", "FAT32", "Visual Studio", "Shlwapi"],
           slug: "short-to-long-filename",
@@ -210,6 +299,148 @@ const projects_data = {
       description: "Web applications and websites",
       projects: 
       [
+        {
+          title: "Ucode Calculator",
+          description: "A modern, responsive web-based calculator built with vanilla JavaScript, HTML5, and CSS3. Features an intuitive interface with support for basic arithmetic operations, memory functions, unit conversions, and number system conversions. Developed as part of Ucode Marathon Race00 project.",
+          fullDescription: "Ucode Calculator is a comprehensive web-based calculator application developed as part of the Race00 project for Ucode Marathon 2025. Built entirely with vanilla technologies (HTML5, CSS3, and JavaScript ES2015+), this project demonstrates modern web development practices, clean code architecture, and user-friendly interface design. The calculator supports all basic arithmetic operations, advanced mathematical functions, memory operations, unit conversions (length, area, weight), and number system conversions (decimal, binary, hexadecimal). Features include clipboard operations, keyboard shortcuts, calculation history, and a sleek macOS-inspired design with smooth animations.",
+          image: "https://i.imghippo.com/files/CUk6627Pno.jpg",
+          additionalImages: [],
+          technologies: ["JavaScript", "HTML5", "CSS3", "ES2015+", "DOM Manipulation", "Responsive Design"],
+          slug: "ucode-calculator",
+          year: "2025",
+          status: "Completed",
+          category: "Web Application",
+          platform: "Web Browser",
+          license: "Open Source",
+          links: 
+          {
+            github: "https://github.com/ArchieDev242/Ucode_Calculator",
+            playGame: "https://archiedev242.github.io/Ucode_Calculator/",
+            download: "https://github.com/ArchieDev242/Ucode_Calculator/archive/refs/heads/main.zip"
+          },
+          features: 
+          [
+            "Basic arithmetic operations (+, -, ×, ÷, %, !)",
+            "Advanced mathematical functions (√, xⁿ, ln)",
+            "Memory operations (MC, MR, M+, M-, MS)",
+            "Unit conversions (length: m/km/cm, area: m²/km²/cm²/h, weight: kg/t/gr)",
+            "Number system conversions (decimal, binary, hexadecimal)",
+            "Clipboard operations (copy/paste results and history)",
+            "Calculation history with full expression tracking",
+            "Keyboard shortcuts for enhanced usability",
+            "Responsive design for all devices",
+            "Smooth animations and visual effects",
+            "Error handling and input validation",
+            "macOS-inspired interface design"
+          ],
+          instructions: 
+          {
+            usage: 
+            [
+              "Click number buttons or use keyboard to input values",
+              "Use operation buttons for calculations",
+              "Press = or Enter to execute calculations",
+              "Use memory buttons (MC, MR, M+, M-, MS) for memory operations",
+              "Click unit buttons to convert between different units",
+              "Use ⧉ to copy results to clipboard",
+              "Use i to paste from clipboard",
+              "Press H to toggle calculation history",
+              "Use ± to change sign of current number"
+            ],
+            installation: 
+            [
+              "Clone or download the repository",
+              "Open index.html in any modern web browser",
+              "No additional setup or dependencies required",
+              "Use online version via GitHub Pages link"
+            ],
+            requirements: 
+            [
+              "Modern web browser (Chrome, Firefox, Safari, Edge)",
+              "JavaScript ES2015+ support",
+              "No internet connection required (works offline)",
+              "Any device with a web browser (desktop, tablet, mobile)"
+            ]
+          },
+          stats: 
+          {
+            complexity: "Intermediate",
+            fileSize: "Medium (~100KB)",
+            teamSize: "2 developers",
+            developmentTime: "Race00 project duration",
+            lastUpdate: "2025"
+          },
+          tags: ["javascript", "html5", "css3", "calculator", "web-app", "vanilla-js", "ucode", "race00", "mathematics"],
+          difficulty: "Intermediate",
+          timeToImplement: "2-3 weeks",
+          supportedSystems: ["Web Browser", "Cross-platform"],
+          technicalDetails: 
+          {
+            architecture: "Modular JavaScript with event-driven programming",
+            calculations: "Native JavaScript mathematical operations",
+            ui: "CSS Grid and Flexbox layout",
+            animations: "CSS transitions and transforms",
+            storage: "Browser clipboard API integration"
+          },
+          projectInfo: "Developed as part of Ucode Marathon Race00 project by a team of 2 developers. This project combined knowledge from five course sprints, demonstrating mastery of HTML5, CSS3, JavaScript ES2015+, DOM manipulation, and Git version control.",
+          teamInfo: 
+          {
+            teamSize: "2 developers",
+            myRole: "Team Lead & Co-Developer",
+            responsibilities: 
+            [
+              "Project leadership and coordination",
+              "Core programming logic implementation",
+              "Mathematical operations and advanced features",
+              "Code architecture and modular structure design",
+              "Git version control and repository management",
+              "Testing and debugging across different browsers",
+              "Feature planning and development strategy",
+              "Collaboration with team partner on UI/UX aspects"
+            ],
+            teamMembers: 
+            [
+              {
+                name: "Maksym Kopychko",
+                role: "Team Lead & Co-Developer",
+                github: "https://github.com/ArchieDev242",
+                githubUsername: "Archie242",
+                contributions: 
+                [
+                  "Project leadership and coordination",
+                  "Core calculator logic and mathematical operations",
+                  "Advanced features implementation (memory, conversions)",
+                  "Code architecture and optimization",
+                  "Git repository management and version control"
+                ]
+              },
+              {
+                name: "Volodymyr Vovk",
+                role: "Main Developer & Designer",
+                github: "https://github.com/1terraflops",
+                githubUsername: "1terraflops",
+                contributions: 
+                [
+                  "Primary development and implementation",
+                  "Interface design and styling",
+                  "CSS animations and visual effects",
+                  "Responsive design implementation",
+                  "User experience optimization"
+                ]
+              }
+            ],
+            collaboration: "Collaborative development with clearly defined roles - Maksym as Team Lead handling project coordination and core logic, Volodymyr as Main Developer focusing on implementation and design"
+          },
+          achievements: 
+          [
+            "Successfully completed Race00 challenge",
+            "Full-featured calculator meeting all requirements",
+            "Modern responsive design implementation",
+            "Advanced features beyond basic requirements",
+            "Clean, maintainable code structure",
+            "Team collaboration and Git workflow"
+          ]
+        },
         {
           title: "Project 4",
           description: "E-commerce platform with modern design",

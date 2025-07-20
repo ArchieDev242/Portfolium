@@ -3,7 +3,7 @@
 import React from 'react';
 import Windows98Window from './Windows98Window';
 
-const Windows98Resume = ({ onClose, onFocus, isActive, zIndex }) => {
+const Win98_resume = ({ onClose, onFocus, isActive, zIndex }) => {
   const About = {
     title: "About Me",
     info: 
@@ -151,4 +151,4 @@ const Windows98Resume = ({ onClose, onFocus, isActive, zIndex }) => {
   );
 };
 
-export default Windows98Resume;
+export default Win98_resume;

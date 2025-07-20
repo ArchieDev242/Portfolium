@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react';
 
 const Win98_theme_manager = ({ onClose }) => {
-  const [selected_theme, setSelectedTheme] = useState('classic');
-  const [is_dragging, setIsDragging] = useState(false);
-  const [position, setPosition] = useState({ x: 100, y: 100 });
-  const [drag_offset, setDragOffset] = useState({ x: 0, y: 0 });  const themes = {
+  const [selected_theme, set_selected_theme] = useState('classic');
+  const [is_dragging, set_is_dragging] = useState(false);
+  const [position, set_position] = useState({ x: 100, y: 100 });
+  const [drag_offset, set_drag_offset] = useState({ x: 0, y: 0 });  
+  
+  const themes = {
     classic: 
     {
       name: 'Windows 98 Classic',
@@ -138,7 +140,7 @@ const Win98_theme_manager = ({ onClose }) => {
 
   useEffect(() => {
     const saved_theme = localStorage.getItem('win98-theme') || 'classic';
-    setSelectedTheme(saved_theme);
+    set_selected_theme(saved_theme);
     apply_theme(themes[saved_theme]);
   }, []);
 
@@ -153,7 +155,7 @@ const Win98_theme_manager = ({ onClose }) => {
   };
 
   const handle_theme_select = (theme_key) => {
-    setSelectedTheme(theme_key);
+    set_selected_theme(theme_key);
     localStorage.setItem('win98-theme', theme_key);
     apply_theme(themes[theme_key]);
   };
@@ -161,8 +163,8 @@ const Win98_theme_manager = ({ onClose }) => {
   const handle_mouse_down = (e) => {
     if(e.target.closest('button') || e.target.closest('.theme-item')) return;
     
-    setIsDragging(true);
-    setDragOffset({
+    set_is_dragging(true);
+    set_drag_offset({
       x: e.clientX - position.x,
       y: e.clientY - position.y
     });
@@ -171,25 +173,25 @@ const Win98_theme_manager = ({ onClose }) => {
   const handle_mouse_move = (e) => {
     if(!is_dragging) return;
     
-    setPosition({
+    set_position({
       x: e.clientX - drag_offset.x,
       y: e.clientY - drag_offset.y
     });
   };
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
+  const handle_mouse_up = () => {
+    set_is_dragging(false);
   };
 
   useEffect(() => {
     if(is_dragging) 
       {
       document.addEventListener('mousemove', handle_mouse_move);
-      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('mouseup', handle_mouse_up);
       
       return () => {
         document.removeEventListener('mousemove', handle_mouse_move);
-        document.removeEventListener('mouseup', handleMouseUp);
+        document.removeEventListener('mouseup', handle_mouse_up);
       };
     }
   }, [is_dragging, drag_offset]);

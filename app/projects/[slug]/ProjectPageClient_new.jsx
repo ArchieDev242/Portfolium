@@ -8,13 +8,13 @@ import { getProjectBySlug } from '@/data/projects';
 import { useEffect, useState } from 'react';
 
 const ProjectPageClient = ({ params }) => {
-  const [project, setProject] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [lightbox_image, setLightboxImage] = useState(null);
-  const [zoom_level, setZoomLevel] = useState(1);
-  const [pan_position, setPanPosition] = useState({ x: 0, y: 0 });
-  const [is_dragging, setIsDragging] = useState(false);
-  const [drag_start, setDragStart] = useState({ x: 0, y: 0 });
+  const [project, set_project] = useState(null);
+  const [loading, set_loading] = useState(true);
+  const [lightbox_image, set_lightbox_image] = useState(null);
+  const [zoom_level, set_zoom_level] = useState(1);
+  const [pan_position, set_pan_position] = useState({ x: 0, y: 0 });
+  const [is_dragging, set_is_dragging] = useState(false);
+  const [drag_start, set_drag_start] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const load_project = async () => {
@@ -22,13 +22,13 @@ const ProjectPageClient = ({ params }) => {
       {
         const resolved_params = await params;
         const found_project = getProjectBySlug(resolved_params.slug);
-        setProject(found_project);
+        set_project(found_project);
       } catch(error) 
       {
         console.error('Error loading project:', error);
       } finally 
       {
-        setLoading(false);
+        set_loading(false);
       }
     };
 
@@ -36,34 +36,34 @@ const ProjectPageClient = ({ params }) => {
   }, [params]);
 
   const open_light_box = (image) => {
-    setLightboxImage(image);
-    setZoomLevel(1);
-    setPanPosition({ x: 0, y: 0 });
+    set_lightbox_image(image);
+    set_zoom_level(1);
+    set_pan_position({ x: 0, y: 0 });
     document.body.style.overflow = 'hidden';
   };
 
   const close_light_box = () => {
-    setLightboxImage(null);
-    setZoomLevel(1);
-    setPanPosition({ x: 0, y: 0 });
+    set_lightbox_image(null);
+    set_zoom_level(1);
+    set_pan_position({ x: 0, y: 0 });
     document.body.style.overflow = 'unset';
   };
 
-  const handle_zoom_in = () => { setZoomLevel(prev => Math.min(prev + 0.25, 3)); };
+  const handle_zoom_in = () => { set_zoom_level(prev => Math.min(prev + 0.25, 3)); };
 
-  const handle_zoom_out = () => { setZoomLevel(prev => Math.max(prev - 0.25, 0.5)); };
+  const handle_zoom_out = () => { set_zoom_level(prev => Math.max(prev - 0.25, 0.5)); };
 
   const handle_reset_zoom = () => {
-    setZoomLevel(1);
-    setPanPosition({ x: 0, y: 0 });
+    set_zoom_level(1);
+    set_pan_position({ x: 0, y: 0 });
   };
 
   const handle_mouse_down = (e) => {
     if(zoom_level > 1) 
       {
       e.preventDefault();
-      setIsDragging(true);
-      setDragStart({
+      set_is_dragging(true);
+      set_drag_start({
         x: e.clientX - pan_position.x,
         y: e.clientY - pan_position.y
       });
@@ -74,11 +74,11 @@ const ProjectPageClient = ({ params }) => {
     if(zoom_level > 1 && e.touches.length === 1) 
       {
       e.preventDefault();
-      setIsDragging(true);
+      set_is_dragging(true);
 
       const touch = e.touches[0];
 
-      setDragStart({
+      set_drag_start({
         x: touch.clientX - pan_position.x,
         y: touch.clientY - pan_position.y
       });
@@ -96,7 +96,7 @@ const ProjectPageClient = ({ params }) => {
       const bounded_x = Math.max(-max_pan, Math.min(new_x, max_pan));
       const bounded_y = Math.max(-max_pan, Math.min(new_y, max_pan));
       
-      setPanPosition({ x: bounded_x, y: bounded_y });
+      set_pan_position({ x: bounded_x, y: bounded_y });
     }
   };
 
@@ -112,18 +112,18 @@ const ProjectPageClient = ({ params }) => {
       const bounded_x = Math.max(-max_pan, Math.min(new_x, max_pan));
       const bounded_y = Math.max(-max_pan, Math.min(new_y, max_pan));
       
-      setPanPosition({ x: bounded_x, y: bounded_y });
+      set_pan_position({ x: bounded_x, y: bounded_y });
     }
   };
 
   const handle_mouse_up = (e) => {
     e.preventDefault();
-    setIsDragging(false);
+    set_is_dragging(false);
   };
 
   const handle_touch_end = (e) => {
     e.preventDefault();
-    setIsDragging(false);
+    set_is_dragging(false);
   };
 
   useEffect(() => {
@@ -210,7 +210,7 @@ const ProjectPageClient = ({ params }) => {
             {/* Additional Images */}
             {project.additionalImages && project.additionalImages.map((image, index) => (
               <div 
-                key={index} 
+                key = {index} 
                 className = "relative overflow-hidden rounded-xl aspect-video cursor-pointer group hover:shadow-2xl transition-all duration-300"
                 onClick={() => open_light_box(image)}
               >
@@ -219,8 +219,8 @@ const ProjectPageClient = ({ params }) => {
                   alt = {`${project.title} - Additional Image ${index + 1}`}
                   className = "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-lg font-semibold">
+                <div className = "absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                  <div className = "opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-lg font-semibold">
                     Click to enlarge
                   </div>
                 </div>
@@ -309,6 +309,17 @@ const ProjectPageClient = ({ params }) => {
 
             {/* Action Buttons */}
             <div className = "flex flex-wrap gap-4">
+              {project.links?.playGame && (
+                <a
+                  href = {project.links.playGame}
+                  target = "_blank"
+                  rel = "noopener noreferrer"
+                  className = "inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 rounded-lg transition-colors text-white"
+                >
+                  <FaExternalLinkAlt />
+                  🎮 Play Game
+                </a>
+              )}
               {project.links?.github && (
                 <a
                   href = {project.links.github}
@@ -320,12 +331,12 @@ const ProjectPageClient = ({ params }) => {
                   View Code
                 </a>
               )}
-              {project.links?.demo && (
+              {project.links?.gamebanana && (
                 <a
-                  href = {project.links.demo}
+                  href = {project.links.gamebanana}
                   target = "_blank"
                   rel = "noopener noreferrer"
-                  className = "inline-flex items-center gap-2 px-6 py-3 bg-accent-default hover:bg-accent-default/80 rounded-lg transition-colors"
+                  className = "inline-flex items-center gap-2 px-6 py-3 bg-orange-600 hover:bg-orange-700 rounded-lg transition-colors text-white"
                 >
                   <FaExternalLinkAlt />
                   GameBanana Page
@@ -336,7 +347,7 @@ const ProjectPageClient = ({ params }) => {
                   href = {project.links.download}
                   target = "_blank"
                   rel = "noopener noreferrer"
-                  className = "inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
+                  className = "inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors text-white"
                 >
                   <FaDownload />
                   Download
@@ -379,6 +390,91 @@ const ProjectPageClient = ({ params }) => {
                 mods without needing to learn Lua programming. It demonstrates how small utilities can have a 
                 significant impact on the modding community.
               </p>
+            </div>
+          </div>
+        )}
+
+        {/* Team Information for Ucode Calculator */}
+        {project.slug === 'ucode-calculator' && project.teamInfo && (
+          <div className = "mb-12">
+            <h2 className = "text-2xl font-bold mb-6">Team & Development</h2>
+            <div className = "bg-[#232329] rounded-xl p-6 space-y-6">
+              
+              {/* My Role */}
+              <div>
+                <h3 className = "text-xl font-semibold mb-3 text-accent-default">My Role & Responsibilities</h3>
+                <div className = "mb-4">
+                  <span className = "inline-block bg-accent-default/20 px-3 py-1 rounded-full text-accent-default text-sm font-medium">
+                    {project.teamInfo.myRole}
+                  </span>
+                </div>
+                <ul className = "space-y-2">
+                  {project.teamInfo.responsibilities.map((responsibility, index) => (
+                    <li key = {index} className = "flex items-start gap-2 text-white/80">
+                      <span className = "text-accent-default mt-1">•</span>
+                      {responsibility}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Team Members */}
+              <div>
+                <h3 className = "text-xl font-semibold mb-4 text-accent-default">Team Members</h3>
+                <div className = "grid md:grid-cols-2 gap-4">
+                  {project.teamInfo.teamMembers.map((member, index) => (
+                    <div key = {index} className = "bg-[#1a1a1f] rounded-lg p-4">
+                      <div className = "flex items-center gap-3 mb-3">
+                        <div>
+                          <h4 className = "font-semibold text-white">{member.name}</h4>
+                          {member.githubUsername && (
+                            <p className = "text-xs text-white/60 mb-1">@{member.githubUsername}</p>
+                          )}
+                          <p className = "text-sm text-accent-default">{member.role}</p>
+                        </div>
+                        {member.github && (
+                          <a 
+                            href = {member.github}
+                            target = "_blank"
+                            rel = "noopener noreferrer"
+                            className = "ml-auto text-white/60 hover:text-white transition-colors"
+                          >
+                            <FaGithub size = {20} />
+                          </a>
+                        )}
+                      </div>
+                      <ul className = "space-y-1">
+                        {member.contributions.map((contribution, cIndex) => (
+                          <li key = {cIndex} className = "text-sm text-white/70 flex items-start gap-2">
+                            <span className = "text-accent-default/60 mt-1">•</span>
+                            {contribution}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Collaboration */}
+              <div className = "bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+                <h4 className = "text-blue-400 font-semibold mb-2">Team Collaboration</h4>
+                <p className = "text-white/80 text-sm">
+                  {project.teamInfo.collaboration}
+                </p>
+              </div>
+
+              {/* Project Context */}
+              <div>
+                <h3 className = "text-xl font-semibold mb-3 text-accent-default">Project Context</h3>
+                <p className = "text-white/80 leading-relaxed">
+                  This calculator was developed as part of the <strong>Ucode Marathon Race00</strong> challenge, 
+                  where teams of 2 developers competed to create a fully functional web calculator. The project 
+                  served as a culmination of knowledge from five course sprints, testing our ability to combine 
+                  HTML5, CSS3, JavaScript ES2015+, DOM manipulation, and Git collaboration skills in a real-world 
+                  development scenario.
+                </p>
+              </div>
             </div>
           </div>
         )}
