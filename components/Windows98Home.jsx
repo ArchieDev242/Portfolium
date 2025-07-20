@@ -36,7 +36,7 @@ const Windows98Home = () => {
       id: 'theme-manager', 
       name: 'Theme Manager', 
       position: { x: 20, y: 20 },
-      icon: '/icons/win98/png/themes-0.png',
+      icon: './icons/win98/png/themes-0.png',
       fallback: '',
       emoji: '🎨',
       type: 'system',
@@ -46,7 +46,7 @@ const Windows98Home = () => {
       id: 'resume',
       name: 'Resume',
       position: { x: 20, y: 120 },
-      icon: '/icons/win98/png/users-0.png',
+      icon: './icons/win98/png/users-0.png',
       fallback: '',
       emoji: '📄',
       type: 'app',
@@ -56,7 +56,7 @@ const Windows98Home = () => {
       id: 'projects', 
       name: 'Projects',
       position: { x: 20, y: 220 },
-      icon: '/icons/win98/png/directory_open_file_mydocs-0.png',
+      icon: './icons/win98/png/directory_open_file_mydocs-0.png',
       fallback: '',
       emoji: '📁',
       type: 'app',
@@ -66,7 +66,7 @@ const Windows98Home = () => {
       id: 'contact',
       name: 'Contact',
       position: { x: 20, y: 320 },
-      icon: '/icons/win98/png/envelope_closed-0.png',
+      icon: './icons/win98/png/envelope_closed-0.png',
       fallback: '',
       emoji: '📧',
       type: 'app',
@@ -76,7 +76,7 @@ const Windows98Home = () => {
       id: 'recycle-bin',
       name: 'Recycle Bin',
       position: { x: 20, y: 420 },
-      icon: '/icons/win98/png/recycle_bin_empty-0.png',
+      icon: './icons/win98/png/recycle_bin_empty-0.png',
       fallback: '',
       emoji: '🗑️',
       type: 'recycle-bin',
@@ -86,7 +86,7 @@ const Windows98Home = () => {
       id: 'my-computer',
       name: 'My Computer',
       position: { x: 20, y: 520 },
-      icon: '/icons/win98/png/computer-0.png',
+      icon: './icons/win98/png/computer-0.png',
       fallback: '',
       emoji: '💻',
       type: 'system',
@@ -367,7 +367,7 @@ const Windows98Home = () => {
             icon.id === 'recycle-bin' 
               ? { 
                   ...icon, 
-                  icon: '/icons/win98/png/recycle_bin_full-0.png',
+                  icon: './icons/win98/png/recycle_bin_full-0.png',
                   emoji: '🗑️'
                 }
               : icon
@@ -384,28 +384,28 @@ const Windows98Home = () => {
     const file_types = {
       'text': 
       {
-        icon: '/icons/win98/png/notepad-0.png',
+        icon: './icons/win98/png/notepad-0.png',
         emoji: '📄',
         extension: '.txt'
       },
 
       'folder': 
       {
-        icon: '/icons/win98/png/directory_closed-0.png',
+        icon: './icons/win98/png/directory_closed-0.png',
         emoji: '📁',
         extension: ''
       },
 
       'image': 
       {
-        icon: '/icons/win98/png/image_old_gif-0.png',
+        icon: './icons/win98/png/image_old_gif-0.png',
         emoji: '🖼️',
         extension: '.bmp'
       },
 
       'exe': 
       {
-        icon: '/icons/win98/png/executable-0.png',
+        icon: './icons/win98/png/executable-0.png',
         emoji: '⚙️',
         extension: '.exe'
       }
@@ -452,7 +452,7 @@ const Windows98Home = () => {
       icon.id === 'recycle-bin' 
         ? { 
             ...icon, 
-            icon: '/icons/win98/png/recycle_bin_empty-0.png',
+            icon: './icons/win98/png/recycle_bin_empty-0.png',
             emoji: '🗑️'
           }
         : icon
@@ -787,9 +787,9 @@ const Windows98Home = () => {
           {/* Other windows */}
           {active_windows.map((windowId) => {
             const windowInfo = {
-              resume: { title: 'Resume', icon: '/icons/win98/png/users-0.png', emoji: '📄' },
-              projects: { title: 'Projects', icon: '/icons/win98/png/directory_open_file_mydocs-0.png', emoji: '📁' },
-              contact: { title: 'Contact', icon: '/icons/win98/png/envelope_closed-0.png', emoji: '📧' }
+              resume: { title: 'Resume', icon: './icons/win98/png/users-0.png', emoji: '📄' },
+              projects: { title: 'Projects', icon: './icons/win98/png/directory_open_file_mydocs-0.png', emoji: '📁' },
+              contact: { title: 'Contact', icon: './icons/win98/png/envelope_closed-0.png', emoji: '📧' }
             };
             
             const info = windowInfo[windowId];
@@ -900,7 +900,7 @@ const Windows98Home = () => {
                   i.id === 'recycle-bin' 
                     ? { 
                         ...i, 
-                        icon: '/icons/win98/png/recycle_bin_full-0.png'
+                        icon: './icons/win98/png/recycle_bin_full-0.png'
                       }
                     : i
                 ));
