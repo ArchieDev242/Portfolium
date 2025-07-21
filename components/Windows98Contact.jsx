@@ -1,7 +1,14 @@
 "use client";
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import Windows98Window from './Windows98Window';
+
+import envelope_closed_icon from '@/public/icons/win98/png/envelope_closed-0.png';
+import envelope_open_icon from '@/public/icons/win98/png/envelope_open_sheet-0.png';
+import refresh_icon from '@/public/icons/win98/png/overlay_refresh-0.png';
+import phone_icon from '@/public/icons/win98/png/world_phonereceiver.png';
+import globe_map_icon from '@/public/icons/win98/png/globe_map-0.png';
 
 const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
   const [form_data, set_form_data] = useState({
@@ -63,7 +70,7 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
   return (
     <Windows98Window
       title = "Contact Form"
-      icon = "./icons/win98/png/envelope_closed-0.png"
+      icon = {envelope_closed_icon}
       onClose = {onClose}
       onFocus = {onFocus}
       isActive = {isActive}
@@ -149,10 +156,12 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
                     justifyContent: 'center'
                   }}
                 >
-                  <img 
-                    src = "./icons/win98/png/envelope_open_sheet-0.png"
+                  <Image 
+                    src = {envelope_open_icon}
                     alt = "Send"
-                    style = {{ width: '16px', height: '16px', imageRendering: 'pixelated' }}
+                    width = {16}
+                    height = {16}
+                    style = {{ imageRendering: 'pixelated' }}
                     onError = {(e) => {
                       e.target.style.display = 'none';
                       e.target.insertAdjacentHTML('afterend', '<span>📧</span>');
@@ -172,10 +181,12 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
                     justifyContent: 'center'
                   }}
                 >
-                  <img 
-                    src = "./icons/win98/png/overlay_refresh-0.png"
+                  <Image 
+                    src = {refresh_icon}
                     alt = "Clear"
-                    style = {{ width: '16px', height: '16px', imageRendering: 'pixelated' }}
+                    width = {16}
+                    height = {16}
+                    style = {{ imageRendering: 'pixelated' }}
                     onError = {(e) => {
                       e.target.style.display = 'none';
                       e.target.insertAdjacentHTML('afterend', '<span>🔄</span>');
@@ -193,10 +204,12 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
           <legend style = {{ fontWeight: 'bold' }}>📞 Contact Information</legend>
           <div style = {{ padding: '10px' }}>
             <div style = {{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
-              <img 
-                src = "./icons/win98/png/envelope_closed-0.png"
+              <Image 
+                src = {envelope_closed_icon}
                 alt = "Email"
-                style = {{ width: '16px', height: '16px', imageRendering: 'pixelated', marginRight: '8px' }}
+                width = {16}
+                height = {16}
+                style = {{ imageRendering: 'pixelated', marginRight: '8px' }}
                 onError = {(e) => {
                   e.target.style.display = 'none';
                   e.target.insertAdjacentHTML('afterend', '<span>📧</span>');
@@ -205,10 +218,12 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
               <strong>Email:</strong>&nbsp;maksym.kopychko@gmail.com
             </div>
             <div style = {{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
-              <img 
-                src = "./icons/win98/png/world_phonereceiver.png"
+              <Image 
+                src = {phone_icon}
                 alt = "Phone"
-                style = {{ width: '16px', height: '16px', imageRendering: 'pixelated', marginRight: '8px' }}
+                width = {16}
+                height = {16}
+                style = {{ imageRendering: 'pixelated', marginRight: '8px' }}
                 onError = {(e) => {
                   e.target.style.display = 'none';
                   e.target.insertAdjacentHTML('afterend', '<span>📞</span>');
@@ -217,10 +232,12 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
               <strong>Phone:</strong>&nbsp;+380669702817
             </div>
             <div style = {{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
-              <img 
-                src = "./icons/win98/png/globe_map-0.png"
+              <Image 
+                src = {globe_map_icon}
                 alt = "Location"
-                style = {{ width: '16px', height: '16px', imageRendering: 'pixelated', marginRight: '8px' }}
+                width = {16}
+                height = {16}
+                style = {{ imageRendering: 'pixelated', marginRight: '8px' }}
                 onError = {(e) => {
                   e.target.style.display = 'none';
                   e.target.insertAdjacentHTML('afterend', '<span>🌍</span>');

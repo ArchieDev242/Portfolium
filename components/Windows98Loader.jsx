@@ -1,6 +1,17 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
+
+import windows_icon from '@/public/icons/win98/png/windows-0.png';
+import computer_icon from '@/public/icons/win98/png/computer-0.png';
+import cd_audio_icon from '@/public/icons/win98/png/cd_audio_cd_a-0.png';
+import users_icon from '@/public/icons/win98/png/users-0.png';
+import monitor_icon from '@/public/icons/win98/png/monitor_blue_grad-0.png';
+import memory_icon from '@/public/icons/win98/png/memory-0.png';
+import network_icon from '@/public/icons/win98/png/network-0.png';
+import battery_icon from '@/public/icons/win98/png/battery.png';
+import hourglass_icon from '@/public/icons/win98/png/application_hourglass-0.png';
 
 const Windows98Loader = ({ onComplete }) => {
   const [progress, set_progress] = useState(0);
@@ -919,12 +930,12 @@ const Windows98Loader = ({ onComplete }) => {
           position: 'relative',
           overflow: 'hidden'
         }}>
-          <img 
-            src = "./icons/win98/png/windows-0.png" 
+          <Image 
+            src = {windows_icon}
             alt = "Windows 98"
+            width = {48}
+            height = {48}
             style = {{
-              width: '48px',
-              height: '48px',
               imageRendering: 'pixelated',
               filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.5))',
               zIndex: 2
@@ -1032,44 +1043,65 @@ const Windows98Loader = ({ onComplete }) => {
         backdropFilter: 'blur(5px)'
       }}>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <img src = "./icons/win98/png/computer-0.png" 
-               style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
+          <Image src = {computer_icon}
+               alt = "Computer"
+               width = {12}
+               height = {12}
+               style = {{ imageRendering: 'pixelated' }} 
                onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>💻</span>'); }} />
           System: Windows 98 Portfolio Edition
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <img src = "./icons/win98/png/cd_audio_cd_a-0.png" 
-               style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
+          <Image src = {cd_audio_icon}
+               alt = "CD Audio"
+               width = {12}
+               height = {12}
+               style = {{ imageRendering: 'pixelated' }} 
                onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>💿</span>'); }} />
           Version: 4.10.1998 Build 1998
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <img src = "./icons/win98/png/users-0.png" 
-               style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
+          <Image src = {users_icon}
+               alt = "User"
+               width = {12}
+               height = {12}
+               style = {{ imageRendering: 'pixelated' }} 
                onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>👤</span>'); }} />
           Owner: Maksym Kopychko
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <img src = "./icons/win98/png/monitor_blue_grad-0.png" 
-               style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
+          <Image src = {monitor_icon}
+               alt = "Monitor"
+               width = {12}
+               height = {12}
+               style = {{ imageRendering: 'pixelated' }} 
                onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>🖥️</span>'); }} />
           Resolution: {window_size.width}x{window_size.height}
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <img src = "./icons/win98/png/memory-0.png" 
-               style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
+          <Image src = {memory_icon}
+               alt = "Memory"
+               width = {12}
+               height = {12}
+               style = {{ imageRendering: 'pixelated' }} 
                onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>💾</span>'); }} />
           Memory: 128 MB RAM
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <img src = "./icons/win98/png/network-0.png" 
-               style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
+          <Image src = {network_icon}
+               alt = "Network"
+               width = {12}
+               height = {12}
+               style = {{ imageRendering: 'pixelated' }} 
                onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>🌐</span>'); }} />
           Network: Connected
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <img src = "./icons/win98/png/battery.png" 
-               style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }} 
+          <Image src = {battery_icon}
+               alt = "Battery"
+               width = {12}
+               height = {12}
+               style = {{ imageRendering: 'pixelated' }} 
                onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>⚡</span>'); }} />
           Status: Optimized
         </div>
@@ -1091,9 +1123,12 @@ const Windows98Loader = ({ onComplete }) => {
         alignItems: 'center',
         gap: '5px'
       }}>
-        <img 
-          src = "./icons/win98/png/application_hourglass-0.png" 
-          style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }}
+        <Image 
+          src = {hourglass_icon}
+          alt = "Loading"
+          width = {12}
+          height = {12}
+          style = {{ imageRendering: 'pixelated' }}
           onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>⏳</span>'); }} 
         />
         Loading{dots}

@@ -1,10 +1,13 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
+
+import default_windows_icon from '@/public/icons/win98/png/windows-0.png';
 
 const Windows98Window = ({ 
   title = "Windows 98 Application", 
-  icon = "./icons/win98/png/windows-0.png",
+  icon = default_windows_icon,
   children, 
   onClose, 
   onFocus,
@@ -114,12 +117,12 @@ const Windows98Window = ({
         style = {{ cursor: is_dragging ? 'grabbing' : 'grab' }}
       >
         <div className = "title-bar-text" style = {{ display: 'flex', alignItems: 'center' }}>
-          <img 
+          <Image 
             src = {icon}
             alt = "Icon"
+            width = {16}
+            height = {16}
             style = {{
-              width: '16px',
-              height: '16px',
               imageRendering: 'pixelated',
               marginRight: '6px'
             }}

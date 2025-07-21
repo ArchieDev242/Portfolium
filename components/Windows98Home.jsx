@@ -2,9 +2,23 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import Windows98Loader from './Windows98Loader';
 import Win98_theme_manager from './Windows98ThemeManager';
 import Win98_window_manager from './Windows98WindowManager';
+
+import themes_icon from '@/public/icons/win98/png/themes-0.png';
+import users_icon from '@/public/icons/win98/png/users-0.png';
+import directory_open_icon from '@/public/icons/win98/png/directory_open_file_mydocs-0.png';
+import envelope_icon from '@/public/icons/win98/png/envelope_closed-0.png';
+import recycle_bin_empty_icon from '@/public/icons/win98/png/recycle_bin_empty-0.png';
+import recycle_bin_full_icon from '@/public/icons/win98/png/recycle_bin_full-0.png';
+import computer_icon from '@/public/icons/win98/png/computer-0.png';
+import notepad_icon from '@/public/icons/win98/png/notepad-0.png';
+import directory_closed_icon from '@/public/icons/win98/png/directory_closed-0.png';
+import image_icon from '@/public/icons/win98/png/image_old_gif-0.png';
+import executable_icon from '@/public/icons/win98/png/executable-0.png';
+import start_menu_icon from '@/public/icons/win98/png/start_menu_shortcuts.png';
 
 const Windows98Home = () => {
   const router = useRouter();
@@ -36,7 +50,7 @@ const Windows98Home = () => {
       id: 'theme-manager', 
       name: 'Theme Manager', 
       position: { x: 20, y: 20 },
-      icon: './icons/win98/png/themes-0.png',
+      icon: themes_icon,
       fallback: '',
       emoji: '🎨',
       type: 'system',
@@ -46,7 +60,7 @@ const Windows98Home = () => {
       id: 'resume',
       name: 'Resume',
       position: { x: 20, y: 120 },
-      icon: './icons/win98/png/users-0.png',
+      icon: users_icon,
       fallback: '',
       emoji: '📄',
       type: 'app',
@@ -56,7 +70,7 @@ const Windows98Home = () => {
       id: 'projects', 
       name: 'Projects',
       position: { x: 20, y: 220 },
-      icon: './icons/win98/png/directory_open_file_mydocs-0.png',
+      icon: directory_open_icon,
       fallback: '',
       emoji: '📁',
       type: 'app',
@@ -66,7 +80,7 @@ const Windows98Home = () => {
       id: 'contact',
       name: 'Contact',
       position: { x: 20, y: 320 },
-      icon: './icons/win98/png/envelope_closed-0.png',
+      icon: envelope_icon,
       fallback: '',
       emoji: '📧',
       type: 'app',
@@ -76,7 +90,7 @@ const Windows98Home = () => {
       id: 'recycle-bin',
       name: 'Recycle Bin',
       position: { x: 20, y: 420 },
-      icon: './icons/win98/png/recycle_bin_empty-0.png',
+      icon: recycle_bin_empty_icon,
       fallback: '',
       emoji: '🗑️',
       type: 'recycle-bin',
@@ -86,7 +100,7 @@ const Windows98Home = () => {
       id: 'my-computer',
       name: 'My Computer',
       position: { x: 20, y: 520 },
-      icon: './icons/win98/png/computer-0.png',
+      icon: computer_icon,
       fallback: '',
       emoji: '💻',
       type: 'system',
@@ -102,7 +116,8 @@ const Windows98Home = () => {
   const [context_menu, set_context_menu] = useState({ visible: false, x: 0, y: 0 });
 
   const open_window = (windowId) => {
-    if(!active_windows.includes(windowId)) {
+    if(!active_windows.includes(windowId)) 
+      {
       set_active_windows(prev => [...prev, windowId]);
     }
     set_active_window_id(windowId);
@@ -118,18 +133,19 @@ const Windows98Home = () => {
 
   const closeWindow = (windowId) => {
     set_active_windows(prev => prev.filter(id => id !== windowId));
-    if (active_window_id === windowId) {
+    if(active_window_id === windowId) 
+      {
       set_active_window_id('portfolio');
     }
   };
 
-  const focusWindow = (windowId) => {
+  const focus_window = (windowId) => {
     set_active_window_id(windowId);
-    const newZIndex = window_z_index + 10;
-    set_window_z_index(newZIndex);
+    const new_z_index = window_z_index + 10;
+    set_window_z_index(new_z_index);
     set_window_z_indexes(prev => ({
       ...prev,
-      [windowId]: newZIndex
+      [windowId]: new_z_index
     }));
   };
 
@@ -210,7 +226,7 @@ const Windows98Home = () => {
     e.preventDefault();
     e.stopPropagation();
     
-    focusWindow('portfolio');
+    focus_window('portfolio');
     
     const windowEl = window_ref.current;
 
@@ -367,7 +383,7 @@ const Windows98Home = () => {
             icon.id === 'recycle-bin' 
               ? { 
                   ...icon, 
-                  icon: './icons/win98/png/recycle_bin_full-0.png',
+                  icon: recycle_bin_full_icon,
                   emoji: '🗑️'
                 }
               : icon
@@ -384,28 +400,28 @@ const Windows98Home = () => {
     const file_types = {
       'text': 
       {
-        icon: './icons/win98/png/notepad-0.png',
+        icon: notepad_icon,
         emoji: '📄',
         extension: '.txt'
       },
 
       'folder': 
       {
-        icon: './icons/win98/png/directory_closed-0.png',
+        icon: directory_closed_icon,
         emoji: '📁',
         extension: ''
       },
 
       'image': 
       {
-        icon: './icons/win98/png/image_old_gif-0.png',
+        icon: image_icon,
         emoji: '🖼️',
         extension: '.bmp'
       },
 
       'exe': 
       {
-        icon: './icons/win98/png/executable-0.png',
+        icon: executable_icon,
         emoji: '⚙️',
         extension: '.exe'
       }
@@ -452,7 +468,7 @@ const Windows98Home = () => {
       icon.id === 'recycle-bin' 
         ? { 
             ...icon, 
-            icon: './icons/win98/png/recycle_bin_empty-0.png',
+            icon: recycle_bin_empty_icon,
             emoji: '🗑️'
           }
         : icon
@@ -529,7 +545,7 @@ const Windows98Home = () => {
         }}
         onClick = {(e) => {
           e.stopPropagation();
-          focusWindow('portfolio');
+          focus_window('portfolio');
         }}
       >
         <div 
@@ -544,12 +560,12 @@ const Windows98Home = () => {
           }}
         >
           <div className = "title-bar-text">
-            <img 
-              src = "./icons/win98/png/directory_open_file_mydocs-0.png" 
+            <Image 
+              src = {directory_open_icon}
               alt = "Portfolio"
+              width = {16}
+              height = {16}
               style = {{
-                width: '16px',
-                height: '16px',
                 imageRendering: 'pixelated',
                 marginRight: '4px',
                 verticalAlign: 'middle'
@@ -723,12 +739,12 @@ const Windows98Home = () => {
             gap: '4px'
           }}
         >
-          <img 
-            src = "./icons/win98/png/start_menu_shortcuts.png" 
+          <Image 
+            src = {start_menu_icon}
             alt = "Start"
+            width = {16}
+            height = {16}
             style = {{
-              width: '16px',
-              height: '16px',
               imageRendering: 'pixelated'
             }}
             onError = {(e) => {
@@ -753,7 +769,7 @@ const Windows98Home = () => {
           <button
             onClick = {() => {
               set_is_minimized(false);
-              focusWindow('portfolio');
+              focus_window('portfolio');
             }}
             style = {{ 
               height: '18px', 
@@ -768,12 +784,12 @@ const Windows98Home = () => {
               cursor: 'pointer'
             }}
           >
-            <img 
-              src = "./icons/win98/png/directory_open_file_mydocs-0.png" 
+            <Image 
+              src = {directory_open_icon}
               alt = "Portfolio"
+              width = {12}
+              height = {12}
               style = {{
-                width: '12px',
-                height: '12px',
                 imageRendering: 'pixelated'
               }}
               onError = {(e) => {
@@ -787,9 +803,9 @@ const Windows98Home = () => {
           {/* Other windows */}
           {active_windows.map((windowId) => {
             const windowInfo = {
-              resume: { title: 'Resume', icon: './icons/win98/png/users-0.png', emoji: '📄' },
-              projects: { title: 'Projects', icon: './icons/win98/png/directory_open_file_mydocs-0.png', emoji: '📁' },
-              contact: { title: 'Contact', icon: './icons/win98/png/envelope_closed-0.png', emoji: '📧' }
+              resume: { title: 'Resume', icon: users_icon, emoji: '📄' },
+              projects: { title: 'Projects', icon: directory_open_icon, emoji: '📁' },
+              contact: { title: 'Contact', icon: envelope_icon, emoji: '📧' }
             };
             
             const info = windowInfo[windowId];
@@ -799,7 +815,7 @@ const Windows98Home = () => {
             return (
               <button
                 key={windowId}
-                onClick={() => focusWindow(windowId)}
+                onClick={() => focus_window(windowId)}
                 style = {{ 
                   height: '18px', 
                   fontSize: '10px',
@@ -813,12 +829,12 @@ const Windows98Home = () => {
                   cursor: 'pointer'
                 }}
               >
-                <img 
+                <Image 
                   src = {info.icon}
                   alt = {info.title}
+                  width = {12}
+                  height = {12}
                   style = {{
-                    width: '12px',
-                    height: '12px',
                     imageRendering: 'pixelated'
                   }}
                   onError = {(e) => {
@@ -900,7 +916,7 @@ const Windows98Home = () => {
                   i.id === 'recycle-bin' 
                     ? { 
                         ...i, 
-                        icon: './icons/win98/png/recycle_bin_full-0.png'
+                        icon: recycle_bin_full_icon
                       }
                     : i
                 ));
@@ -914,12 +930,12 @@ const Windows98Home = () => {
             }
           }}
         >
-          <img 
+          <Image 
             src = {icon.icon}
             alt = {icon.name}
+            width = {32}
+            height = {32}
             style = {{
-              width: '32px',
-              height: '32px',
               imageRendering: 'pixelated',
               marginBottom: '4px',
               pointerEvents: 'none'
@@ -1063,7 +1079,7 @@ const Windows98Home = () => {
       <Win98_window_manager 
         activeWindows = {active_windows}
         onCloseWindow = {closeWindow}
-        onFocusWindow = {focusWindow}
+        onFocusWindow = {focus_window}
         activeWindowId = {active_window_id}
         windowZIndexes = {window_z_indexes}
       />

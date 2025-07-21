@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
+
+import themes_icon from '@/public/icons/win98/png/themes-0.png';
+import color_profile_icon from '@/public/icons/win98/png/color_profile-0.png';
+import notepad_file_icon from '@/public/icons/win98/png/notepad_file-0.png';
+import gears_icon from '@/public/icons/win98/png/gears-0.png';
+import check_icon from '@/public/icons/win98/png/check-0.png';
 
 const Win98_theme_manager = ({ onClose }) => {
   const [selected_theme, set_selected_theme] = useState('classic');
@@ -215,11 +222,12 @@ const Win98_theme_manager = ({ onClose }) => {
         style = {{ cursor: is_dragging ? 'grabbing' : 'grab' }}
       >
         <div className = "title-bar-text">
-          <img 
-            src = "./icons/win98/png/themes-0.png" 
+          <Image 
+            src = {themes_icon}
             alt = "Themes"
+            width = {16}
+            height = {16}
             style = {{
-              width: '16px',
               height: '16px',
               imageRendering: 'pixelated',
               marginRight: '4px',
@@ -241,12 +249,12 @@ const Win98_theme_manager = ({ onClose }) => {
       <div className = "window-body" style = {{ padding: '15px' }}>
         <fieldset style = {{ marginBottom: '15px' }}>
           <legend>
-            <img 
-              src = "./icons/win98/png/color_profile-0.png"
+            <Image 
+              src = {color_profile_icon}
               alt = "Colors"
+              width = {16}
+              height = {16}
               style = {{
-                width: '16px',
-                height: '16px',
                 imageRendering: 'pixelated',
                 marginRight: '4px',
                 verticalAlign: 'middle'
@@ -351,12 +359,12 @@ const Win98_theme_manager = ({ onClose }) => {
 
         <fieldset style = {{ marginBottom: '15px' }}>
           <legend>
-            <img 
-              src = "./icons/win98/png/notepad_file-0.png"
+            <Image 
+              src = {notepad_file_icon}
               alt = "Info"
+              width = {16}
+              height = {16}
               style = {{
-                width: '16px',
-                height: '16px',
                 imageRendering: 'pixelated',
                 marginRight: '4px',
                 verticalAlign: 'middle'
@@ -419,12 +427,12 @@ const Win98_theme_manager = ({ onClose }) => {
               }}
               style = {{ minWidth: '80px', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center' }}
             >
-              <img 
-                src = "./icons/win98/png/gears-0.png"
+              <Image 
+                src = {gears_icon}
                 alt = "Random"
+                width = {16}
+                height = {16}
                 style = {{
-                  width: '16px',
-                  height: '16px',
                   imageRendering: 'pixelated'
                 }}
                 onError = {(e) => {
@@ -449,12 +457,12 @@ const Win98_theme_manager = ({ onClose }) => {
                 justifyContent: 'center'
               }}
             >
-              <img 
-                src = "./icons/win98/png/check-0.png"
+              <Image 
+                src = {check_icon}
                 alt = "Apply"
+                width = {16}
+                height = {16}
                 style = {{
-                  width: '16px',
-                  height: '16px',
                   imageRendering: 'pixelated',
                   filter: 'brightness(0) invert(1)'
                 }}

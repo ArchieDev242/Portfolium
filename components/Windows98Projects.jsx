@@ -1,8 +1,17 @@
 "use client";
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import Windows98Window from './Windows98Window';
 import { projectsData } from '@/data/projects';
+
+import directory_open_icon from '@/public/icons/win98/png/directory_open_file_mydocs-0.png';
+import file_lines_icon from '@/public/icons/win98/png/file_lines-0.png';
+import media_play_icon from '@/public/icons/win98/png/media_player-0.png';
+import globe_map_icon from '@/public/icons/win98/png/globe_map-0.png';
+import executable_icon from '@/public/icons/win98/png/executable-0.png';
+import download_icon from '@/public/icons/win98/png/download.png';
+import msg_information_icon from '@/public/icons/win98/png/msg_information-0.png';
 
 const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
   const [selected_category, set_selected_category] = useState(0);
@@ -10,7 +19,7 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
   return (
     <Windows98Window
       title = "Projects Portfolio"
-      icon = "./icons/win98/png/directory_open_file_mydocs-0.png"
+      icon = {directory_open_icon}
       onClose = {onClose}
       onFocus = {onFocus}
       isActive = {isActive}
@@ -63,10 +72,12 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
             {projectsData.categories[selected_category].projects.map((project, index) => (
               <div key = {index} className = "sunken-panel" style = {{ padding: '10px', background: 'white' }}>
                 <div style = {{ fontWeight: 'bold', fontSize: '12px', marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
-                  <img 
-                    src = "./icons/win98/png/file_lines-0.png" 
+                  <Image 
+                    src = {file_lines_icon}
                     alt  ="Project"
-                    style = {{ width: '16px', height: '16px', marginRight: '5px', imageRendering: 'pixelated' }}
+                    width = {16}
+                    height = {16}
+                    style = {{ marginRight: '5px', imageRendering: 'pixelated' }}
                     onError = {(e) => {
                       e.target.style.display = 'none';
                       e.target.insertAdjacentHTML('afterend', '<span style="margin-right: 5px;">📁</span>');
@@ -176,10 +187,12 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
                         gap: '3px'
                       }}
                     >
-                      <img 
-                        src = "./icons/win98/png/media_play-4.png"
+                      <Image 
+                        src = {media_play_icon}
                         alt = "Play Game"
-                        style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }}
+                        width = {12}
+                        height = {12}
+                        style = {{ imageRendering: 'pixelated' }}
                         onError = {(e) => {
                           e.target.style.display = 'none';
                           e.target.insertAdjacentHTML('afterend', '<span>🎮</span>');
@@ -199,10 +212,12 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
                         gap: '3px'
                       }}
                     >
-                      <img 
-                        src = "./icons/win98/png/globe_map-0.png"
+                      <Image 
+                        src = {globe_map_icon}
                         alt = "GameBanana"
-                        style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }}
+                        width = {12}
+                        height = {12}
+                        style = {{ imageRendering: 'pixelated' }}
                         onError = {(e) => {
                           e.target.style.display = 'none';
                           e.target.insertAdjacentHTML('afterend', '<span>🌐</span>');
@@ -222,10 +237,12 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
                         gap: '3px'
                       }}
                     >
-                      <img 
-                        src = "./icons/win98/png/executable-0.png"
+                      <Image 
+                        src = {executable_icon}
                         alt = "Code"
-                        style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }}
+                        width = {12}
+                        height = {12}
+                        style = {{ imageRendering: 'pixelated' }}
                         onError = {(e) => {
                           e.target.style.display = 'none';
                           e.target.insertAdjacentHTML('afterend', '<span>💻</span>');
@@ -245,10 +262,12 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
                         gap: '3px'
                       }}
                     >
-                      <img 
-                        src = "./icons/win98/png/download.png"
+                      <Image 
+                        src = {download_icon}
                         alt = "Download"
-                        style = {{ width: '12px', height: '12px', imageRendering: 'pixelated' }}
+                        width = {12}
+                        height = {12}
+                        style = {{ imageRendering: 'pixelated' }}
                         onError = {(e) => {
                           e.target.style.display = 'none';
                           e.target.insertAdjacentHTML('afterend', '<span>📥</span>');
@@ -270,10 +289,12 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
               fontStyle: 'italic', 
               color: '#666' 
             }}>
-              <img 
-                src = "./icons/win98/png/msg_information-0.png"
+              <Image 
+                src = {msg_information_icon}
                 alt = "Info"
-                style = {{ width: '32px', height: '32px', imageRendering: 'pixelated', marginBottom: '10px' }}
+                width = {32}
+                height = {32}
+                style = {{ imageRendering: 'pixelated', marginBottom: '10px' }}
                 onError = {(e) => {
                   e.target.style.display = 'none';
                   e.target.insertAdjacentHTML('afterend', '<span style="font-size: 32px; margin-bottom: 10px;">ℹ️</span>');

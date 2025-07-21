@@ -1,7 +1,10 @@
 "use client";
 
 import React from 'react';
+import Image from 'next/image';
 import Windows98Window from './Windows98Window';
+
+import users_icon from '@/public/icons/win98/png/users-0.png';
 
 const Win98_resume = ({ onClose, onFocus, isActive, zIndex }) => {
   const About = {
@@ -49,7 +52,7 @@ const Win98_resume = ({ onClose, onFocus, isActive, zIndex }) => {
   return (
     <Windows98Window
       title = "Resume - Maksym Kopychko"
-      icon = "./icons/win98/png/users-0.png"
+      icon = {users_icon}
       onClose = {onClose}
       onFocus = {onFocus}
       isActive = {isActive}
