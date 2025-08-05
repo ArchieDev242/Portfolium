@@ -226,6 +226,33 @@ const ProjectPageClient = ({ params }) => {
                 </div>
               </div>
             ))}
+
+            {/* Video Demo */}
+            {project.videoDemo && (
+              <div className = "space-y-3">
+                <h3 className = "text-lg font-semibold text-accent-default">🎥 Gameplay Demo</h3>
+                <div className = "relative overflow-hidden rounded-xl aspect-video bg-[#232329]">
+                  {project.videoDemo.includes('youtube.com') || project.videoDemo.includes('youtu.be') ? (
+                    <iframe
+                      src = {project.videoDemo.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/').split('&')[0]}
+                      title = {`${project.title} - Gameplay Demo`}
+                      className = "w-full h-full"
+                      frameBorder = "0"
+                      allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <video
+                      src = {project.videoDemo}
+                      controls
+                      className = "w-full h-full object-cover"
+                    >
+                      Your browser does not support the video tag.
+                    </video>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Project Info */}
@@ -474,6 +501,230 @@ const ProjectPageClient = ({ params }) => {
                   HTML5, CSS3, JavaScript ES2015+, DOM manipulation, and Git collaboration skills in a real-world 
                   development scenario.
                 </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Video Demo Section for SDL Game Project */}
+        {project.slug === 'sdl-game-project' && project.videoDemo && (
+          <div className = "mb-12">
+            <h2 className = "text-2xl font-bold mb-6">🎮 Gameplay Demo</h2>
+            <div className = "bg-[#232329] rounded-xl p-6">
+              <div className = "mb-4">
+              </div>
+              
+              {/* YouTube Video Embed */}
+              <div className = "relative aspect-video rounded-xl overflow-hidden bg-black/20">
+                <iframe
+                  src = {(() => {
+                    let video_url = project.videoDemo;
+                    
+                    // converting youtu.be URLs to embed format
+                    if(video_url.includes('youtu.be/')) 
+                      {
+                      const video_id = video_url.split('youtu.be/')[1].split('?')[0];
+
+                      return `https://www.youtube.com/embed/${video_id}`;
+                    }
+                    if(video_url.includes('youtube.com/watch?v=')) 
+                      {
+                      const video_id = video_url.split('v=')[1].split('&')[0];
+
+                      return `https://www.youtube.com/embed/${video_id}`;
+                    }
+                    return video_url;
+                  })()}
+                  title = {`${project.title} - Gameplay Demo`}
+                  frameBorder = "0"
+                  allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className = "w-full h-full"
+                />
+              </div>
+
+            </div>
+          </div>
+        )}
+
+        {/* Detailed Information for SDL Game Project */}
+        {project.slug === 'sdl-game-project' && (
+          <div className = "mb-12">
+            <h2 className = "text-2xl font-bold mb-6">📋 Project Details</h2>
+            <div className = "grid lg:grid-cols-2 gap-8">
+              
+              {/* Gameplay & Instructions */}
+              <div className = "bg-[#232329] rounded-xl p-6 space-y-6">
+                {project.gameplay && (
+                  <div>
+                    <h3 className = "text-xl font-semibold mb-3 text-accent-default">🎮 Gameplay</h3>
+                    {project.gameplay.description && (
+                      <p className = "text-white/80 leading-relaxed mb-4">
+                        {project.gameplay.description}
+                      </p>
+                    )}
+                    
+                    {/* Gameplay Mechanics */}
+                    {project.gameplay.mechanics && (
+                      <div className = "mb-4">
+                        <h4 className = "text-lg font-semibold mb-2 text-accent-default">Game Mechanics</h4>
+                        <ul className = "space-y-1">
+                          {project.gameplay.mechanics.map((mechanic, index) => (
+                            <li key = {index} className = "flex items-start gap-2 text-white/70 text-sm">
+                              <span className = "text-accent-default mt-1">•</span>
+                              {mechanic}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    
+                    {/* Gameplay Objectives */}
+                    {project.gameplay.objectives && (
+                      <div>
+                        <h4 className = "text-lg font-semibold mb-2 text-accent-default">Objectives</h4>
+                        <ul className = "space-y-1">
+                          {project.gameplay.objectives.map((objective, index) => (
+                            <li key = {index} className = "flex items-start gap-2 text-white/70 text-sm">
+                              <span className = "text-accent-default mt-1">•</span>
+                              {objective}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {project.instructions && (
+                  <div className = "space-y-6">
+                    {/* Gameplay Instructions */}
+                    {project.instructions.gameplay && (
+                      <div>
+                        <h3 className = "text-xl font-semibold mb-3 text-accent-default">🎯 How to Play</h3>
+                        <ul className = "space-y-2">
+                          {project.instructions.gameplay.map((instruction, index) => (
+                            <li key = {index} className = "flex items-start gap-2 text-white/80">
+                              <span className = "text-accent-default mt-1">•</span>
+                              {instruction}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* System Requirements */}
+                    {project.instructions.requirements && (
+                      <div>
+                        <h3 className = "text-xl font-semibold mb-3 text-accent-default">� Requirements</h3>
+                        <ul className = "space-y-2">
+                          {project.instructions.requirements.map((requirement, index) => (
+                            <li key = {index} className = "flex items-start gap-2 text-white/80">
+                              <span className = "text-accent-default mt-1">•</span>
+                              {requirement}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Technical Details */}
+              <div className = "space-y-6">
+              </div>
+            </div>
+
+            {/* VSCode Setup */}
+            {project.vscodeSetup && (
+              <div className = "mt-8 bg-[#232329] rounded-xl p-6">
+                <h3 className = "text-xl font-semibold mb-4 text-accent-default">🛠️ VSCode Development Setup</h3>
+                <div className = "bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+                  <h4 className = "text-blue-400 font-semibold mb-3">Development Environment</h4>
+                  <p className = "text-white/80 text-sm leading-relaxed mb-4">
+                    {project.vscodeSetup.description}
+                  </p>
+                  
+                  <div className = "space-y-3">
+                    <div>
+                      <h5 className = "text-white font-medium mb-2">Required Extensions:</h5>
+                      <div className = "flex flex-wrap gap-2">
+                        {project.vscodeSetup.extensions.map((ext, index) => (
+                          <span key = {index} className = "px-2 py-1 bg-blue-500/20 text-blue-300 rounded text-xs">
+                            {ext}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h5 className = "text-white font-medium mb-2">Key Features:</h5>
+                      <ul className = "space-y-1">
+                        {project.vscodeSetup.features.map((feature, index) => (
+                          <li key = {index} className = "text-white/70 text-sm flex items-start gap-2">
+                            <span className = "text-blue-400 mt-1">•</span>
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Team Section for SDL Game */}
+        {project.team && (
+          <div className = "mb-12">
+            <h2 className = "text-2xl font-bold mb-6">{project.team.name} - Development Team</h2>
+            <div className = "bg-[#232329] rounded-xl p-6 space-y-6">
+              
+              {/* Team Description */}
+              <div className = "bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+                <h4 className = "text-blue-400 font-semibold mb-2">About the Team</h4>
+                <p className = "text-white/80 text-sm leading-relaxed">
+                  {project.team.description}
+                </p>
+              </div>
+
+              {/* Team Members */}
+              <div>
+                <h3 className = "text-xl font-semibold mb-4 text-accent-default">Team Members</h3>
+                <div className = "grid md:grid-cols-2 gap-4">
+                  {project.team.members.map((member, index) => (
+                    <div key = {index} className = "bg-[#1a1a1f] rounded-lg p-4 hover:bg-[#1e1e24] transition-colors duration-200">
+                      <div className = "flex items-center gap-3 mb-3">
+                        <div className = "flex-1">
+                          <h4 className = "font-semibold text-white">{member.name}</h4>
+                          {member.username && (
+                            <p className = "text-xs text-white/60 mb-1">@{member.username}</p>
+                          )}
+                          <p className = "text-sm text-accent-default font-medium">{member.role}</p>
+                        </div>
+                        {member.github && (
+                          <a 
+                            href = {member.github}
+                            target = "_blank"
+                            rel = "noopener noreferrer"
+                            className = "text-white/60 hover:text-white transition-colors duration-200 hover:scale-110 transform"
+                            title = {`Visit ${member.name}'s GitHub`}
+                          >
+                            <FaGithub size = {20} />
+                          </a>
+                        )}
+                      </div>
+                      <div className = "bg-[#0d0d0f] rounded-md p-3 mt-3">
+                        <h5 className = "text-xs font-semibold text-accent-default mb-2 uppercase tracking-wide">Contribution</h5>
+                        <p className = "text-sm text-white/80 leading-relaxed">
+                          {member.contribution}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

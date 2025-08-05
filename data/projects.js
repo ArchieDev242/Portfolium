@@ -97,11 +97,238 @@ const projects_data = {
           ]
         },
         {
-          title: "Project 1",
-          description: "A 3D action game developed with Unity",
-          image: "https://via.placeholder.com/400x300/0080FF/FFFFFF?text=Unity+Game",
-          technologies: ["Unity", "C#", "Blender"],
-          slug: "unity-action-game",
+          title: "The Loop Place",
+          description: "A 2D game developed using SDL2 library in pure C. This project demonstrates fundamental game development concepts including real-time rendering, input handling, and game state management using low-level C programming.",
+          fullDescription: "SDL Game Project represents my exploration into native game development using pure C and the SDL2 library. This project showcases fundamental game development concepts including real-time 2D rendering, efficient input handling, and game state management. Built with clean C code, it demonstrates proficiency in low-level programming, memory management, and understanding of graphics programming without high-level abstractions.",
+          image: "https://i.imghippo.com/files/ewsJ6619IoA.png",
+          additionalImages: 
+          [
+            "https://i.imghippo.com/files/hNZx6219IY.png",
+            "https://i.imghippo.com/files/YI8642nFE.png"
+          ],
+          videoDemo: "https://youtu.be/Ynthj9Q90OY?si=OSy8Tkw1dvTM4gYn",
+          technologies: ["C", "SDL2", "Game Development", "Cross-platform", "Make", "Git", "Visual Studio Code"],
+          slug: "sdl-game-project",
+          year: "2024",
+          status: "Completed",
+          category: "2D Action Game",
+          platform: "Windows, Linux, macOS",
+          license: "Open Source",
+          links: 
+          {
+            github: "https://github.com/ArchieDev242/gameSDL",
+            demo: "https://youtu.be/Ynthj9Q90OY?si=OSy8Tkw1dvTM4gYn",
+            download: "https://github.com/ArchieDev242/gameSDL/releases"
+          },
+          team: 
+          {
+            name: "Floppa Team",
+            members: 
+            [
+              {
+                name: "Volodymyr Nevmyrych",
+                username: "TheSaulGoodman",
+                role: "Team Lead & Coder",
+                github: "https://github.com/THESAULGOODMAN",
+                contribution: "Project management, code architecture"
+              },
+              {
+                name: "Danylo Lavunov", 
+                username: "lavanios",
+                role: "Main Coder",
+                github: "https://github.com/lavanios",
+                contribution: "Core development, game logic"
+              },
+              {
+                name: "Maksym Kopychko",
+                username: "Archie242", 
+                role: "Main Designer",
+                github: "https://github.com/Archie242",
+                contribution: "Design, graphics, coding assistance"
+              },
+              {
+                name: "Yaroslav Fedun",
+                username: "Blum",
+                role: "Designer", 
+                github: "https://github.com/Blumex7",
+                contribution: "UI/UX design, visual effects"
+              },
+              {
+                name: "Vladyslav Oryshchuk",
+                username: "buymeprada",
+                role: "Sound Designer", 
+                github: "",
+                contribution: "Audio design, soundtrack"
+              }
+            ],
+            description: "Floppa Team is a passionate collective of Ukrainian game developers who came together during their computer science studies to create engaging 2D games using C and SDL2. The team emphasizes clean code architecture, cross-platform compatibility, and efficient performance optimization."
+          },
+          features: 
+          [
+            "2D action game built with pure C and SDL2",
+            "Dynamic enemy spawning with progressive difficulty",
+            "Real-time rendering with optimized SDL2 graphics",
+            "Smooth player movement and responsive controls",
+            "Particle effects and visual feedback systems",
+            "Sprite and texture management system",
+            "Advanced collision detection algorithms",
+            "Keyboard and mouse input handling",
+            "Game state management with scene transitions",
+            "Audio integration with SDL2_mixer",
+            "Score tracking and health system",
+            "Memory-safe C programming practices",
+            "Cross-platform compatibility (Linux, Windows, macOS)",
+            "Efficient game loop with 60 FPS target",
+            "Modular codebase with clean architecture"
+          ],
+          gameplay: 
+          {
+            description: "Players control a character in a dynamic 2D environment, fighting against waves of enemies that become progressively more challenging. The game features fast-paced combat with visual feedback through particle effects and smooth animations.",
+            mechanics: 
+            [
+              "Character movement in 2D space with WASD/Arrow keys",
+              "Combat system with attack mechanics using Spacebar",
+              "Enemy AI with different behavior patterns and difficulty scaling",
+              "Progressive difficulty system that adapts to player progress",
+              "Health and scoring systems with real-time feedback",
+              "Visual feedback through particle effects and animations",
+              "Collision detection between player, enemies, and environment",
+              "Game state persistence and scene management"
+            ],
+            objectives: 
+            [
+              "Survive waves of increasingly difficult enemies",
+              "Achieve high scores through strategic combat",
+              "Master movement and combat mechanics",
+              "Explore the game environment and discover secrets"
+            ]
+          },
+          instructions: 
+          {
+            gameplay: 
+            [
+              "Use WASD or arrow keys for character movement",
+              "Press Spacebar to attack enemies",
+              "Mouse for targeting and interaction",
+              "ESC key to pause game or access menu",
+              "P key to pause/unpause during gameplay",
+              "Follow on-screen instructions for advanced controls",
+              "Monitor health and score indicators on HUD"
+            ],
+            installation: 
+            [
+              "Install SDL2 development libraries for your platform:",
+              "  - Ubuntu/Debian: sudo apt-get install libsdl2-dev libsdl2-mixer-dev",
+              "  - Fedora: sudo dnf install SDL2-devel SDL2_mixer-devel", 
+              "  - macOS: brew install sdl2 sdl2_mixer",
+              "  - Windows: Download SDL2 development libraries from libsdl.org",
+              "Clone the repository: git clone https://github.com/ArchieDev242/gameSDL.git",
+              "Navigate to project directory: cd gameSDL",
+              "Compile using provided Makefile: make",
+              "Run the executable: ./endgame",
+              "For clean build: make clean && make"
+            ],
+            requirements: 
+            [
+              "SDL2 library (2.0.0 or higher) - Core graphics and input",
+              "SDL2_mixer for audio support (optional but recommended)",
+              "C compiler (GCC 4.8+ or Clang 3.4+)",
+              "Make build system",
+              "Minimum 512 MB RAM",
+              "Graphics card with basic 2D support",
+              "50 MB free disk space"
+            ],
+            vsCodeSetup: 
+            [
+              "Open project in Visual Studio Code",
+              "Install C/C++ extension for IntelliSense",
+              "Use Ctrl+Shift+P > Tasks: Run Task > Build to compile",
+              "Use Ctrl+Shift+P > Tasks: Run Task > Run Game to execute",
+              "Use Ctrl+Shift+P > Tasks: Run Task > Clean for clean build",
+              "Configure debugging with launch.json for development"
+            ]
+          },
+          stats: 
+          {
+            complexity: "Intermediate to Advanced",
+            codeLines: "~2500+ lines of C code",
+            performanceTarget: "60 FPS stable gameplay",
+            lastUpdate: "2024",
+            teamSize: "4 developers (Floppa Team)",
+            developmentTime: "3-4 months collaborative development",
+            testingPhase: "6 weeks comprehensive QA and cross-platform testing",
+            platformsTested: "Windows 10/11, Ubuntu 20.04+, macOS 11+"
+          },
+          tags: ["c", "sdl2", "game-development", "2d-graphics", "cross-platform", "native-development", "action-game", "floppa-team"],
+          difficulty: "Intermediate to Advanced",
+          timeToImplement: "3-4 months team development",
+          supportedSystems: ["Windows 10+", "Linux (Ubuntu 18.04+)", "macOS 10.14+"],
+          projectStructure: 
+          {
+            description: "Well-organized C project with modular design and clean architecture",
+            directories: 
+            [
+              "src/ - Core source code files with game logic",
+              "include/ - Header files with function declarations", 
+              "assets/ - Game assets including sprites and sounds",
+              "build/ - Compiled binaries and intermediate files",
+              "docs/ - Project documentation and development notes",
+              "tests/ - Unit tests and integration tests",
+              "Makefile - Build configuration and compilation rules"
+            ],
+            codeOrganization: 
+            [
+              "main.c - Entry point and main game loop",
+              "game.c - Core game logic and state management",
+              "player.c - Player entity and movement system",
+              "enemy.c - Enemy AI and behavior patterns",
+              "renderer.c - Graphics rendering and SDL2 integration",
+              "input.c - Input handling and event processing",
+              "audio.c - Sound effects and music management",
+              "collision.c - Collision detection algorithms",
+              "particles.c - Particle system for visual effects"
+            ]
+          },
+          technicalDetails: 
+          {
+            gameLoop: "Fixed timestep game loop with delta time",
+            rendering: "Hardware-accelerated SDL2 2D renderer",
+            memoryManagement: "Manual memory management with leak prevention",
+            architecture: "Modular C with clean separation of concerns",
+            buildSystem: "Cross-platform Makefile with dependency tracking",
+            optimization: "Optimized for 60 FPS with efficient algorithms",
+            debugging: "Memory debugging with Valgrind support",
+            versionControl: "Git with feature branch workflow"
+          },
+          gitCommands: 
+          {
+            clone: "git clone https://github.com/ArchieDev242/gameSDL.git",
+            navigate: "cd gameSDL",
+            build: "make",
+            run: "./endgame",
+            clean: "make clean",
+            rebuild: "make clean && make",
+            debug: "make debug",
+            test: "make test"
+          },
+          achievements: 
+          [
+            "Successfully developed complete 2D action game in pure C",
+            "Implemented efficient real-time rendering with SDL2",
+            "Achieved stable 60 FPS performance across platforms", 
+            "Built comprehensive collision detection system",
+            "Created dynamic enemy AI with progressive difficulty",
+            "Implemented particle effects and visual feedback systems",
+            "Achieved cross-platform compatibility (Linux, Windows, macOS)",
+            "Demonstrates advanced low-level programming skills",
+            "Built complete game engine architecture from scratch",
+            "Successful team collaboration with Floppa Team",
+            "Optimized memory usage with manual C management",
+            "Created modular and maintainable C codebase",
+            "Integrated audio system with SDL2_mixer",
+            "Implemented game state management and scene transitions",
+            "Delivered production-ready game with full feature set"
+          ]
         },
       ],
     },
@@ -111,13 +338,6 @@ const projects_data = {
       description: "Software and application development projects",
       projects: 
       [
-        {
-          title: "Project 2",
-          description: "Desktop application for data analysis",
-          image: "https://via.placeholder.com/400x300/FF8000/FFFFFF?text=Data+Analysis+App",
-          technologies: ["Python", "C++", "Qt"],
-          slug: "data-analysis-app",
-        },
         {
           title: "ShortToLongFilename",
           description: "A powerful Windows-only C++ utility that bridges the gap between FAT32's legacy 8.3 filenames and modern long filenames. This Windows-specific tool searches for files with short names and displays their full long names along with complete file paths.",
@@ -442,11 +662,106 @@ const projects_data = {
           ]
         },
         {
-          title: "Project 4",
-          description: "E-commerce platform with modern design",
-          image: "https://via.placeholder.com/400x300/00C851/FFFFFF?text=E-commerce+Platform",
-          technologies: ["React", "Next.js", "Tailwind CSS"],
-          slug: "ecommerce-platform",
+          title: "IT-Start Course Sites",
+          description: "A comprehensive web development portfolio showcasing 10+ websites created during my IT-Start course. Features modern responsive designs, interactive elements, and diverse project types from corporate sites to e-commerce platforms.",
+          fullDescription: "IT-Start Course Sites is a comprehensive portfolio website showcasing my web development journey and all projects created during the IT-Start Evolution course. This collection includes 10+ different websites demonstrating various web development skills and technologies. Each project represents a unique learning experience, from corporate IT sites and educational portals to e-commerce platforms and interactive games. The portfolio features modern design with gradients and animations, responsive layouts for all devices, and interactive project cards with hover effects. Built with vanilla web technologies and optimized for performance, this portfolio demonstrates my progression in HTML5, CSS3, JavaScript, responsive design, and modern web development practices.",
+          image: "https://i.imghippo.com/files/iIy6155b.png",
+          additionalImages: [],
+          technologies: ["HTML5", "CSS3", "JavaScript", "Responsive Design", "CSS Grid", "Flexbox", "GitHub Pages"],
+          slug: "it-start-course-sites",
+          year: "2020-2021",
+          status: "Completed",
+          category: "Portfolio Website",
+          platform: "Web Browser",
+          license: "Open Source",
+          links: 
+          {
+            github: "https://github.com/ArchieDev242/IT-Start_course_sites",
+            playGame: "https://archiedev242.github.io/IT-Start_course_sites/",
+            download: "https://github.com/ArchieDev242/IT-Start_course_sites/archive/refs/heads/main.zip"
+          },
+          features: 
+          [
+            "Portfolio of 10+ diverse web projects",
+            "Modern design with gradients and animations",
+            "Responsive layout for all devices (desktop, tablet, mobile)",
+            "Interactive project cards with hover effects",
+            "Fast loading and optimization",
+            "GitHub Pages deployment",
+            "Corporate IT site with portfolio and services",
+            "Christmas Magic - festive website with animations",
+            "IT Education Hub - educational portal",
+            "Summer Vibes - e-commerce with bright design",
+            "Travel Explorer - booking and destination search",
+            "Fashion Store - course catalog and materials",
+            "Sneaker Kingdom - specialized footwear store",
+            "Cat Paradise - game recommendation system",
+            "JS Playground - interactive JavaScript demos",
+            "Creative Showcase - unique design and animations"
+          ],
+          instructions: 
+          {
+            navigation: 
+            [
+              "Visit the portfolio homepage to see all projects",
+              "Click on individual project cards to explore each site",
+              "Use responsive navigation menu on mobile devices",
+              "Hover over project cards to see interactive effects"
+            ],
+            projects: 
+            [
+              "Corporate IT Site - Professional design with portfolio section",
+              "Christmas Magic - Holiday animations and winter theme",
+              "IT Education Hub - Educational content with modern interface",
+              "Summer Vibes - Bright e-commerce design with mobile version",
+              "Travel Explorer - Tour booking and destination search features",
+              "Fashion Store - Course catalog with educational materials",
+              "Sneaker Kingdom - Modern e-commerce for footwear",
+              "Cat Paradise - Interactive game suggestion system",
+              "JS Playground - JavaScript capabilities demonstration",
+              "Creative Showcase - Unique design with creative solutions"
+            ],
+            setup: 
+            [
+              "Clone the repository from GitHub",
+              "Open index.html in any modern web browser",
+              "No installation required - runs directly in browser",
+              "Access live demo via GitHub Pages link"
+            ]
+          },
+          stats: 
+          {
+            complexity: "Intermediate",
+            fileSize: "Large (~500KB+)",
+            teamSize: "1 developer",
+            developmentTime: "6 months (course duration)",
+            lastUpdate: "2021"
+          },
+          tags: ["html5", "css3", "javascript", "portfolio", "responsive", "web-development", "it-start", "course-projects"],
+          difficulty: "Beginner to Intermediate",
+          timeToImplement: "6 months (course duration)",
+          supportedSystems: ["Web Browser", "Cross-platform"],
+          technicalDetails: 
+          {
+            architecture: "Multi-page portfolio with individual project sites",
+            design: "CSS Grid and Flexbox for responsive layouts",
+            animations: "CSS transitions and keyframe animations",
+            fonts: "Google Fonts (Poppins) for modern typography",
+            icons: "Font Awesome icon library",
+            hosting: "GitHub Pages for free hosting"
+          },
+          projectInfo: "Developed during the IT-Start Evolution web development course, this portfolio represents my journey learning modern web technologies. Each project demonstrates different aspects of web development, from basic HTML/CSS to advanced JavaScript interactions and responsive design principles.",
+          achievements: 
+          [
+            "Successfully completed IT-Start Evolution course",
+            "Built 10+ diverse web projects showcasing different skills",
+            "Mastered responsive design principles",
+            "Implemented modern CSS techniques (Grid, Flexbox)",
+            "Created interactive user interfaces with JavaScript",
+            "Deployed portfolio using GitHub Pages",
+            "Demonstrated progression from basic to advanced concepts",
+            "Built projects covering various domains (corporate, e-commerce, education, entertainment)"
+          ]
         },
       ],
     },

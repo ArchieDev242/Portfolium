@@ -2,6 +2,7 @@
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CiMenuFries } from "react-icons/ci"
 
@@ -30,6 +31,11 @@ const links = [
 
 const MobileNav = () => {
     const pathname = usePathname();
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
 
   return <Sheet>
     <SheetTrigger className = "flex justify-center items-center">
@@ -47,10 +53,10 @@ const MobileNav = () => {
         {/* nav */}
         <nav className = "flex flex-col justify-center items-center gap-8">
             {links.map((link, index) => {
-                // Check if current page matches the link
-                const isActive = link.path === "/" 
+                // Check if current page matches the link - only on client side
+                const isActive = isClient && (link.path === "/" 
                     ? pathname === "/" 
-                    : pathname.startsWith(link.path);
+                    : pathname.startsWith(link.path));
                 
                 return <Link 
                 href = {link.path} 
@@ -63,6 +69,13 @@ const MobileNav = () => {
               </Link>
               
             })}
+            
+            {/* Hire Me button for mobile */}
+            <Link href = "/hire" className = "mt-4">
+                <button className = "px-6 py-3 bg-accent-default text-black font-semibold rounded-full hover:bg-accent-default/80 transition-colors">
+                    Hire Me
+                </button>
+            </Link>
         </nav>
 
         </SheetContent>

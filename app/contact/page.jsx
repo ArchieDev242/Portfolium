@@ -14,50 +14,50 @@ import {
 } from "@/components/PixelArt";
 
 const Contact = () => {
-  const [gameState, setGameState] = useState("idle"); // idle, active, success, error
-  const [formData, setFormData] = useState({
+  const [game_state, set_game_state] = useState("idle"); // idle, active, success, error
+  const [form_data, set_form_data] = useState({
     name: "",
     email: "",
     message: ""
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [miningStage, setMiningStage] = useState(0);
-  const [playerStats, setPlayerStats] = useState({
+  const [is_submitting, set_is_submitting] = useState(false);
+  const [error_message, set_error_message] = useState("");
+  const [mining_stage, set_mining_stage] = useState(0);
+  const [player_stats, set_player_stats] = useState({
     health: 10,
     hunger: 10,
     xp: 0
   });
   
   useEffect(() => {
-    if(gameState === "active") 
+    if(game_state === "active") 
       {
-      const nameProgress = formData.name ? 20 : 0;
-      const emailProgress = formData.email ? 30 : 0;
-      const messageProgress = formData.message ? formData.message.length > 50 ? 50 : 30 : 0;
+      const name_progress = form_data.name ? 20 : 0;
+      const email_progress = form_data.email ? 30 : 0;
+      const message_progress = form_data.message ? form_data.message.length > 50 ? 50 : 30 : 0;
       
-      const totalProgress = Math.min(nameProgress + emailProgress + messageProgress, 100);
+      const total_progress = Math.min(name_progress + email_progress + message_progress, 100);
       
-      setPlayerStats(prev => ({
+      set_player_stats(prev => ({
         ...prev,
-        xp: totalProgress
+        xp: total_progress
       }));
     }
-  }, [formData, gameState]);
+  }, [form_data, game_state]);
 
-  const handleChange = (e) => {
+  const handle_change = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    set_form_data(prev => ({
       ...prev,
       [name]: value
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handle_submit = async (e) => {
     e.preventDefault();
     
-    setMiningStage(1);
-    setIsSubmitting(true);
+    set_mining_stage(1);
+    set_is_submitting(true);
     
     try 
     {
@@ -67,21 +67,21 @@ const Contact = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
+          name: form_data.name,
+          email: form_data.email,
+          message: form_data.message,
         }),
       });
       
       if(response.ok) 
         {
-        setGameState("success");
+        set_game_state("success");
         
         setTimeout(() => {
-          setGameState("idle");
-          setFormData({ name: "", email: "", message: "" });
-          setMiningStage(0);
-          setPlayerStats({
+          set_game_state("idle");
+          set_form_data({ name: "", email: "", message: "" });
+          set_mining_stage(0);
+          set_player_stats({
             health: 10,
             hunger: 10,
             xp: 0
@@ -94,26 +94,27 @@ const Contact = () => {
       }
     } catch(error) 
     {
-      setErrorMessage(error.message || "Щось пішло не так. Спробуйте ще раз.");
-      setGameState("error");
+      set_error_message(error.message || "Щось пішло не так. Спробуйте ще раз.");
+      set_game_state("error");
       
-      setPlayerStats(prev => ({
+      set_player_stats(prev => ({
         ...prev,
         health: Math.max(prev.health - 3, 0)
       }));
       
       setTimeout(() => {
-        setGameState("active");
-        setErrorMessage("");
+        set_game_state("active");
+        set_error_message("");
       }, 3000);
-    } finally {
-      setIsSubmitting(false);
-      setMiningStage(0);
+    } finally 
+    {
+      set_is_submitting(false);
+      set_mining_stage(0);
     }
   };
 
-  const handleStartGame = () => {
-    setGameState("active");
+  const handle_start_game = () => {
+    set_game_state("active");
   };
 
   return (
@@ -135,9 +136,9 @@ const Contact = () => {
         {/* Інтерфейс гравця */}
         <div className = "max-w-4xl mx-auto mb-8">
           <PlayerInterface 
-            health = {playerStats.health} 
-            hunger = {playerStats.hunger} 
-            xp = {playerStats.xp} 
+            health = {player_stats.health} 
+            hunger = {player_stats.hunger} 
+            xp = {player_stats.xp} 
           />
         </div>
         
@@ -145,7 +146,7 @@ const Contact = () => {
         <div className = "max-w-4xl mx-auto">
           <div className = "relative">
             {/* Стан "Почати гру" */}
-            {gameState === "idle" && (
+            {game_state === "idle" && (
               <div className = "bg-gray-900/80 p-8 border-4 border-gray-800 pixelated">
                 <div className = "flex flex-col items-center justify-center space-y-8">
                   <motion.div
@@ -173,14 +174,14 @@ const Contact = () => {
                   
                   <MinecraftButton 
                     text = "ПОЧАТИ ГРУ" 
-                    onClick = {handleStartGame} 
+                    onClick = {handle_start_game} 
                   />
                 </div>
               </div>
             )}
             
             {/* Форма контактів */}
-            {gameState === "active" && (
+            {game_state === "active" && (
               <motion.div 
                 initial = {{ opacity: 0, scale: 0 }}
                 animate = {{ opacity: 1, scale: 1 }}
@@ -212,17 +213,17 @@ const Contact = () => {
                       </div>
                       
                       <div className = "flex justify-center space-x-4 mb-6">
-                        <MinecraftItem type = "pickaxe" animate = {isSubmitting} />
+                        <MinecraftItem type = "pickaxe" animate = {is_submitting} />
                         <MinecraftItem type = "sword" />
                         <MinecraftItem type = "axe" />
                       </div>
                       
-                      {miningStage > 0 && (
+                      {mining_stage > 0 && (
                         <div className = "mt-8 flex justify-center">
                           <BreakingBlock 
                             type = "diamond" 
-                            stage = {miningStage} 
-                            onComplete = {() => setMiningStage(0)} 
+                            stage = {mining_stage} 
+                            onComplete = {() => set_mining_stage(0)} 
                           />
                         </div>
                       )}
@@ -234,7 +235,7 @@ const Contact = () => {
                         <h3 className = "text-xl text-yellow-300 minecraft-font">КРАФТІНГ ПОВІДОМЛЕННЯ</h3>
                       </div>
                       
-                      <form onSubmit = {handleSubmit} className = "space-y-5">
+                      <form onSubmit = {handle_submit} className = "space-y-5">
                         <div>
                           <label className = "block text-yellow-300 mb-2 minecraft-font">
                             ІМ'Я ГРАВЦЯ:
@@ -242,8 +243,8 @@ const Contact = () => {
                           <MinecraftInput 
                             type = "text" 
                             name = "name" 
-                            value = {formData.name} 
-                            onChange = {handleChange}
+                            value = {form_data.name} 
+                            onChange = {handle_change}
                             required
                             placeholder = "Введіть ваше ім'я"
                           />
@@ -256,8 +257,8 @@ const Contact = () => {
                           <MinecraftInput 
                             type = "email" 
                             name = "email" 
-                            value = {formData.email} 
-                            onChange = {handleChange}
+                            value = {form_data.email} 
+                            onChange = {handle_change}
                             required
                             placeholder = "Введіть вашу електронну пошту"
                           />
@@ -270,8 +271,8 @@ const Contact = () => {
                           <MinecraftInput 
                             type = "textarea" 
                             name = "message" 
-                            value = {formData.message} 
-                            onChange = {handleChange}
+                            value = {form_data.message} 
+                            onChange = {handle_change}
                             required
                             rows = "4"
                             placeholder = "Опишіть ваше повідомлення"
@@ -280,9 +281,9 @@ const Contact = () => {
                         
                         <div className = "text-center pt-5">
                           <MinecraftButton 
-                            text = {isSubmitting ? "ВІДПРАВКА..." : "ВІДПРАВИТИ ПОВІДОМЛЕННЯ"} 
+                            text = {is_submitting ? "ВІДПРАВКА..." : "ВІДПРАВИТИ ПОВІДОМЛЕННЯ"} 
                             type = "submit"
-                            disabled = {isSubmitting}
+                            disabled = {is_submitting}
                           />
                         </div>
                       </form>
@@ -293,7 +294,7 @@ const Contact = () => {
             )}
             
             {/* Успішне відправлення */}
-            {gameState === "success" && (
+            {game_state === "success" && (
               <motion.div 
                 initial = {{ opacity: 0 }}
                 animate = {{ opacity: 1 }}
@@ -335,7 +336,7 @@ const Contact = () => {
             )}
             
             {/* Помилка відправлення */}
-            {gameState === "error" && (
+            {game_state === "error" && (
               <motion.div 
                 initial = {{ opacity: 0 }}
                 animate = {{ opacity: 1 }}
@@ -352,7 +353,7 @@ const Contact = () => {
                   >
                     GAME OVER!
                   </motion.h3>
-                  <p className = "text-white text-center mb-8 minecraft-font">{errorMessage}</p>
+                  <p className = "text-white text-center mb-8 minecraft-font">{error_message}</p>
                   
                   <div className = "grid grid-cols-3 gap-4 mb-8">
                     <MinecraftBlock type = "lava" className = "h-16 w-16" />

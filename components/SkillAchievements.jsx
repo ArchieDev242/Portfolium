@@ -57,98 +57,104 @@ const Achievement = ({ title, description, icon, unlocked, progress = 100 }) => 
 };
 
 const SkillAchievements = () => {
-  // Achievement data
   const achievements = [
     {
       id: 1,
-      title: "HTML Master",
-      description: "Created 10+ projects using semantic HTML markup",
-      icon: "html",
+      title: "Unity Explorer",
+      description: "First steps in Unity - created basic 3D scenes and learned C# scripting",
+      icon: "unity",
       unlocked: true,
       progress: 100
     },
     {
       id: 2,
-      title: "CSS Wizard",
-      description: "Implemented complex animations and responsive interfaces",
-      icon: "css",
+      title: "Game Mechanic Creator",
+      description: "Implemented core gameplay mechanics like player movement and collision detection",
+      icon: "csharp",
       unlocked: true,
       progress: 100
     },
     {
       id: 3,
-      title: "JavaScript Guru",
-      description: "Developed interactive web applications using modern JS",
-      icon: "js",
+      title: "3D World Builder",
+      description: "Designed and created immersive 3D environments with proper lighting",
+      icon: "3d",
       unlocked: true,
       progress: 100
     },
     {
       id: 4,
-      title: "React Architect",
-      description: "Created complex component systems using React",
-      icon: "react",
+      title: "Animation Master",
+      description: "Created smooth character animations and interactive UI elements",
+      icon: "animation",
       unlocked: true,
       progress: 100
     },
     {
       id: 5,
-      title: "Next.js Engineer",
-      description: "Developed optimized SSR applications with Next.js",
-      icon: "nextjs",
+      title: "Physics Wizard",
+      description: "Mastered Unity's physics system - rigidbodies, colliders, and forces",
+      icon: "physics",
       unlocked: true,
       progress: 100
     },
     {
       id: 6,
-      title: "Node.js Expert",
-      description: "Created server applications and APIs using Node.js",
-      icon: "nodejs",
+      title: "Scripting Architect",
+      description: "Developed complex game systems using C# and Unity's component system",
+      icon: "code",
       unlocked: true,
       progress: 100
     },
     {
       id: 7,
-      title: "MongoDB Explorer",
-      description: "Developed complex data schemas and queries for MongoDB",
-      icon: "mongodb",
-      unlocked: false,
-      progress: 70
+      title: "Unreal Engine Explorer",
+      description: "Started learning Unreal Engine - blueprints, materials, and visual scripting",
+      icon: "unreal",
+      unlocked: true,
+      progress: 100
     },
     {
       id: 8,
-      title: "Tailwind Artist",
-      description: "Created unique design systems using Tailwind CSS",
-      icon: "tailwind",
-      unlocked: true,
-      progress: 100
+      title: "Level Design Pro",
+      description: "Created engaging and balanced game levels with proper flow",
+      icon: "level",
+      unlocked: false,
+      progress: 75
     },
     {
       id: 9,
-      title: "Figma Designer",
-      description: "Developed prototypes and design systems in Figma",
-      icon: "figma",
-      unlocked: true,
-      progress: 100
+      title: "Audio Engineer",
+      description: "Implemented sound effects, music, and spatial audio in games",
+      icon: "audio",
+      unlocked: false,
+      progress: 60
     },
     {
       id: 10,
-      title: "Fullstack Legend",
-      description: "Independently developed a complete web application from start to finish",
-      icon: "server",
+      title: "Multiplayer Developer",
+      description: "Created networked multiplayer games with real-time synchronization",
+      icon: "network",
       unlocked: false,
-      progress: 85
+      progress: 30
+    },
+    {
+      id: 11,
+      title: "Game Publisher",
+      description: "Successfully published a complete game from concept to market",
+      icon: "trophy",
+      unlocked: false,
+      progress: 45
     }
   ];
   
-  // Split achievements into unlocked and locked
   const unlocked_achievements = achievements.filter(a => a.unlocked);
   const locked_achievements = achievements.filter(a => !a.unlocked);
 
   return (
     <div className = "w-full">
       <div className = "mb-6">
-        <h3 className = "pixel-text text-xl text-cyan-400 mb-4">Unlocked Achievements</h3>
+        <h3 className = "pixel-text text-xl text-cyan-400 mb-4">Unlocked Game Dev Achievements</h3>
         <div className = "grid grid-cols-1 md:grid-cols-2 gap-4">
           {unlocked_achievements.map(achievement => (
             <Achievement 
@@ -164,9 +170,9 @@ const SkillAchievements = () => {
       </div>
       
       <div>
-        <h3 className = "pixel-text text-xl text-gray-500 mb-4">Locked Achievements</h3>
+        <h3 className = "pixel-text text-xl text-gray-500 mb-4">In Progress / Future Goals</h3>
         <div className = "grid grid-cols-1 md:grid-cols-2 gap-4">
-          {lockedAchievements.map(achievement => (
+          {locked_achievements.map(achievement => (
             <Achievement 
               key = {achievement.id}
               title = {achievement.title}

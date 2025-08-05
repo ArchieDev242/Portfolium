@@ -27,7 +27,7 @@ const StairTransition = () => {
           transition = {{
             duration: 0.5,
             ease: "easeInOut",
-            delay: 0.3 // Delay to match stairs animation
+            delay: 0.3
           }}
         />
       </motion.div>

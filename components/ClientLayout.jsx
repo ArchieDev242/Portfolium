@@ -6,13 +6,17 @@ import Background from "@/components/Background";
 import ThemeSettings from "@/components/ThemeSettings";
 import { AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const ClientLayout = ({ children }) => {
   const pathname = usePathname();
+  const [isClient, setIsClient] = useState(false);
 
-  const is_Win98_mode = pathname === '/win98' || pathname.startsWith('/win98/');
-  
-  console.log('Current pathname:', pathname, 'isWin98Mode:', is_Win98_mode);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const is_Win98_mode = isClient && (pathname === '/win98' || pathname.startsWith('/win98/'));
 
   if(is_Win98_mode) 
     {

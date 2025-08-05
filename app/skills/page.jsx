@@ -9,16 +9,16 @@ import SkillMinigame from '@/components/SkillMinigame';
 import SkillTreeBackground from '@/components/SkillTreeBackground';
 
 const Skills = () => {
-  const [minigameScore, setMinigameScore] = useState(0);
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [minigame_score, set_minigame_score] = useState(0);
+  const [show_confetti, set_show_confetti] = useState(false);
   
   const handleMinigameComplete = (score) => {
-    setMinigameScore(score);
+    set_minigame_score(score);
     
     if(score > 20) 
       {
-      setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 3000);
+      set_show_confetti(true);
+      setTimeout(() => set_show_confetti(false), 3000);
     }
   };
   
@@ -94,18 +94,18 @@ const Skills = () => {
               <SkillMinigame onComplete = { handleMinigameComplete } />
               
               {/* Show result after game */}
-              {minigameScore > 0 && (
+              {minigame_score > 0 && (
                 <div className = "mt-6 text-center">
                   <h3 className = "pixel-text text-lg text-cyan-400 mb-2">
-                    {minigameScore > 20 
+                    {minigame_score > 20 
                       ? "IMPRESSIVE!" 
-                      : minigameScore > 10 
+                      : minigame_score > 10 
                         ? "WELL DONE!" 
                         : "NOT BAD!"}
                   </h3>
                   <p className = "pixel-text text-sm text-gray-300">
-                    You scored {minigameScore} points! 
-                    {minigameScore > 20 && " You're a true skill hunter!"}
+                    You scored {minigame_score} points! 
+                    {minigame_score > 20 && " You're a true skill hunter!"}
                   </p>
                 </div>
               )}
@@ -115,7 +115,7 @@ const Skills = () => {
       </div>
       
       {/* Confetti for high score celebration */}
-      {showConfetti && (
+      {show_confetti && (
         <div className = "fixed inset-0 pointer-events-none z-50">
 
           <div className = "absolute inset-0 flex items-center justify-center">

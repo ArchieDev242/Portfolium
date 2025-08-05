@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const colors = {
   green: "#00ff99",
@@ -21,11 +21,27 @@ const shadow_colors = {
 };
 
 export function ThemeProvider({ children }) {
+  const [is_mounted, set_is_mounted] = useState(false);
+
   useEffect(() => {
-    const saved_color = localStorage.getItem("theme-color") || "green";
-    document.documentElement.style.setProperty("--accent-default", colors[saved_color]);
-    document.documentElement.style.setProperty("--accent-shadow", shadow_colors[saved_color]);
+    set_is_mounted(true);
+    
+    // Set default theme first
+    document.documentElement.style.setProperty("--accent-default", colors.green);
+    document.documentElement.style.setProperty("--accent-shadow", shadow_colors.green);
+    
+    // Then check for saved theme
+    const saved_color = localStorage.getItem("theme-color");
+    if (saved_color && colors[saved_color]) {
+      document.documentElement.style.setProperty("--accent-default", colors[saved_color]);
+      document.documentElement.style.setProperty("--accent-shadow", shadow_colors[saved_color]);
+    }
   }, []);
+
+  // Prevent hydration mismatch by not rendering children until mounted
+  if (!is_mounted) {
+    return children;
+  }
 
   return children;
 } 

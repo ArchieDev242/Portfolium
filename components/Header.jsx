@@ -49,7 +49,7 @@ const Header = () => {
             {/* nav + btn hire */}
             <div className = "hidden xl:flex items-center gap-8">
                 <Nav />
-                <Link href = "/contacts">
+                <Link href = "/hire">
                     <Button className = "relative overflow-hidden group bg-transparent transition-colors duration-500 hover:bg-accent-default hover:text-black rounded-full px-6 py-3 border-none flash-animation">Hire Me</Button>
                 </Link>
             </div>
