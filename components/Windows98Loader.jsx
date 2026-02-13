@@ -1,17 +1,8 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-
-import windows_icon from '@/public/icons/win98/png/windows-0.png';
-import computer_icon from '@/public/icons/win98/png/computer-0.png';
-import cd_audio_icon from '@/public/icons/win98/png/cd_audio_cd_a-0.png';
-import users_icon from '@/public/icons/win98/png/users-0.png';
-import monitor_icon from '@/public/icons/win98/png/monitor_blue_grad-0.png';
-import memory_icon from '@/public/icons/win98/png/memory-0.png';
-import network_icon from '@/public/icons/win98/png/network-0.png';
-import battery_icon from '@/public/icons/win98/png/battery.png';
-import hourglass_icon from '@/public/icons/win98/png/application_hourglass-0.png';
+import { getWin98Icon, WIN98_ICONS } from '@/lib/win98-icons';
 
 const Windows98Loader = ({ onComplete }) => {
   const [progress, set_progress] = useState(0);
@@ -58,18 +49,19 @@ const Windows98Loader = ({ onComplete }) => {
   const [fractal_zoom, set_fractal_zoom] = useState(false);
   const [aurora_borealis, set_aurora_borealis] = useState(false);
 
+  const on_complete_ref = useRef(onComplete);
+  on_complete_ref.current = onComplete;
+
+  const [img_fallback, set_img_fallback] = useState({ windows: false, computer: false, cd: false, users: false, monitor: false, memory: false, network: false, battery: false, hourglass: false });
+
   useEffect(() => {
     set_is_client(true);
-    
-    const link98 = document.createElement('link');
-    link98.rel = 'stylesheet';
-    link98.href = 'https://unpkg.com/98.css';
-    link98.id = 'win98-loader-css';
-    document.head.appendChild(link98);
+    document.body.classList.add('win98-mode');
 
+    const base = (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_BASE_PATH) || '';
     const custom_link = document.createElement('link');
     custom_link.rel = 'stylesheet';
-    custom_link.href = '/win98/win98.css';
+    custom_link.href = `${base}/win98/win98.css`;
     custom_link.id = 'win98-loader-custom-css';
     document.head.appendChild(custom_link);
 
@@ -322,31 +314,19 @@ const Windows98Loader = ({ onComplete }) => {
       
       return () => {
         window.removeEventListener('resize', handle_resize);
-        const existing_link = document.getElementById('win98-loader-css');
-        
-        if(existing_link) 
-            {
-          document.head.removeChild(existing_link);
-        }
         const existing_custom_link = document.getElementById('win98-loader-custom-css');
-        
-        if(existing_custom_link) 
-            {
+
+        if(existing_custom_link)
+          {
           document.head.removeChild(existing_custom_link);
         }
       };
     }
 
     return () => {
-      const existing_link = document.getElementById('win98-loader-css');
-      
-      if(existing_link) 
-        {
-        document.head.removeChild(existing_link);
-      }
       const existing_custom_link = document.getElementById('win98-loader-custom-css');
-      
-      if(existing_custom_link) 
+
+      if(existing_custom_link)
         {
         document.head.removeChild(existing_custom_link);
       }
@@ -414,14 +394,14 @@ const Windows98Loader = ({ onComplete }) => {
       } else 
       {
         clearInterval(timer);
-        setTimeout(() => { 
-            onComplete(); 
+        setTimeout(() => {
+          on_complete_ref.current?.();
         }, 1500);
       }
     }, 800);
 
     return () => clearInterval(timer);
-  }, [onComplete]);
+  }, []);
 
   useEffect(() => {
     const dots_timer = setInterval(() => {
@@ -884,16 +864,17 @@ const Windows98Loader = ({ onComplete }) => {
         </div>
       )}
 
-      {/* Windows 98 Boot Logo */}
+      {/* Windows 98 Boot Logo — inline fallback for prod */}
       <div className = "win98-loader-boot-screen win98-loader-startup" 
       style = {{
-        padding: '40px',
-        marginBottom: '30px',
+        padding: '32px 40px',
+        marginBottom: '24px',
         textAlign: 'center',
-        background: 'rgba(192, 192, 192, 0.95)',
-        borderRadius: '10px',
-        backdropFilter: 'blur(10px)',
-        boxShadow: '0 0 30px rgba(0, 0, 255, 0.3)'
+        background: '#c0c0c0',
+        border: '2px outset #dfdfdf',
+        borderRadius: '0',
+        boxShadow: 'inset 1px 1px 0 #fff, 2px 2px 6px rgba(0,0,0,0.25)',
+        fontFamily: 'MS Sans Serif, Tahoma, sans-serif'
       }}>
         <div className = "win98-loader-title neon-text" 
         style = {{
@@ -930,22 +911,23 @@ const Windows98Loader = ({ onComplete }) => {
           position: 'relative',
           overflow: 'hidden'
         }}>
-          <Image 
-            src = {windows_icon}
-            alt = "Windows 98"
-            width = {48}
-            height = {48}
-            style = {{
-              imageRendering: 'pixelated',
-              filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.5))',
-              zIndex: 2
-            }}
-            onError = {(e) => {
-              e.target.style.display = 'none';
-              e.target.nextSibling.style.display = 'block';
-            }}
-          />
-          <div style = {{ display: 'none', fontSize: '32px', zIndex: 2 }}>🪟</div>
+          {!img_fallback.windows ? (
+            <Image 
+              src = {getWin98Icon(WIN98_ICONS.windows)}
+              alt = "Windows 98"
+              width = {48}
+              height = {48}
+              style = {{
+                imageRendering: 'pixelated',
+                filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.5))',
+                zIndex: 2
+              }}
+              unoptimized
+              onError = {() => set_img_fallback(f => ({ ...f, windows: true }))}
+            />
+          ) : (
+            <span style = {{ fontSize: '32px', zIndex: 2 }}>🪟</span>
+          )}
           
           {/* Sound Waves Animation */}
           <div className = "sound-waves">
@@ -964,16 +946,18 @@ const Windows98Loader = ({ onComplete }) => {
         </div>
       </div>
 
-      {/* Loading Progress */}
+      {/* Loading Progress — inline styles so it works even if win98.css fails to load */}
       <div className = "loading-panel" 
       style = {{
-        width: '400px',
-        background: 'rgba(192, 192, 192, 0.9)',
-        border: '2px inset #c0c0c0',
+        width: 'min(400px, 92vw)',
+        maxWidth: '400px',
+        background: '#c0c0c0',
+        border: '2px inset #808080',
         padding: '20px',
         textAlign: 'center',
-        borderRadius: '5px',
-        backdropFilter: 'blur(5px)'
+        borderRadius: '0',
+        boxShadow: 'inset 1px 1px 0 #fff, 2px 2px 4px rgba(0,0,0,0.3)',
+        fontFamily: 'MS Sans Serif, Tahoma, sans-serif'
       }}>
         <div className = "win98-loader-dots typewriter" 
         style = {{
@@ -984,10 +968,24 @@ const Windows98Loader = ({ onComplete }) => {
           {loading_text}
         </div>
 
-        {/* Progress Bar */}
-        <div className = "win98-loader-progress-bar rainbow-border">
+        {/* Progress Bar — inline so it always shows */}
+        <div className = "win98-loader-progress-bar rainbow-border" 
+        style = {{
+          width: '100%',
+          height: '22px',
+          border: '2px inset #808080',
+          background: '#c0c0c0',
+          marginBottom: '10px',
+          overflow: 'hidden'
+        }}>
           <div className = {`win98-loader-progress-fill ${progress === 100 ? 'complete' : ''}`} 
-          style = {{ width: `${progress}%` }}>
+          style = {{ 
+            width: `${progress}%`,
+            height: '100%',
+            minWidth: progress > 0 ? '4px' : 0,
+            background: progress === 100 ? '#008000' : 'linear-gradient(90deg, #000080, #1084d0)',
+            transition: 'width 0.2s ease'
+          }}>
             <div className = "win98-loader-progress-pattern" />
           </div>
         </div>
@@ -1043,66 +1041,31 @@ const Windows98Loader = ({ onComplete }) => {
         backdropFilter: 'blur(5px)'
       }}>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <Image src = {computer_icon}
-               alt = "Computer"
-               width = {12}
-               height = {12}
-               style = {{ imageRendering: 'pixelated' }} 
-               onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>💻</span>'); }} />
+          {!img_fallback.computer ? <Image src = {getWin98Icon(WIN98_ICONS.computer)} alt = "Computer" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_img_fallback(f => ({ ...f, computer: true }))} /> : <span>💻</span>}
           System: Windows 98 Portfolio Edition
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <Image src = {cd_audio_icon}
-               alt = "CD Audio"
-               width = {12}
-               height = {12}
-               style = {{ imageRendering: 'pixelated' }} 
-               onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>💿</span>'); }} />
+          {!img_fallback.cd ? <Image src = {getWin98Icon(WIN98_ICONS.cd_audio)} alt = "CD Audio" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_img_fallback(f => ({ ...f, cd: true }))} /> : <span>💿</span>}
           Version: 4.10.1998 Build 1998
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <Image src = {users_icon}
-               alt = "User"
-               width = {12}
-               height = {12}
-               style = {{ imageRendering: 'pixelated' }} 
-               onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>👤</span>'); }} />
+          {!img_fallback.users ? <Image src = {getWin98Icon(WIN98_ICONS.users)} alt = "User" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_img_fallback(f => ({ ...f, users: true }))} /> : <span>👤</span>}
           Owner: Maksym Kopychko
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <Image src = {monitor_icon}
-               alt = "Monitor"
-               width = {12}
-               height = {12}
-               style = {{ imageRendering: 'pixelated' }} 
-               onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>🖥️</span>'); }} />
+          {!img_fallback.monitor ? <Image src = {getWin98Icon(WIN98_ICONS.monitor)} alt = "Monitor" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_img_fallback(f => ({ ...f, monitor: true }))} /> : <span>🖥️</span>}
           Resolution: {window_size.width}x{window_size.height}
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <Image src = {memory_icon}
-               alt = "Memory"
-               width = {12}
-               height = {12}
-               style = {{ imageRendering: 'pixelated' }} 
-               onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>💾</span>'); }} />
+          {!img_fallback.memory ? <Image src = {getWin98Icon(WIN98_ICONS.memory)} alt = "Memory" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_img_fallback(f => ({ ...f, memory: true }))} /> : <span>💾</span>}
           Memory: 128 MB RAM
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <Image src = {network_icon}
-               alt = "Network"
-               width = {12}
-               height = {12}
-               style = {{ imageRendering: 'pixelated' }} 
-               onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>🌐</span>'); }} />
+          {!img_fallback.network ? <Image src = {getWin98Icon(WIN98_ICONS.network)} alt = "Network" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_img_fallback(f => ({ ...f, network: true }))} /> : <span>🌐</span>}
           Network: Connected
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <Image src = {battery_icon}
-               alt = "Battery"
-               width = {12}
-               height = {12}
-               style = {{ imageRendering: 'pixelated' }} 
-               onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>⚡</span>'); }} />
+          {!img_fallback.battery ? <Image src = {getWin98Icon(WIN98_ICONS.battery)} alt = "Battery" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_img_fallback(f => ({ ...f, battery: true }))} /> : <span>⚡</span>}
           Status: Optimized
         </div>
       </div>
@@ -1123,14 +1086,19 @@ const Windows98Loader = ({ onComplete }) => {
         alignItems: 'center',
         gap: '5px'
       }}>
-        <Image 
-          src = {hourglass_icon}
-          alt = "Loading"
-          width = {12}
-          height = {12}
-          style = {{ imageRendering: 'pixelated' }}
-          onError = {(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<span>⏳</span>'); }} 
-        />
+        {!img_fallback.hourglass ? (
+          <Image 
+            src = {getWin98Icon(WIN98_ICONS.hourglass)}
+            alt = "Loading"
+            width = {12}
+            height = {12}
+            style = {{ imageRendering: 'pixelated' }}
+            unoptimized
+            onError = {() => set_img_fallback(f => ({ ...f, hourglass: true }))}
+          />
+        ) : (
+          <span>⏳</span>
+        )}
         Loading{dots}
       </div>
 

@@ -4,11 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Windows98Window from './Windows98Window';
 
-import envelope_closed_icon from '@/public/icons/win98/png/envelope_closed-0.png';
-import envelope_open_icon from '@/public/icons/win98/png/envelope_open_sheet-0.png';
-import refresh_icon from '@/public/icons/win98/png/overlay_refresh-0.png';
-import phone_icon from '@/public/icons/win98/png/world_phonereceiver.png';
-import globe_map_icon from '@/public/icons/win98/png/globe_map-0.png';
+import { getWin98Icon, WIN98_ICONS } from '@/lib/win98-icons';
 
 const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
   const [form_data, set_form_data] = useState({
@@ -70,7 +66,7 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
   return (
     <Windows98Window
       title = "Contact Form"
-      icon = {envelope_closed_icon}
+      icon = {WIN98_ICONS.envelope}
       onClose = {onClose}
       onFocus = {onFocus}
       isActive = {isActive}
@@ -157,7 +153,7 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
                   }}
                 >
                   <Image 
-                    src = {envelope_open_icon}
+                    src = {getWin98Icon(WIN98_ICONS.envelope_open)}
                     alt = "Send"
                     width = {16}
                     height = {16}
@@ -182,7 +178,7 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
                   }}
                 >
                   <Image 
-                    src = {refresh_icon}
+                    src = {getWin98Icon(WIN98_ICONS.refresh)}
                     alt = "Clear"
                     width = {16}
                     height = {16}
@@ -205,7 +201,7 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
           <div style = {{ padding: '10px' }}>
             <div style = {{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
               <Image 
-                src = {envelope_closed_icon}
+                src = {getWin98Icon(WIN98_ICONS.envelope)}
                 alt = "Email"
                 width = {16}
                 height = {16}
@@ -219,7 +215,7 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
             </div>
             <div style = {{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
               <Image 
-                src = {phone_icon}
+                src = {getWin98Icon(WIN98_ICONS.phone)}
                 alt = "Phone"
                 width = {16}
                 height = {16}
@@ -233,7 +229,7 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
             </div>
             <div style = {{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
               <Image 
-                src = {globe_map_icon}
+                src = {getWin98Icon(WIN98_ICONS.globe)}
                 alt = "Location"
                 width = {16}
                 height = {16}

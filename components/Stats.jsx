@@ -5,7 +5,7 @@ import CountUp from "react-countup";
 import useGitHubStats from "../hooks/useGitHubStats";
 
 const Stats = () => {
-  const { total_commits: totalCommits, total_repos: totalRepos, is_loading: isLoading, error } = useGitHubStats('Archie242');
+  const { total_commits: totalCommits, total_repos: totalRepos, is_loading: isLoading, error } = useGitHubStats('ArchieDev242');
 
   const stats = [
     {

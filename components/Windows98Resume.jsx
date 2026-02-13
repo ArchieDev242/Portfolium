@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Windows98Window from './Windows98Window';
 
-import users_icon from '@/public/icons/win98/png/users-0.png';
+import { WIN98_ICONS } from '@/lib/win98-icons';
 
 const Win98_resume = ({ onClose, onFocus, isActive, zIndex }) => {
   const About = {
@@ -12,7 +12,7 @@ const Win98_resume = ({ onClose, onFocus, isActive, zIndex }) => {
     info: 
     [
       { fieldName: "Name", fieldValue: "Maksym Kopychko" },
-      { fieldName: "Age", fieldValue: "18" },
+      { fieldName: "Age", fieldValue: "19" },
       { fieldName: "Phone", fieldValue: "+380669702817" },
       { fieldName: "Education", fieldValue: "National Technical University «Kharkiv Polytechnic Institute», Computer Engineering" },
       { fieldName: "Email", fieldValue: "maksym.kopychko@gmail.com" },
@@ -52,7 +52,7 @@ const Win98_resume = ({ onClose, onFocus, isActive, zIndex }) => {
   return (
     <Windows98Window
       title = "Resume - Maksym Kopychko"
-      icon = {users_icon}
+      icon = {WIN98_ICONS.users}
       onClose = {onClose}
       onFocus = {onFocus}
       isActive = {isActive}

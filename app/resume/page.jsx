@@ -1,150 +1,77 @@
 "use client";
 
-import React from 'react';
-
-import 
-{
-  FaHtml5,
-  FaCss3,
-  FaJs,
-  FaReact,
-  FaFigma,
-  FaNodeJs,
-  FaUnity,
-  FaPython,
-  FaGit,
-  FaCode,
+import React, { useState } from 'react';
+import {
+  FaHtml5, FaCss3, FaJs, FaReact, FaFigma, FaNodeJs, FaUnity, FaPython, FaGit, FaCode,
 } from "react-icons/fa";
-
-import 
-{
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-
-import 
-{
-  SiTailwindcss,
-  SiNextdotjs,
-  SiUnrealengine,
-  SiCplusplus,
-  SiLua,
-  SiBlender,
-  SiAdobephotoshop,
-  SiC,
-  SiCinema4D,
+import {
+  SiTailwindcss, SiNextdotjs, SiUnrealengine, SiCplusplus, SiLua, SiBlender,
+  SiAdobephotoshop, SiC, SiCinema4D,
 } from "react-icons/si";
-
 import { DiCsharp } from "react-icons/di";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const About = {
-  title: "About Me",
-  info: 
-  [
-    { fieldName: "Name", fieldValue: "Maksym Kopychko" },
-    { fieldName: "Age", fieldValue: "18" },
-    { fieldName: "Phone", fieldValue: "+380669702817" },
-    { fieldName: "Education", fieldValue: "National Technical University «Kharkiv Polytechnic Institute», Computer Engineering" },
-    { fieldName: "Email", fieldValue: "maksym.kopychko@gmail.com" },
-    { fieldName: "Location", fieldValue: "Okhtyrka, Sumy Region, Ukraine" },
-    { fieldName: "Nationality", fieldValue: "Ukrainian" },
-    { fieldName: "GameDev Experience", fieldValue: "1 Year" },
-    { fieldName: "Languages", fieldValue: "Ukrainian, English, German, Russian" },
+  info: [
+    { fieldName: "Name", fieldNameHR: "Name", fieldValue: "Maksym Kopychko", icon: "👤" },
+    { fieldName: "Level", fieldNameHR: "Age", fieldValue: "19", icon: "⭐" },
+    { fieldName: "HP", fieldNameHR: "Phone", fieldValue: "+380669702817", icon: "📞" },
+    { fieldName: "Class", fieldNameHR: "Education", fieldValue: "Computer Engineering", icon: "🎓" },
+    { fieldName: "Guild", fieldNameHR: "University", fieldValue: "National Technical University «Kharkiv Polytechnic Institute»", icon: "🏛️" },
+    { fieldName: "Email", fieldNameHR: "Email", fieldValue: "MaxymKopychko@gmail.com", icon: "✉️" },
+    { fieldName: "Spawn Point", fieldNameHR: "Location", fieldValue: "Okhtyrka, Sumy Region, Ukraine", icon: "📍" },
+    { fieldName: "Nationality", fieldNameHR: "Nationality", fieldValue: "Ukrainian", icon: "🇺🇦" },
+    { fieldName: "GameDev XP", fieldNameHR: "Game Dev Experience", fieldValue: "1 Year", icon: "🎮" },
+    { fieldName: "Languages", fieldNameHR: "Languages", fieldValue: "Ukrainian, English, German, Russian", icon: "🗣️" },
   ],
 };
 
 const Experience = {
-  title: "My Experience",
-  description: "Professional journey and accomplishments",
-  items: 
-  [
-    // no experience yet
-  ],
-};
-
-const Education = {
-  title: "My Education",
-  description: "Academic background and qualifications",
-  items: 
-  [
-    {
-      title: "Bachelor's Degree in Computer Engineering",
-      institution: "National Technical University «Kharkiv Polytechnic Institute»",
-      location: "Kharkiv, Ukraine",
-      duration: "2023 - 2027",
-    },
-    {
-      title: "IT Courses",
-      institution: "IT Start School",
-      location: "Okhtyrka, Ukraine",
-      duration: "2021 - 2022",
-    },
-  ],
-};
-
-const Skills = {
-  title: "My Skills",
-  description: "Technical proficiencies and tools",
-  categories: 
-  [
+  categories: [
     {
       name: "Software Development",
-      items: 
-      [
-        { title: "C", icon: <SiC /> },
-        { title: "C++", icon: <SiCplusplus /> },
-        { title: "C#", icon: <FaCode /> },
-        { title: "Python", icon: <FaPython /> },
-        { title: "Git", icon: <FaGit /> },
+      icon: "💻",
+      items: [
+        { title: "C / C++ / C# Development", description: "Systems programming, algorithms, OOP. University projects & personal tools.", level: "Intermediate", duration: "2021 — present" },
+        { title: "Python", description: "Scripting, automation, data processing.", level: "Intermediate", duration: "2021 — present" },
       ],
     },
     {
       name: "Web Development",
-      items: 
-      [
-        { title: "JavaScript", icon: <FaJs /> },
-        { title: "React.js", icon: <FaReact /> },
-        { title: "Next.js", icon: <SiNextdotjs /> },
-        { title: "Node.js", icon: <FaNodeJs /> },
+      icon: "🌐",
+      items: [
+        { title: "Frontend (React, Next.js)", description: "Portfolios, SPAs, responsive UIs. This site built with Next.js.", level: "Intermediate", duration: "2023 — present" },
+        { title: "JavaScript / HTML5 / CSS", description: "Vanilla JS games (Arkanoid), Canvas, Tailwind.", level: "Intermediate", duration: "2020 — present" },
       ],
     },
     {
-      name: "Game Development",
-      items: 
-      [
-        { title: "Unreal Engine", icon: <SiUnrealengine /> },
-        { title: "Unity", icon: <FaUnity /> },
-        { title: "C++", icon: <SiCplusplus /> },
-        { title: "C", icon: <SiC /> },
-        { title: "C#", icon: <FaCode /> },
-        { title: "Lua", icon: <SiLua /> },
+      name: "Game Development & Modding",
+      icon: "🎮",
+      items: [
+        { title: "Unreal Engine / Unity", description: "Game projects, blueprints, C++. Learning level design & gameplay systems.", level: "Beginner–Intermediate", duration: "2024 — present" },
+        { title: "Modding (Lua, scripting)", description: "Game modifications, addons, scripting for game engines.", level: "Intermediate", duration: "2022 — present" },
       ],
     },
-    {
-      name: "Web Design",
-      items: 
-      [
-        { title: "HTML5", icon: <FaHtml5 /> },
-        { title: "CSS3", icon: <FaCss3 /> },
-        { title: "Tailwind CSS", icon: <SiTailwindcss /> },
-      ],
-    },
-    {
-      name: "Design Tools",
-      items: 
-      [
-        { title: "Figma", icon: <FaFigma /> },
-        { title: "Blender", icon: <SiBlender /> },
-        { title: "Cinema 4D", icon: <SiCinema4D /> },
-        { title: "Photoshop", icon: <SiAdobephotoshop /> },
-      ],
-    },
+  ],
+};
+
+const Education = {
+  items: [
+    { title: "Bachelor's Degree in Computer Engineering", institution: "Kharkiv Polytechnic Institute", location: "Kharkiv, Ukraine", duration: "2023 - 2027", xp: "⚡ 4 Years XP" },
+    { title: "IT Courses", institution: "IT Start School", location: "Okhtyrka, Ukraine", duration: "2021 - 2022", xp: "⚡ 1 Year XP" },
+  ],
+};
+
+const Skills = {
+  categories: [
+    { name: "Software Dev", items: [{ title: "C", icon: <SiC /> }, { title: "C++", icon: <SiCplusplus /> }, { title: "C#", icon: <FaCode /> }, { title: "Python", icon: <FaPython /> }, { title: "Git", icon: <FaGit /> }] },
+    { name: "Web Dev", items: [{ title: "JavaScript", icon: <FaJs /> }, { title: "React.js", icon: <FaReact /> }, { title: "Next.js", icon: <SiNextdotjs /> }, { title: "Node.js", icon: <FaNodeJs /> }] },
+    { name: "Game Dev", items: [{ title: "Unreal Engine", icon: <SiUnrealengine /> }, { title: "Unity", icon: <FaUnity /> }, { title: "C++", icon: <SiCplusplus /> }, { title: "C#", icon: <FaCode /> }, { title: "Lua", icon: <SiLua /> }] },
+    { name: "Design", items: [{ title: "HTML5", icon: <FaHtml5 /> }, { title: "CSS3", icon: <FaCss3 /> }, { title: "Tailwind", icon: <SiTailwindcss /> }] },
+    { name: "Tools", items: [{ title: "Figma", icon: <FaFigma /> }, { title: "Blender", icon: <SiBlender /> }, { title: "Cinema 4D", icon: <SiCinema4D /> }, { title: "Photoshop", icon: <SiAdobephotoshop /> }] },
   ],
 };
 
@@ -153,246 +80,264 @@ const Resume = () => {
 
   return (
     <motion.div
-      initial = {{ opacity: 0 }}
-      animate = {{ opacity: 1 }}
-      exit = {{ opacity: 0 }}
-      transition = {{ delay: 0.5, duration: 0.5, ease: "easeInOut" }}
-      className = "min-h-[80vh] flex items-center justify-center py-12 xl:py-0"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-[80vh] relative py-12 xl:py-16 overflow-hidden"
     >
-      <div className = "container mx-auto">
-        <Tabs defaultValue = "about" className = "flex flex-col xl:flex-row gap-[70px]">
-          <TabsList className = "flex flex-col w-full max-w-[380px] mx-auto xl:mx-0 gap-6">
-            <TabsTrigger value = "about">About Me</TabsTrigger>
-            <TabsTrigger value = "experience">Experience</TabsTrigger>
-            <TabsTrigger value = "education">Education</TabsTrigger>
-            <TabsTrigger value = "skills">Skills</TabsTrigger>
+      {/* Grid overlay */}
+      <div 
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(6, 182, 212, 0.3) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(6, 182, 212, 0.3) 1px, transparent 1px)
+          `,
+          backgroundSize: '32px 32px',
+        }}
+      />
+
+      <div className="container mx-auto relative z-10">
+        {/* Header — PLAYER PROFILE */}
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="text-center mb-12"
+        >
+          <h1 className="pixel-text text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-cyan-300 to-cyan-500 mb-2">
+            ▶ PLAYER PROFILE ◀
+          </h1>
+          <p className="text-cyan-400/70 text-xs mt-1">Resume — Maksym Kopychko</p>
+          <div className="h-[2px] w-48 mx-auto bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
+          <p className="text-white/50 text-sm mt-2 pixel-text">RESUME • ArchieDev242</p>
+        </motion.div>
+
+        <Tabs defaultValue="about" className="flex flex-col xl:flex-row gap-8 xl:gap-12">
+          {/* Tabs — Game menu style */}
+          <TabsList className="flex flex-row xl:flex-col flex-wrap justify-center xl:justify-start w-full xl:w-[280px] gap-3 p-2 bg-black/40 rounded-lg border border-cyan-500/30">
+            <TabsTrigger 
+              value="about" 
+              className="pixel-text data-[state=active]:bg-cyan-500/20 data-[state=active]:text-cyan-300 data-[state=active]:border-cyan-400/50 border border-transparent px-4 py-3 rounded"
+              title="Personal Info"
+            >
+              <span className="block">📊 Stats</span>
+              <span className="text-[10px] text-white/50 normal-case">Personal Info</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="experience" 
+              className="pixel-text data-[state=active]:bg-cyan-500/20 data-[state=active]:text-cyan-300 data-[state=active]:border-cyan-400/50 border border-transparent px-4 py-3 rounded"
+              title="Experience"
+            >
+              <span className="block">📜 Quest Log</span>
+              <span className="text-[10px] text-white/50 normal-case">Experience</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="education" 
+              className="pixel-text data-[state=active]:bg-cyan-500/20 data-[state=active]:text-cyan-300 data-[state=active]:border-cyan-400/50 border border-transparent px-4 py-3 rounded"
+              title="Education"
+            >
+              <span className="block">🏆 Quests</span>
+              <span className="text-[10px] text-white/50 normal-case">Education</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="skills" 
+              className="pixel-text data-[state=active]:bg-cyan-500/20 data-[state=active]:text-cyan-300 data-[state=active]:border-cyan-400/50 border border-transparent px-4 py-3 rounded"
+              title="Skills"
+            >
+              <span className="block">⚔️ Abilities</span>
+              <span className="text-[10px] text-white/50 normal-case">Skills</span>
+            </TabsTrigger>
           </TabsList>
 
-          <div className = "min-h-[70vh] w-full">
-            {/* About Tab */}
-            <TabsContent value = "about" className = "w-full">
-              <div className = "flex flex-col items-center w-full max-w-4xl mx-auto">
-                <div className = "w-full text-center mb-12">
-                  <h3 className = "text-5xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-accent-default to-blue-400">
-                    {About.title}
-                  </h3>
-                  <div className = "h-1 w-24 bg-accent-default mx-auto mb-8 rounded-full" />
-                  <p className = "text-lg text-white/80 max-w-2xl mx-auto leading-relaxed">
-                    Passionate software engineer with expertise in game development and web technologies.
-                    Currently pursuing Computer Engineering at National Technical University «Kharkiv Polytechnic Institute».
-                  </p>
-                </div>
-                
-                <div className = "w-full">
-                  <h4 className = "text-2xl font-semibold mb-6 text-center text-white/90">
-                    Personal Information
-                  </h4>
-                  <div className = "grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {About.info.map((item, index) => (
-                      <motion.div 
-                        key = {index}
-                        initial = {{ opacity: 0, y: 20 }}
-                        animate = {{ opacity: 1, y: 0 }}
-                        transition = {{ duration: 0.3, delay: index * 0.05 }}
-                        className = "flex flex-col p-6 bg-[#1e1e24] rounded-xl border border-white/5 hover:border-accent-default/30 transition-all duration-300"
+          <div className="flex-1 min-h-[60vh]">
+            {/* About — Character stats panel */}
+            <TabsContent value="about" className="mt-0">
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="relative"
+              >
+                <div className="rounded-xl border-2 border-cyan-500/40 bg-black/50 backdrop-blur-sm p-6 md:p-8 shadow-[0_0_30px_rgba(6,182,212,0.1)]">
+                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent" />
+                  <h3 className="pixel-text text-cyan-400 text-xl mb-1">▶ CHARACTER INFO</h3>
+                  <p className="text-white/40 text-xs mb-6">Personal Information</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {About.info.map((item, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.03 }}
+                        className="flex items-start gap-3 p-4 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-500/30 hover:bg-cyan-500/5 transition-all duration-300 group"
                       >
-                        <span className = "text-sm font-medium text-accent-default mb-1">
-                          {item.fieldName}
-                        </span>
-                        <span className = "text-white/90 text-base leading-relaxed break-words w-full overflow-hidden">
-                          {item.fieldName === 'Email' ? (
-                            <a 
-                              href = {`mailto:${item.fieldValue}`}
-                              className = "text-accent-default hover:underline break-all inline-block w-full"
-                            >
+                        <span className="text-xl">{item.icon}</span>
+                        <div className="flex-1 min-w-0">
+                          <span className="text-xs text-cyan-400/80 pixel-text block mb-1">
+                            {item.fieldName} <span className="text-white/40 font-normal">({item.fieldNameHR})</span>
+                          </span>
+                          {item.fieldName === 'Email' || item.fieldNameHR === 'Email' ? (
+                            <a href={`mailto:${item.fieldValue}`} className="text-cyan-300 hover:text-cyan-200 break-all">
                               {item.fieldValue}
                             </a>
                           ) : (
-                            item.fieldValue
+                            <span className="text-white/90">{item.fieldValue}</span>
                           )}
-                        </span>
+                        </div>
                       </motion.div>
                     ))}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </TabsContent>
 
-            {/* Experience Tab */}
-            <TabsContent value = "experience" className = "w-full">
-              <div className = "flex flex-col gap-8">
-                <h3 className = "text-4xl font-bold">{Experience.title}</h3>
-                {Experience.items.length > 0 ? (
-                  <ScrollArea className = "h-[400px]">
-                    <ul className = "grid grid-cols-1 lg:grid-cols-2 gap-[30px]">
-                      {Experience.items.map((item, index) => (
-                        <li
-                          key = {index}
-                          className = "bg-[#232329] w-full p-6 rounded-xl flex flex-col justify-center items-center gap-4 text-center group hover:bg-[#2a2a31] transition-colors duration-300"
-                        >
-                          <span className = "text-accent-default lg:text-left">{item.duration}</span>
-                          <h3 className = "text-xl text-center">{item.position}</h3>
-                          <div className = "flex items-center gap-3">
-                            <span className = "w-[6px] h-[6px] rounded-full bg-accent-default"></span>
-                            <p className = "text-white/60">{item.company}</p>
-                          </div>
-                          <p className = "text-white/60 text-sm">{item.description}</p>
-                        </li>
-                      ))}
-                    </ul>
-                  </ScrollArea>
-                ) : (
-                  <motion.div 
-                    initial = {{ opacity: 0, y: 30 }}
-                    animate = {{ opacity: 1, y: 0 }}
-                    transition = {{ duration: 0.6, ease: "easeOut" }}
-                    className = "flex flex-col items-center justify-center min-h-[400px] text-center"
-                  >
-                    <motion.div 
-                      initial = {{ scale: 0 }}
-                      animate = {{ scale: 1 }}
-                      transition = {{ duration: 0.5, delay: 0.2, type: "spring", bounce: 0.4 }}
-                      className = "text-9xl mb-8"
-                    >
-                      😔
-                    </motion.div>
-                    <motion.h4 
-                      initial = {{ opacity: 0 }}
-                      animate = {{ opacity: 1 }}
-                      transition = {{ duration: 0.5, delay: 0.4 }}
-                      className = "text-3xl font-bold text-white/90 mb-4"
-                    >
-                      No Professional Experience Yet
-                    </motion.h4>
-                    <motion.p 
-                      initial = {{ opacity: 0 }}
-                      animate = {{ opacity: 1 }}
-                      transition = {{ duration: 0.5, delay: 0.6 }}
-                      className = "text-lg text-white/70 max-w-lg mb-8 leading-relaxed"
-                    >
-                      But I'm actively learning, working on projects and developing my skills! 
-                      Every day is a new step towards my dream of becoming a professional developer.
-                    </motion.p>
-                    <motion.div 
-                      initial = {{ opacity: 0, y: 20 }}
-                      animate = {{ opacity: 1, y: 0 }}
-                      transition = {{ duration: 0.5, delay: 0.8 }}
-                      className = "flex flex-col gap-4"
-                    >
-                      <div className = "flex items-center gap-3 text-accent-default bg-accent-default/10 px-6 py-3 rounded-lg">
-                        <span className = "text-2xl">🚀</span>
-                        <span className = "font-semibold">Ready for new challenges</span>
-                      </div>
-                      <div className = "flex items-center gap-3 text-blue-400 bg-blue-400/10 px-6 py-3 rounded-lg">
-                        <span className = "text-2xl">💡</span>
-                        <span className = "font-semibold">Quick learner and adaptable</span>
-                      </div>
-                      <div className = "flex items-center gap-3 text-green-400 bg-green-400/10 px-6 py-3 rounded-lg">
-                        <span className = "text-2xl">⭐</span>
-                        <span className = "font-semibold">Motivated to achieve goals</span>
-                      </div>
-                    </motion.div>
-                  </motion.div>
-                )}
-              </div>
-            </TabsContent>
-
-            {/* Education Tab */}
-            <TabsContent value = "education" className = "w-full">
-              <div className = "flex flex-col gap-8">
-                <h3 className = "text-4xl font-bold">{Education.title}</h3>
-                <ScrollArea className = "h-[400px]">
-                  <ul className = "grid grid-cols-1 lg:grid-cols-2 gap-[30px]">
-                    {Education.items.map((item, index) => (
-                      <li
-                        key = {index}
-                        className = "bg-[#232329] w-full p-6 rounded-xl flex flex-col justify-center items-center gap-4 text-center group hover:bg-[#2a2a31] transition-colors duration-300"
-                      >
-                        <span className = "text-accent-default text-sm lg:text-left">{item.duration}</span>
-                        <h3 className = "text-lg xl:text-xl text-center">{item.title}</h3>
-                        <div className = "flex items-center gap-3">
-                          <span className = "w-[6px] h-[6px] rounded-full bg-accent-default"></span>
-                          <p className = "text-white/60">{item.institution}</p>
-                        </div>
-                        <p className = "text-sm text-white/40">{item.location}</p>
-                      </li>
-                    ))}
-                  </ul>
-                </ScrollArea>
-              </div>
-            </TabsContent>
-
-            {/* Skills Tab */}
-            <TabsContent value = "skills" className = "w-full">
-              <div className = "flex flex-col gap-8">
-                <h3 className = "text-4xl font-bold">{Skills.title}</h3>
-                <div className = "flex flex-col gap-8">
-                  {/* Category Navigation */}
-                  <div className = "flex flex-wrap gap-4">
-                    {Skills.categories.map((category, index) => (
-                      <button
-                        key = {index}
-                        onClick = {() => setActiveCategory(index)}
-                        className = {`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
-                          activeCategory === index
-                            ? "bg-accent-default text-black"
-                            : "bg-muted hover:bg-primary/10"
-                        }`}
-                      >
-                        {category.name}
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* Skills Display */}
+            {/* Experience — Quest log with categories */}
+            <TabsContent value="experience" className="mt-0">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="space-y-8"
+              >
+                <div className="mb-4">
+                  <h3 className="pixel-text text-amber-400 text-xl">📜 QUEST LOG</h3>
+                  <p className="text-white/40 text-xs">Work & Project Experience by Category</p>
+                </div>
+                {Experience.categories.map((cat, catIndex) => (
                   <motion.div
-                    key = {activeCategory}
-                    initial = {{ opacity: 0, y: 20 }}
-                    animate = {{ opacity: 1, y: 0 }}
-                    exit = {{ opacity: 0, y: -20 }}
-                    transition = {{ duration: 0.3 }}
-                    className = "min-h-[300px]"
+                    key={catIndex}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: catIndex * 0.1 }}
+                    className="rounded-xl border-2 border-amber-500/30 bg-black/50 backdrop-blur-sm p-6 hover:border-amber-500/50 transition-all"
                   >
-                    <div className = "flex flex-col gap-8">
-                      <h4 className = "text-2xl font-semibold text-accent-default">
-                        {Skills.categories[activeCategory].name}
-                      </h4>
-                      <TooltipProvider>
-                        <ul className = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 xl:gap-12">
-                          {Skills.categories[activeCategory].items.map((skill, index) => (
-                            <motion.li
-                              key = {index}
-                              initial = {{ opacity: 0, scale: 0.8 }}
-                              animate = {{ opacity: 1, scale: 1 }}
-                              transition = {{ duration: 0.3, delay: index * 0.1 }}
-                              className = "h-full"
-                            >
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <div className = "group w-full flex flex-col items-center gap-2 p-4 bg-muted rounded-xl hover:bg-primary/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_20px_var(--accent-shadow)] relative overflow-hidden">
-                                    <div 
-                                      className = "absolute inset-0 bg-gradient-to-br from-transparent to-transparent group-hover:from-accent-default/10 group-hover:to-accent-default/5 transition-all duration-300"
-                                    ></div>
-                                    {React.cloneElement(skill.icon, {
-                                      className: "skill-icon"
-                                    })}
-                                    <span className = "font-medium text-base group-hover:text-accent-default transition-colors duration-300 relative z-10 text-center">
-                                      {skill.title}
-                                    </span>
-                                  </div>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  <p>{skill.title}</p>
-                                </TooltipContent>
-                              </Tooltip>
-                            </motion.li>
-                          ))}
-                        </ul>
-                      </TooltipProvider>
+                    <h4 className="pixel-text text-amber-400 mb-4 flex items-center gap-2">
+                      <span>{cat.icon}</span> {cat.name}
+                    </h4>
+                    <div className="space-y-4">
+                      {cat.items.map((item, i) => (
+                        <div
+                          key={i}
+                          className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 p-4 rounded-lg bg-white/5 border border-white/10"
+                        >
+                          <div>
+                            <h5 className="text-white font-medium">{item.title}</h5>
+                            <p className="text-white/60 text-sm mt-1">{item.description}</p>
+                          </div>
+                          <div className="flex flex-wrap gap-2 sm:flex-col sm:items-end shrink-0">
+                            <span className="px-2 py-1 rounded text-xs font-medium bg-amber-500/20 text-amber-300 border border-amber-500/40 pixel-text">
+                              {item.level}
+                            </span>
+                            <span className="text-white/50 text-xs">{item.duration}</span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </motion.div>
+                ))}
+              </motion.div>
+            </TabsContent>
+
+            {/* Education — Quest completed cards */}
+            <TabsContent value="education" className="mt-0">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="space-y-6"
+              >
+                <div className="mb-4">
+                  <h3 className="pixel-text text-green-400 text-xl">🏆 QUESTS COMPLETED</h3>
+                  <p className="text-white/40 text-xs">Education</p>
                 </div>
-              </div>
+                {Education.items.map((item, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                    className="rounded-xl border-2 border-green-500/30 bg-black/50 backdrop-blur-sm p-6 hover:border-green-500/50 hover:shadow-[0_0_20px_rgba(34,197,94,0.1)] transition-all"
+                  >
+                    <div className="flex items-start justify-between gap-4 flex-wrap">
+                      <div>
+                        <span className="text-green-400 pixel-text text-xs block mb-1">✓ QUEST COMPLETE</span>
+                        <h4 className="text-xl font-semibold text-white mb-1">{item.title}</h4>
+                        <p className="text-white/60 text-sm">{item.institution} • {item.location}</p>
+                      </div>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className="text-cyan-400 text-sm pixel-text">{item.duration}</span>
+                        <span className="text-green-400/80 text-xs pixel-text">{item.xp}</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </TabsContent>
+
+            {/* Skills — Unlocked abilities */}
+            <TabsContent value="skills" className="mt-0">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="space-y-8"
+              >
+                <div className="flex flex-wrap gap-2">
+                  {Skills.categories.map((cat, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setActiveCategory(i)}
+                      className={`px-4 py-2 rounded pixel-text text-sm transition-all ${
+                        activeCategory === i
+                          ? 'bg-cyan-500/30 text-cyan-300 border border-cyan-400/50 shadow-[0_0_15px_rgba(6,182,212,0.2)]'
+                          : 'bg-white/5 text-white/60 border border-white/10 hover:border-cyan-500/30'
+                      }`}
+                    >
+                      {cat.name}
+                    </button>
+                  ))}
+                </div>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeCategory}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="rounded-xl border-2 border-cyan-500/30 bg-black/50 backdrop-blur-sm p-6"
+                  >
+                    <div className="mb-6">
+                      <h4 className="pixel-text text-cyan-400">⚔️ {Skills.categories[activeCategory].name} — UNLOCKED</h4>
+                      <p className="text-white/40 text-xs">Technical Skills</p>
+                    </div>
+                    <TooltipProvider>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                        {Skills.categories[activeCategory].items.map((skill, i) => (
+                          <motion.div
+                            key={i}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: i * 0.05 }}
+                          >
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div className="flex flex-col items-center gap-2 p-4 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-500/50 hover:bg-cyan-500/10 hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] transition-all duration-300 cursor-pointer group">
+                                  <div className="text-4xl text-cyan-400/80 group-hover:text-cyan-300 group-hover:scale-110 transition-transform">
+                                    {React.cloneElement(skill.icon, {})}
+                                  </div>
+                                  <span className="text-sm text-white/80 group-hover:text-cyan-300 pixel-text text-center">
+                                    {skill.title}
+                                  </span>
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p className="pixel-text">{skill.title} — Mastered</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </TooltipProvider>
+                  </motion.div>
+                </AnimatePresence>
+              </motion.div>
             </TabsContent>
           </div>
         </Tabs>

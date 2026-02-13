@@ -26,22 +26,20 @@ export function ThemeProvider({ children }) {
   useEffect(() => {
     set_is_mounted(true);
     
-    // Set default theme first
-    document.documentElement.style.setProperty("--accent-default", colors.green);
-    document.documentElement.style.setProperty("--accent-shadow", shadow_colors.green);
-    
-    // Then check for saved theme
+    const set_theme = (color) => {
+      const c = colors[color];
+      document.documentElement.style.setProperty("--accent-default", c);
+      document.documentElement.style.setProperty("--accent-shadow", `${c}33`);
+      document.documentElement.style.setProperty("--accent-glow", `${c}66`);
+      document.documentElement.style.setProperty("--accent-bg", `${c}20`);
+    };
+    set_theme("green");
     const saved_color = localStorage.getItem("theme-color");
-    if (saved_color && colors[saved_color]) {
-      document.documentElement.style.setProperty("--accent-default", colors[saved_color]);
-      document.documentElement.style.setProperty("--accent-shadow", shadow_colors[saved_color]);
-    }
+    if(saved_color && colors[saved_color]) set_theme(saved_color);
   }, []);
 
-  // Prevent hydration mismatch by not rendering children until mounted
-  if (!is_mounted) {
-    return children;
-  }
+  // prevent hydration mismatch by not rendering children until mounted
+  if(!is_mounted) return children;
 
   return children;
 } 

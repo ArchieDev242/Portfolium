@@ -2,12 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-
-import default_windows_icon from '@/public/icons/win98/png/windows-0.png';
+import { getWin98Icon, WIN98_ICONS } from '@/lib/win98-icons';
 
 const Windows98Window = ({ 
   title = "Windows 98 Application", 
-  icon = default_windows_icon,
+  icon = WIN98_ICONS.default_window,
   children, 
   onClose, 
   onFocus,
@@ -19,6 +18,8 @@ const Windows98Window = ({
   maximizable = false,
   minimizable = false 
 }) => {
+  const [icon_error, set_icon_error] = useState(false);
+  const icon_src = typeof icon === 'string' && (icon.startsWith('data:') || icon.startsWith('http')) ? icon : getWin98Icon(icon);
   const [is_dragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({ x: 100, y: 100 });
   const [drag_offset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -116,47 +117,26 @@ const Windows98Window = ({
         onMouseDown = {handle_mouse_down}
         style = {{ cursor: is_dragging ? 'grabbing' : 'grab' }}
       >
-        <div className = "title-bar-text" style = {{ display: 'flex', alignItems: 'center' }}>
-          <Image 
-            src = {icon}
-            alt = "Icon"
-            width = {16}
-            height = {16}
-            style = {{
-              imageRendering: 'pixelated',
-              marginRight: '6px'
-            }}
-            onError = {(e) => {
-              e.target.style.display = 'none';
-              // emojis for specific titles
-              const emoji_map = {
-                'Resume': '📄',
-                'Projects': '📁',
-                'Contact': '📧',
-                'Portfolio': '💼'
-              };
-              
-              const emoji = Object.keys(emoji_map).find(key => title.includes(key));
-
-              if(emoji) 
-                {
-                e.target.insertAdjacentHTML('afterend', `<span style="margin-right: 6px;">${emoji_map[emoji]}</span>`);
-              }
-            }}
-          />
+        <div className = "title-bar-text" style = {{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          {!icon_error ? (
+            <Image 
+              src = {icon_src}
+              alt = ""
+              width = {16}
+              height = {16}
+              unoptimized
+              style = {{ imageRendering: 'pixelated', flexShrink: 0 }}
+              onError = {() => set_icon_error(true)}
+            />
+          ) : (
+            <span style = {{ marginRight: '2px' }}>{title.includes('Resume') ? '📄' : title.includes('Projects') ? '📁' : title.includes('Contact') ? '📧' : '💼'}</span>
+          )}
           {title}
         </div>
         <div className = "title-bar-controls">
-          {minimizable && (
-            <button aria-label = "Minimize" onClick = {() => {}}></button>
-          )}
-          {maximizable && (
-            <button 
-              aria-label = {is_maximized ? "Restore" : "Maximize"} 
-              onClick = {handle_maximize}
-            ></button>
-          )}
-          <button aria-label = "Close" onClick = {onClose}></button>
+          {minimizable && <button aria-label = "Minimize" className = "minimize" onClick = {() => {}} />}
+          {maximizable && <button aria-label = {is_maximized ? "Restore" : "Maximize"} className = {is_maximized ? "restore" : "maximize"} onClick = {handle_maximize} />}
+          <button aria-label = "Close" className = "close" onClick = {onClose} />
         </div>
       </div>
 

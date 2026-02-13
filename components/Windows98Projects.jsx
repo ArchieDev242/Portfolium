@@ -4,14 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Windows98Window from './Windows98Window';
 import { projectsData } from '@/data/projects';
-
-import directory_open_icon from '@/public/icons/win98/png/directory_open_file_mydocs-0.png';
-import file_lines_icon from '@/public/icons/win98/png/file_lines-0.png';
-import media_play_icon from '@/public/icons/win98/png/media_player-0.png';
-import globe_map_icon from '@/public/icons/win98/png/globe_map-0.png';
-import executable_icon from '@/public/icons/win98/png/executable-0.png';
-import download_icon from '@/public/icons/win98/png/download.png';
-import msg_information_icon from '@/public/icons/win98/png/msg_information-0.png';
+import { getWin98Icon, WIN98_ICONS } from '@/lib/win98-icons';
 
 const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
   const [selected_category, set_selected_category] = useState(0);
@@ -19,7 +12,7 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
   return (
     <Windows98Window
       title = "Projects Portfolio"
-      icon = {directory_open_icon}
+      icon = {WIN98_ICONS.directory_open}
       onClose = {onClose}
       onFocus = {onFocus}
       isActive = {isActive}
@@ -73,10 +66,11 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
               <div key = {index} className = "sunken-panel" style = {{ padding: '10px', background: 'white' }}>
                 <div style = {{ fontWeight: 'bold', fontSize: '12px', marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
                   <Image 
-                    src = {file_lines_icon}
-                    alt  ="Project"
+                    src = {getWin98Icon(WIN98_ICONS.file_lines)}
+                    alt = "Project"
                     width = {16}
                     height = {16}
+                    unoptimized
                     style = {{ marginRight: '5px', imageRendering: 'pixelated' }}
                     onError = {(e) => {
                       e.target.style.display = 'none';
@@ -188,7 +182,7 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
                       }}
                     >
                       <Image 
-                        src = {media_play_icon}
+                        src = {getWin98Icon(WIN98_ICONS.media_play)}
                         alt = "Play Game"
                         width = {12}
                         height = {12}
@@ -213,7 +207,7 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
                       }}
                     >
                       <Image 
-                        src = {globe_map_icon}
+                        src = {getWin98Icon(WIN98_ICONS.globe)}
                         alt = "GameBanana"
                         width = {12}
                         height = {12}
@@ -238,7 +232,7 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
                       }}
                     >
                       <Image 
-                        src = {executable_icon}
+                        src = {getWin98Icon(WIN98_ICONS.executable)}
                         alt = "Code"
                         width = {12}
                         height = {12}
@@ -263,7 +257,7 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
                       }}
                     >
                       <Image 
-                        src = {download_icon}
+                        src = {getWin98Icon(WIN98_ICONS.download)}
                         alt = "Download"
                         width = {12}
                         height = {12}
@@ -290,7 +284,7 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
               color: '#666' 
             }}>
               <Image 
-                src = {msg_information_icon}
+                src = {getWin98Icon(WIN98_ICONS.msg_info)}
                 alt = "Info"
                 width = {32}
                 height = {32}

@@ -1,3 +1,17 @@
+/* Fixedsys Excelsior — classic Notepad font (like 98.js) */
+@font-face {
+  font-family: 'Fixedsys Excelsior';
+  src: url('https://cdn.jsdelivr.net/npm/@south-paw/typeface-fixed-system-excelsior@1.0.0/font/fsex300-webfont.woff') format('woff'),
+       url('https://cdn.jsdelivr.net/npm/@south-paw/typeface-fixed-system-excelsior@1.0.0/font/fsex300-webfont.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+.win98-notepad .win98-notepad-textarea {
+  font-family: 'Fixedsys Excelsior', 'Lucida Console', Consolas, 'Courier New', monospace !important;
+  font-size: 16px !important;
+}
+
 body.win98-mode 
 {
   margin: 0 !important;
@@ -7,14 +21,7 @@ body.win98-mode
   background: #008080 !important;
 }
 
-body:not(.win98-mode) 
-{
-  font-family: inherit !important;
-  background: inherit !important;
-  overflow: auto !important;
-  margin: inherit !important;
-  padding: inherit !important;
-}
+/* body:not(.win98-mode) видалено — ламало шрифт при завантаженні CSS до додавання класу */
 
 .win98-container 
 {

@@ -3,72 +3,101 @@
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 
+const PARTICLE_COUNT = 18;
+const ORB_CONFIG = [
+  { left: '15%', top: '20%', size: 320, opacity: 0.6, delay: 0 },
+  { left: '75%', top: '60%', size: 280, opacity: 0.5, delay: 1 },
+  { left: '50%', top: '85%', size: 400, opacity: 0.4, delay: 2 },
+  { left: '85%', top: '15%', size: 200, opacity: 0.35, delay: 0.5 },
+  { left: '10%', top: '70%', size: 250, opacity: 0.45, delay: 1.5 },
+];
+
 const Background = () => {
-  const particles = useMemo(() => {
-    return Array.from({ length: 20 }, (_, i) => ({
-      left: `${(i * 37 + 13) % 100}%`,
-      top: `${(i * 23 + 7) % 100}%`,
-    }));
-  }, []);
+  const particles = useMemo(() => 
+    Array.from({ length: PARTICLE_COUNT }, (_, i) => ({
+      left: `${(i * 37 + 11) % 100}%`,
+      top: `${(i * 29 + 7) % 100}%`,
+      size: 1.2 + ((i * 7) % 5) * 0.3,
+      duration: 5 + (i % 4),
+      delay: (i * 0.3) % 3,
+    })),
+  []);
 
   return (
-    <div className = "fixed inset-0 -z-10">
-      <div className = "absolute inset-0 bg-gradient-to-b from-primary via-primary to-black opacity-95" />
-
-      <div 
-        className = "absolute inset-0" 
-        style = {{
-          backgroundImage: `
-            linear-gradient(to right, var(--accent-default, rgba(0,255,153,0.1)) 1px, transparent 1px),
-            linear-gradient(to bottom, var(--accent-default, rgba(0,255,153,0.1)) 1px, transparent 1px)
-          `,
-          backgroundSize: '50px 50px'
-        }}
+    <div className = "fixed inset-0 -z-10 overflow-hidden bg-bg-base" aria-hidden = "true">
+      {/* Aurora — uses theme vars */}
+      <motion.div
+        className = "absolute inset-0 bg-aurora"
+        animate = {{ opacity: [0.6, 1, 0.7, 1, 0.6] }}
+        transition = {{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
       />
 
+      {/* Drifting orbs — theme-colored */}
       <div className = "absolute inset-0">
-        <motion.div
-          className = "absolute top-0 left-0 w-full h-full"
-          animate = {{
-            background: 
-            [
-              "radial-gradient(circle at 20% 20%, var(--accent-shadow, rgba(0,255,153,0.15)) 0%, rgba(0,0,0,0) 50%)",
-              "radial-gradient(circle at 80% 80%, var(--accent-shadow, rgba(0,255,153,0.15)) 0%, rgba(0,0,0,0) 50%)",
-              "radial-gradient(circle at 20% 80%, var(--accent-shadow, rgba(0,255,153,0.15)) 0%, rgba(0,0,0,0) 50%)",
-              "radial-gradient(circle at 80% 20%, var(--accent-shadow, rgba(0,255,153,0.15)) 0%, rgba(0,0,0,0) 50%)",
-              "radial-gradient(circle at 20% 20%, var(--accent-shadow, rgba(0,255,153,0.15)) 0%, rgba(0,0,0,0) 50%)"
-            ]
-          }}
-          transition = {{
-            duration: 10,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-      </div>
-
-      <div className = "absolute inset-0 overflow-hidden">
-        {particles.map((position, i) => (
+        {ORB_CONFIG.map((orb, i) => (
           <motion.div
             key = {i}
-            className = "absolute w-1 h-1 bg-accent-default rounded-full"
-            style = {position}
+            className = "absolute rounded-full bg-accent-orb"
+            style = {{
+              left: orb.left,
+              top: orb.top,
+              width: orb.size,
+              height: orb.size,
+              opacity: orb.opacity,
+            }}
             animate = {{
-              opacity: [0, 1, 0],
-              scale: [0, 1.5, 0],
-              y: [0, -100, 0],
+              x: [0, 40, -30, 0],
+              y: [0, -25, 30, 0],
+              scale: [1, 1.18, 0.9, 1],
+              opacity: [orb.opacity * 0.7, orb.opacity, orb.opacity * 0.8, orb.opacity * 0.7],
             }}
             transition = {{
-              duration: 5,
+              duration: 12 + i * 3,
               repeat: Infinity,
-              delay: i * 0.5,
-              ease: "easeInOut"
+              ease: "easeInOut",
+              delay: orb.delay,
             }}
           />
         ))}
       </div>
 
-      <div className = "absolute inset-0 backdrop-blur-[100px]" />
+      {/* Grid — theme, subtle pulse */}
+      <div className = "absolute inset-0 bg-grid bg-grid-animated" />
+
+      {/* Twinkling particles — float upward */}
+      <div className = "absolute inset-0 overflow-hidden">
+        {particles.map((p, i) => (
+          <motion.div
+            key = {i}
+            className = "absolute rounded-full bg-particle"
+            style = {{
+              left: p.left,
+              top: p.top,
+              width: p.size,
+              height: p.size,
+            }}
+            animate = {{
+              opacity: [0, 0.9, 0],
+              scale: [0.8, 1.2, 0.8],
+              y: [0, -80, 0],
+            }}
+            transition = {{
+              duration: p.duration + 2,
+              repeat: Infinity,
+              delay: p.delay,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Vignette */}
+      <div className = "absolute inset-0 pointer-events-none bg-vignette" />
+
+      {/* Top horizon glow — breathing */}
+      <div className = "absolute inset-x-0 top-0 h-32 pointer-events-none bg-horizon bg-horizon-animated" />
+
+      <div className = "absolute inset-0 backdrop-blur-[2px]" />
     </div>
   );
 };

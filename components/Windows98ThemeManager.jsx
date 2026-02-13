@@ -3,11 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-import themes_icon from '@/public/icons/win98/png/themes-0.png';
-import color_profile_icon from '@/public/icons/win98/png/color_profile-0.png';
-import notepad_file_icon from '@/public/icons/win98/png/notepad_file-0.png';
-import gears_icon from '@/public/icons/win98/png/gears-0.png';
-import check_icon from '@/public/icons/win98/png/check-0.png';
+import { getWin98Icon, WIN98_ICONS } from '@/lib/win98-icons';
 
 const Win98_theme_manager = ({ onClose }) => {
   const [selected_theme, set_selected_theme] = useState('classic');
@@ -223,7 +219,7 @@ const Win98_theme_manager = ({ onClose }) => {
       >
         <div className = "title-bar-text">
           <Image 
-            src = {themes_icon}
+            src = {getWin98Icon(WIN98_ICONS.themes)}
             alt = "Themes"
             width = {16}
             height = {16}
@@ -250,7 +246,7 @@ const Win98_theme_manager = ({ onClose }) => {
         <fieldset style = {{ marginBottom: '15px' }}>
           <legend>
             <Image 
-              src = {color_profile_icon}
+              src = {getWin98Icon(WIN98_ICONS.color_profile)}
               alt = "Colors"
               width = {16}
               height = {16}
@@ -360,7 +356,7 @@ const Win98_theme_manager = ({ onClose }) => {
         <fieldset style = {{ marginBottom: '15px' }}>
           <legend>
             <Image 
-              src = {notepad_file_icon}
+              src = {getWin98Icon(WIN98_ICONS.notepad_file)}
               alt = "Info"
               width = {16}
               height = {16}
@@ -428,7 +424,7 @@ const Win98_theme_manager = ({ onClose }) => {
               style = {{ minWidth: '80px', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center' }}
             >
               <Image 
-                src = {gears_icon}
+                src = {getWin98Icon(WIN98_ICONS.gears)}
                 alt = "Random"
                 width = {16}
                 height = {16}
@@ -458,7 +454,7 @@ const Win98_theme_manager = ({ onClose }) => {
               }}
             >
               <Image 
-                src = {check_icon}
+                src = {getWin98Icon(WIN98_ICONS.check)}
                 alt = "Apply"
                 width = {16}
                 height = {16}

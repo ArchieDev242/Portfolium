@@ -1,24 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Windows98Loader from './Windows98Loader';
 import Win98_theme_manager from './Windows98ThemeManager';
 import Win98_window_manager from './Windows98WindowManager';
-
-import themes_icon from '@/public/icons/win98/png/themes-0.png';
-import users_icon from '@/public/icons/win98/png/users-0.png';
-import directory_open_icon from '@/public/icons/win98/png/directory_open_file_mydocs-0.png';
-import envelope_icon from '@/public/icons/win98/png/envelope_closed-0.png';
-import recycle_bin_empty_icon from '@/public/icons/win98/png/recycle_bin_empty-0.png';
-import recycle_bin_full_icon from '@/public/icons/win98/png/recycle_bin_full-0.png';
-import computer_icon from '@/public/icons/win98/png/computer-0.png';
-import notepad_icon from '@/public/icons/win98/png/notepad-0.png';
-import directory_closed_icon from '@/public/icons/win98/png/directory_closed-0.png';
-import image_icon from '@/public/icons/win98/png/image_old_gif-0.png';
-import executable_icon from '@/public/icons/win98/png/executable-0.png';
-import start_menu_icon from '@/public/icons/win98/png/start_menu_shortcuts.png';
+import { getWin98Icon, WIN98_ICONS } from '@/lib/win98-icons';
 
 const Windows98Home = () => {
   const router = useRouter();
@@ -41,71 +29,24 @@ const Windows98Home = () => {
     portfolio: 1000,
     resume: 1000,
     projects: 1000,
-    contact: 1000
+    contact: 1000,
+    notepad: 1000,
+    msdos: 1000
   });
   
-  // desktop icons state
+  const [icon_fallback, set_icon_fallback] = useState({});
+  const [start_menu_open, set_start_menu_open] = useState(false);
+
+  // desktop icons state — icon = filename from WIN98_ICONS, so paths work in prod
   const [desktop_icons, set_desktop_icons] = useState([
-    { 
-      id: 'theme-manager', 
-      name: 'Theme Manager', 
-      position: { x: 20, y: 20 },
-      icon: themes_icon,
-      fallback: '',
-      emoji: '🎨',
-      type: 'system',
-      action: () => set_theme_manager_open(true)
-    },
-    {
-      id: 'resume',
-      name: 'Resume',
-      position: { x: 20, y: 120 },
-      icon: users_icon,
-      fallback: '',
-      emoji: '📄',
-      type: 'app',
-      action: () => open_window('resume')
-    },
-    {
-      id: 'projects', 
-      name: 'Projects',
-      position: { x: 20, y: 220 },
-      icon: directory_open_icon,
-      fallback: '',
-      emoji: '📁',
-      type: 'app',
-      action: () => open_window('projects')
-    },
-    {
-      id: 'contact',
-      name: 'Contact',
-      position: { x: 20, y: 320 },
-      icon: envelope_icon,
-      fallback: '',
-      emoji: '📧',
-      type: 'app',
-      action: () => open_window('contact')
-    },
-    {
-      id: 'recycle-bin',
-      name: 'Recycle Bin',
-      position: { x: 20, y: 420 },
-      icon: recycle_bin_empty_icon,
-      fallback: '',
-      emoji: '🗑️',
-      type: 'recycle-bin',
-      action: () => {}
-    },
-    {
-      id: 'my-computer',
-      name: 'My Computer',
-      position: { x: 20, y: 520 },
-      icon: computer_icon,
-      fallback: '',
-      emoji: '💻',
-      type: 'system',
-      action: () => {}
-    }
+    { id: 'theme-manager', name: 'Theme Manager', position: { x: 20, y: 20 }, icon: WIN98_ICONS.themes, emoji: '🎨', type: 'system', action: () => set_theme_manager_open(true) },
+    { id: 'resume', name: 'Resume', position: { x: 20, y: 120 }, icon: WIN98_ICONS.users, emoji: '📄', type: 'app', action: () => open_window('resume') },
+    { id: 'projects', name: 'Projects', position: { x: 20, y: 220 }, icon: WIN98_ICONS.directory_open, emoji: '📁', type: 'app', action: () => open_window('projects') },
+    { id: 'contact', name: 'Contact', position: { x: 20, y: 320 }, icon: WIN98_ICONS.envelope, emoji: '📧', type: 'app', action: () => open_window('contact') },
+    { id: 'notepad', name: 'Notepad', position: { x: 20, y: 420 }, icon: WIN98_ICONS.notepad, emoji: '📝', type: 'app', action: () => open_window('notepad') },
+    { id: 'msdos', name: 'MS-DOS Prompt', position: { x: 20, y: 520 }, icon: WIN98_ICONS.cmd, emoji: '💻', type: 'app', action: () => open_window('msdos') },
+    { id: 'recycle-bin', name: 'Recycle Bin', position: { x: 20, y: 620 }, icon: WIN98_ICONS.recycle_empty, emoji: '🗑️', type: 'recycle-bin', action: () => {} },
+    { id: 'my-computer', name: 'My Computer', position: { x: 20, y: 720 }, icon: WIN98_ICONS.computer, emoji: '💻', type: 'system', action: () => {} }
   ]);
   const [dragging_icon, set_dragging_icon] = useState(null);
   const [drag_icon_offset, set_drag_icon_offset] = useState({ x: 0, y: 0 });
@@ -149,45 +90,33 @@ const Windows98Home = () => {
     }));
   };
 
-  const handleLoaderComplete = () => { set_is_loading(false); };
+  const handleLoaderComplete = useCallback(() => { set_is_loading(false); }, []);
 
   useEffect(() => {
     document.body.classList.add('win98-mode');
 
-    const link98 = document.createElement('link');
-    link98.rel = 'stylesheet';
-    link98.href = 'https://unpkg.com/98.css';
-    link98.id = 'win98-css';
-    document.head.appendChild(link98);
-
+    const base = (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_BASE_PATH) || '';
     const custom_link = document.createElement('link');
     custom_link.rel = 'stylesheet';
-    custom_link.href = '/win98/win98.css';
+    custom_link.href = `${base}/win98/win98.css`;
     custom_link.id = 'win98-custom-css';
     document.head.appendChild(custom_link);
 
     return () => {
       document.body.classList.remove('win98-mode');
-      
-      const existing98_link = document.getElementById('win98-css');
-
-      if(existing98_link) 
-        {
-        document.head.removeChild(existing98_link);
-      }
+      document.body.classList.remove('matrix-theme', 'cyber-theme');
 
       const existing_custom_link = document.getElementById('win98-custom-css');
+      if(existing_custom_link) document.head.removeChild(existing_custom_link);
 
-      if(existing_custom_link) 
-        {
-        document.head.removeChild(existing_custom_link);
-      }
+      document.body.style.removeProperty('font-family');
+      document.body.style.removeProperty('background');
+      document.body.style.removeProperty('overflow');
+      document.body.style.removeProperty('margin');
+      document.body.style.removeProperty('padding');
 
-      document.body.style.fontFamily = '';
-      document.body.style.background = '';
-      document.body.style.overflow = '';
-      document.body.style.margin = '';
-      document.body.style.padding = '';
+      const root = document.documentElement;
+      ['--win98-primary', '--win98-secondary', '--win98-accent', '--win98-window', '--win98-text', '--win98-highlight'].forEach(v => root.style.removeProperty(v));
     };
   }, []);
 
@@ -383,7 +312,7 @@ const Windows98Home = () => {
             icon.id === 'recycle-bin' 
               ? { 
                   ...icon, 
-                  icon: recycle_bin_full_icon,
+                  icon: WIN98_ICONS.recycle_full,
                   emoji: '🗑️'
                 }
               : icon
@@ -398,33 +327,10 @@ const Windows98Home = () => {
 
   const create_new_file = (type, x = 150, y = 150) => {
     const file_types = {
-      'text': 
-      {
-        icon: notepad_icon,
-        emoji: '📄',
-        extension: '.txt'
-      },
-
-      'folder': 
-      {
-        icon: directory_closed_icon,
-        emoji: '📁',
-        extension: ''
-      },
-
-      'image': 
-      {
-        icon: image_icon,
-        emoji: '🖼️',
-        extension: '.bmp'
-      },
-
-      'exe': 
-      {
-        icon: executable_icon,
-        emoji: '⚙️',
-        extension: '.exe'
-      }
+      'text':  { icon: WIN98_ICONS.notepad, emoji: '📄', extension: '.txt' },
+      'folder': { icon: WIN98_ICONS.directory_closed, emoji: '📁', extension: '' },
+      'image': { icon: WIN98_ICONS.image, emoji: '🖼️', extension: '.bmp' },
+      'exe':  { icon: WIN98_ICONS.executable, emoji: '⚙️', extension: '.exe' }
     };
 
     const file_info = file_types[type] || file_types['text'];
@@ -466,11 +372,7 @@ const Windows98Home = () => {
     set_recycle_bin_files([]);
     set_desktop_icons(prev => prev.map(icon => 
       icon.id === 'recycle-bin' 
-        ? { 
-            ...icon, 
-            icon: recycle_bin_empty_icon,
-            emoji: '🗑️'
-          }
+        ? { ...icon, icon: WIN98_ICONS.recycle_empty, emoji: '🗑️' }
         : icon
     ));
   };
@@ -526,7 +428,7 @@ const Windows98Home = () => {
         position: 'relative'
       }}
       onContextMenu = {handle_desktop_right_click}
-      onClick = {hide_context_menu}
+      onClick = {() => { hide_context_menu(); set_start_menu_open(false); }}
     >
       {/* Main Content Window */}
       <div 
@@ -559,51 +461,26 @@ const Windows98Home = () => {
             touchAction: 'none'
           }}
         >
-          <div className = "title-bar-text">
-            <Image 
-              src = {directory_open_icon}
-              alt = "Portfolio"
-              width = {16}
-              height = {16}
-              style = {{
-                imageRendering: 'pixelated',
-                marginRight: '4px',
-                verticalAlign: 'middle'
-              }}
-              onError = {(e) => {
-                e.target.style.display = 'none';
-                e.target.insertAdjacentHTML('afterend', '<span style="margin-right: 4px;">📁</span>');
-              }}
-            />
+          <div className = "title-bar-text" style = {{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            {!icon_fallback['title-portfolio'] ? (
+              <Image 
+                src = {getWin98Icon(WIN98_ICONS.directory_open)}
+                alt = "Portfolio"
+                width = {16}
+                height = {16}
+                unoptimized
+                style = {{ imageRendering: 'pixelated', flexShrink: 0 }}
+                onError = {() => set_icon_fallback(f => ({ ...f, 'title-portfolio': true }))}
+              />
+            ) : (
+              <span style = {{ marginRight: '2px' }}>📁</span>
+            )}
             Maksym Kopychko - Portfolio.exe
           </div>
           <div className = "title-bar-controls">
-            <button 
-              aria-label = "Minimize" 
-              onClick = {handle_minimize}
-            >
-              <span style = {{ fontFamily: 'Wingdings, monospace', fontSize: '10px' }}>
-                {/* Wingdings minimize symbol or fallback */}
-                0
-              </span>
-            </button>
-            <button 
-              aria-label = {is_maximized ? "Restore" : "Maximize"}
-              onClick = {handle_maximize}
-            >
-              <span style = {{ fontFamily: 'Wingdings, monospace', fontSize: '10px' }}>
-                {is_maximized ? '2' : '1'}
-              </span>
-            </button>
-            <button 
-              aria-label = "Close"
-              onClick = {() => router.push('/')}
-              title = "Exit Windows 98 Mode"
-            >
-              <span style = {{ fontFamily: 'Wingdings, monospace', fontSize: '10px' }}>
-                r
-              </span>
-            </button>
+            <button aria-label = "Minimize" className = "minimize" onClick = {handle_minimize} />
+            <button aria-label = {is_maximized ? "Restore" : "Maximize"} className = {is_maximized ? "restore" : "maximize"} onClick = {handle_maximize} />
+            <button aria-label = "Close" className = "close" onClick = {() => router.push('/')} title = "Exit Windows 98 Mode" />
           </div>
         </div>
 
@@ -708,50 +585,56 @@ const Windows98Home = () => {
         </div>
       </div>
 
-      {/* Taskbar */}
-      <div style = {{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: '32px',
-        background: '#c0c0c0',
-        border: '1px solid #808080',
-        borderTop: '1px solid #dfdfdf',
-        display: 'flex',
-        alignItems: 'center',
-        padding: '0 4px',
-        zIndex: 1000,
-        fontSize: '11px'
-      }}>
-        {/* Start Button */}
+      {/* Taskbar — 98-style */}
+      <div 
+        className = "status-bar"
+        style = {{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '30px',
+          background: '#c0c0c0',
+          borderTop: '2px solid #dfdfdf',
+          borderBottom: '1px solid #000',
+          display: 'flex',
+          alignItems: 'stretch',
+          padding: '0 2px',
+          zIndex: 1000,
+          fontSize: '11px',
+          gap: '2px'
+        }}
+      >
+        {/* Start Button — opens Start menu */}
         <button 
+          onClick = {(e) => { e.stopPropagation(); set_start_menu_open(prev => !prev); }}
           style = {{ 
             height: '26px', 
             fontSize: '11px', 
             fontWeight: 'bold',
-            marginRight: '4px',
-            padding: '0 8px',
-            background: '#c0c0c0',
-            border: '1px outset #c0c0c0',
+            margin: '2px 2px 2px 0',
+            padding: '0 10px',
+            background: start_menu_open ? '#808080' : '#c0c0c0',
+            border: start_menu_open ? '1px inset #808080' : '1px outset #dfdfdf',
             display: 'flex',
             alignItems: 'center',
-            gap: '4px'
+            gap: '4px',
+            cursor: 'pointer'
           }}
         >
-          <Image 
-            src = {start_menu_icon}
-            alt = "Start"
-            width = {16}
-            height = {16}
-            style = {{
-              imageRendering: 'pixelated'
-            }}
-            onError = {(e) => {
-              e.target.style.display = 'none';
-              e.target.insertAdjacentHTML('afterend', '<span>🪟</span>');
-            }}
-          />
+          {!icon_fallback['start'] ? (
+            <Image 
+              src = {getWin98Icon(WIN98_ICONS.start_menu)}
+              alt = "Start"
+              width = {16}
+              height = {16}
+              unoptimized
+              style = {{ imageRendering: 'pixelated' }}
+              onError = {() => set_icon_fallback(f => ({ ...f, start: true }))}
+            />
+          ) : (
+            <span>🪟</span>
+          )}
           Start
         </button>
 
@@ -767,102 +650,176 @@ const Windows98Home = () => {
           gap: '2px'
         }}>
           <button
-            onClick = {() => {
-              set_is_minimized(false);
-              focus_window('portfolio');
-            }}
+            onClick = {() => { set_is_minimized(false); focus_window('portfolio'); set_start_menu_open(false); }}
             style = {{ 
-              height: '18px', 
-              fontSize: '10px',
+              height: '22px', 
+              fontSize: '11px',
               padding: '0 8px',
               background: active_window_id === 'portfolio' ? '#316ac5' : '#c0c0c0',
               color: active_window_id === 'portfolio' ? 'white' : 'black',
-              border: active_window_id === 'portfolio' ? '1px inset #316ac5' : '1px outset #c0c0c0',
+              border: active_window_id === 'portfolio' ? '1px inset #316ac5' : '1px outset #dfdfdf',
               display: 'flex',
               alignItems: 'center',
               gap: '4px',
               cursor: 'pointer'
             }}
           >
-            <Image 
-              src = {directory_open_icon}
-              alt = "Portfolio"
-              width = {12}
-              height = {12}
-              style = {{
-                imageRendering: 'pixelated'
-              }}
-              onError = {(e) => {
-                e.target.style.display = 'none';
-                e.target.insertAdjacentHTML('afterend', '<span>📁</span>');
-              }}
-            />
+            {!icon_fallback['taskbar-portfolio'] ? <Image src = {getWin98Icon(WIN98_ICONS.directory_open)} alt = "Portfolio" width = {16} height = {16} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_icon_fallback(f => ({ ...f, 'taskbar-portfolio': true }))} /> : <span>📁</span>}
             Portfolio
           </button>
           
-          {/* Other windows */}
           {active_windows.map((windowId) => {
             const windowInfo = {
-              resume: { title: 'Resume', icon: users_icon, emoji: '📄' },
-              projects: { title: 'Projects', icon: directory_open_icon, emoji: '📁' },
-              contact: { title: 'Contact', icon: envelope_icon, emoji: '📧' }
+              resume: { title: 'Resume', icon: WIN98_ICONS.users, emoji: '📄' },
+              projects: { title: 'Projects', icon: WIN98_ICONS.directory_open, emoji: '📁' },
+              contact: { title: 'Contact', icon: WIN98_ICONS.envelope, emoji: '📧' },
+              notepad: { title: 'Notepad', icon: WIN98_ICONS.notepad, emoji: '📝' },
+              msdos: { title: 'MS-DOS Prompt', icon: WIN98_ICONS.cmd, emoji: '💻' }
             };
-            
             const info = windowInfo[windowId];
-            
             if(!info) return null;
-            
+            const key = `taskbar-${windowId}`;
             return (
               <button
-                key={windowId}
-                onClick={() => focus_window(windowId)}
+                key = {windowId}
+                onClick = {() => { focus_window(windowId); set_start_menu_open(false); }}
                 style = {{ 
-                  height: '18px', 
-                  fontSize: '10px',
+                  height: '22px', 
+                  fontSize: '11px',
                   padding: '0 8px',
                   background: active_window_id === windowId ? '#316ac5' : '#c0c0c0',
                   color: active_window_id === windowId ? 'white' : 'black',
-                  border: active_window_id === windowId ? '1px inset #316ac5' : '1px outset #c0c0c0',
+                  border: active_window_id === windowId ? '1px inset #316ac5' : '1px outset #dfdfdf',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '4px',
                   cursor: 'pointer'
                 }}
               >
-                <Image 
-                  src = {info.icon}
-                  alt = {info.title}
-                  width = {12}
-                  height = {12}
-                  style = {{
-                    imageRendering: 'pixelated'
-                  }}
-                  onError = {(e) => {
-                    e.target.style.display = 'none';
-                    e.target.insertAdjacentHTML('afterend', `<span>${info.emoji}</span>`);
-                  }}
-                />
+                {!icon_fallback[key] ? <Image src = {getWin98Icon(info.icon)} alt = {info.title} width = {16} height = {16} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_icon_fallback(f => ({ ...f, [key]: true }))} /> : <span>{info.emoji}</span>}
                 {info.title}
               </button>
             );
           })}
         </div>
 
-        {/* Clock */}
-        <div style = {{ 
+        {/* Clock — 98 style */}
+        <div className = "status-bar-field" style = {{ 
           fontSize: '11px', 
           padding: '0 8px',
-          border: '1px inset #c0c0c0',
+          border: '1px inset #808080',
           background: '#c0c0c0',
           height: '22px',
           display: 'flex',
           alignItems: 'center',
-          minWidth: '60px',
-          justifyContent: 'center'
+          minWidth: '52px',
+          justifyContent: 'center',
+          marginLeft: 'auto'
         }}>
           {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </div>
       </div>
+
+      {/* Start menu popup — 98-style */}
+      {start_menu_open && (
+        <>
+          <div 
+            style = {{ position: 'fixed', inset: 0, zIndex: 999 }}
+            onClick = {() => set_start_menu_open(false)}
+            aria-hidden = "true"
+          />
+          <div 
+            className = "window"
+            style = {{
+              position: 'fixed',
+              bottom: '30px',
+              left: '2px',
+              zIndex: 1001,
+              minWidth: '200px',
+              boxShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+            }}
+            onClick = {(e) => e.stopPropagation()}
+          >
+            <div className = "title-bar">
+              <div className = "title-bar-text">Start Menu</div>
+            </div>
+            <div className = "window-body" style = {{ padding: '4px' }}>
+              <ul className = "tree-view" style = {{ listStyle: 'none', margin: 0, padding: '2px 0' }}>
+                <li>
+                  <button 
+                    className = "field-row" 
+                    style = {{ width: '100%', justifyContent: 'flex-start', padding: '6px 12px', gap: '8px' }}
+                    onClick = {() => { open_window('resume'); set_start_menu_open(false); }}
+                  >
+                    {!icon_fallback['start-resume'] ? <Image src = {getWin98Icon(WIN98_ICONS.users)} alt = "" width = {16} height = {16} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_icon_fallback(f => ({ ...f, 'start-resume': true }))} /> : <span>📄</span>}
+                    Resume
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    className = "field-row" 
+                    style = {{ width: '100%', justifyContent: 'flex-start', padding: '6px 12px', gap: '8px' }}
+                    onClick = {() => { open_window('projects'); set_start_menu_open(false); }}
+                  >
+                    {!icon_fallback['start-projects'] ? <Image src = {getWin98Icon(WIN98_ICONS.directory_open)} alt = "" width = {16} height = {16} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_icon_fallback(f => ({ ...f, 'start-projects': true }))} /> : <span>📁</span>}
+                    Projects
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    className = "field-row" 
+                    style = {{ width: '100%', justifyContent: 'flex-start', padding: '6px 12px', gap: '8px' }}
+                    onClick = {() => { open_window('contact'); set_start_menu_open(false); }}
+                  >
+                    {!icon_fallback['start-contact'] ? <Image src = {getWin98Icon(WIN98_ICONS.envelope)} alt = "" width = {16} height = {16} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_icon_fallback(f => ({ ...f, 'start-contact': true }))} /> : <span>📧</span>}
+                    Contact
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    className = "field-row" 
+                    style = {{ width: '100%', justifyContent: 'flex-start', padding: '6px 12px', gap: '8px' }}
+                    onClick = {() => { set_theme_manager_open(true); set_start_menu_open(false); }}
+                  >
+                    {!icon_fallback['start-themes'] ? <Image src = {getWin98Icon(WIN98_ICONS.themes)} alt = "" width = {16} height = {16} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_icon_fallback(f => ({ ...f, 'start-themes': true }))} /> : <span>🎨</span>}
+                    Theme Manager
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    className = "field-row" 
+                    style = {{ width: '100%', justifyContent: 'flex-start', padding: '6px 12px', gap: '8px' }}
+                    onClick = {() => { open_window('notepad'); set_start_menu_open(false); }}
+                  >
+                    {!icon_fallback['start-notepad'] ? <Image src = {getWin98Icon(WIN98_ICONS.notepad)} alt = "" width = {16} height = {16} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_icon_fallback(f => ({ ...f, 'start-notepad': true }))} /> : <span>📝</span>}
+                    Notepad
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    className = "field-row" 
+                    style = {{ width: '100%', justifyContent: 'flex-start', padding: '6px 12px', gap: '8px' }}
+                    onClick = {() => { open_window('msdos'); set_start_menu_open(false); }}
+                  >
+                    {!icon_fallback['start-msdos'] ? <Image src = {getWin98Icon(WIN98_ICONS.cmd)} alt = "" width = {16} height = {16} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_icon_fallback(f => ({ ...f, 'start-msdos': true }))} /> : <span>💻</span>}
+                    MS-DOS Prompt
+                  </button>
+                </li>
+                <hr style = {{ margin: '4px 8px', borderColor: '#c0c0c0' }} />
+                <li>
+                  <button 
+                    className = "field-row" 
+                    style = {{ width: '100%', justifyContent: 'flex-start', padding: '6px 12px' }}
+                    onClick = {() => { set_start_menu_open(false); router.push('/'); }}
+                  >
+                    Exit Windows 98 Mode
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Desktop Icons */}
       {desktop_icons.map((icon) => (
@@ -914,10 +871,7 @@ const Windows98Home = () => {
                 
                 set_desktop_icons(prev => prev.map(i => 
                   i.id === 'recycle-bin' 
-                    ? { 
-                        ...i, 
-                        icon: recycle_bin_full_icon
-                      }
+                    ? { ...i, icon: WIN98_ICONS.recycle_full }
                     : i
                 ));
               }
@@ -930,30 +884,19 @@ const Windows98Home = () => {
             }
           }}
         >
-          <Image 
-            src = {icon.icon}
-            alt = {icon.name}
-            width = {32}
-            height = {32}
-            style = {{
-              imageRendering: 'pixelated',
-              marginBottom: '4px',
-              pointerEvents: 'none'
-            }}
-            onError = {(e) => {
-              e.target.style.display = 'none';
-              e.target.nextSibling.style.display = 'block';
-            }}
-          />
-          <div style = {{ 
-            display: 'none', 
-            fontSize: '32px', 
-            pointerEvents: 'none',
-            marginBottom: '4px',
-            lineHeight: 1
-          }}>
-            {icon.emoji}
-          </div>
+          {!icon_fallback[icon.id] ? (
+            <Image 
+              src = {getWin98Icon(icon.icon)}
+              alt = {icon.name}
+              width = {32}
+              height = {32}
+              unoptimized
+              style = {{ imageRendering: 'pixelated', marginBottom: '4px', pointerEvents: 'none' }}
+              onError = {() => set_icon_fallback(f => ({ ...f, [icon.id]: true }))}
+            />
+          ) : (
+            <span style = {{ fontSize: '32px', marginBottom: '4px', lineHeight: 1 }}>{icon.emoji}</span>
+          )}
           <span style = {{ 
             fontSize: '10px', 
             color: 'white',

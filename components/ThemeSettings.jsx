@@ -27,10 +27,9 @@ const theme_settings = () => {
     document.documentElement.style.setProperty("--accent-default", color);
     document.documentElement.style.setProperty("--accent-hover", `${color}dd`);
     document.documentElement.style.setProperty("--accent-active", `${color}aa`);
-    
     document.documentElement.style.setProperty("--accent-shadow", `${color}33`);
     document.documentElement.style.setProperty("--accent-glow", `${color}66`);
-    
+    document.documentElement.style.setProperty("--accent-bg", `${color}20`);
     document.documentElement.style.setProperty("--accent-gradient-start", `${color}22`);
     document.documentElement.style.setProperty("--accent-gradient-end", `${color}11`);
   };
