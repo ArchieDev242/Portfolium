@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Windows98Window from './Windows98Window';
 import { WIN98_ICONS } from '@/lib/win98-icons';
 
-const PROMPT = 'C:\\WINDOWS>';
+const PROMPT = 'C:\\WINDOWS\\Desktop>';
 
 const COMMANDS = {
   help: () =>
@@ -66,7 +66,6 @@ const Win98_msdos = ({ onClose, onFocus, isActive, zIndex }) => {
   const [history_index, set_history_index] = useState(-1);
   const input_ref = useRef(null);
   const output_ref = useRef(null);
-  const [menu_open, set_menu_open] = useState(false);
 
   useEffect(() => {
     if(isActive && input_ref.current) input_ref.current.focus();
@@ -153,7 +152,6 @@ const Win98_msdos = ({ onClose, onFocus, isActive, zIndex }) => {
     {
       if(txt && navigator.clipboard) await navigator.clipboard.writeText(txt);
     } catch(_) {}
-    set_menu_open(false);
   };
 
   return (
@@ -164,132 +162,42 @@ const Win98_msdos = ({ onClose, onFocus, isActive, zIndex }) => {
       onFocus = {onFocus}
       isActive = {isActive}
       zIndex = {zIndex}
-      width = {668}
-      height = {432}
+      width = {640}
+      height = {400}
       maximizable = {true}
     >
-      <div
-        style = {{
-          fontFamily: '"Lucida Console", "Courier New", Consolas, monospace',
-          fontSize: '14px',
-          lineHeight: 1.2,
-          background: '#000',
-          color: '#00ff00',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden'
-        }}
-      >
-        {/* Edit menu bar — like real CMD */}
-        <div
-          style = {{
-            display: 'flex',
-            alignItems: 'center',
-            padding: '2px 4px',
-            background: '#000',
-            borderBottom: '1px solid #00ff00',
-            minHeight: '20px'
-          }}
-        >
-          <div style = {{ position: 'relative' }}>
-            <button
-              onMouseDown = {(e) => {
-                e.preventDefault();
-                set_menu_open(!menu_open);
-              }}
-              style = {{
-                padding: '2px 8px',
-                fontSize: '11px',
-                background: 'transparent',
-                color: '#00ff00',
-                border: 'none',
-                cursor: 'pointer'
-              }}
-            >
-              &nbsp;Edit&nbsp;
-            </button>
-            {menu_open && (
-              <>
-                <div
-                  style = {{ position: 'fixed', inset: 0, zIndex: 9998 }}
-                  onClick = {() => set_menu_open(false)}
-                />
-                <div
-                  className = "window"
-                  style = {{
-                    position: 'absolute',
-                    top: '100%',
-                    left: 0,
-                    zIndex: 9999,
-                    minWidth: '120px',
-                    padding: '2px'
-                  }}
-                >
-                  <div className = "window-body" style = {{ padding: '2px' }}>
-                    <button
-                      className = "field-row"
-                      style = {{
-                        width: '100%',
-                        justifyContent: 'flex-start',
-                        padding: '4px 8px',
-                        fontSize: '11px'
-                      }}
-                      onClick = {handle_copy}
-                    >
-                      Mark
-                    </button>
-                    <button
-                      className = "field-row"
-                      style = {{
-                        width: '100%',
-                        justifyContent: 'flex-start',
-                        padding: '4px 8px',
-                        fontSize: '11px'
-                      }}
-                      onClick = {handle_copy}
-                    >
-                      Copy
-                    </button>
-                    <button
-                      className = "field-row"
-                      style = {{
-                        width: '100%',
-                        justifyContent: 'flex-start',
-                        padding: '4px 8px',
-                        fontSize: '11px'
-                      }}
-                      onClick = {async () => {
-                        set_menu_open(false);
-                        let t = '';
-                        try {
-                          t = navigator.clipboard ? await navigator.clipboard.readText() : '';
-                        } catch(_) {
-                          t = prompt('Paste text (Ctrl+V):') || '';
-                        }
-                        if(t) set_input((prev) => prev + t);
-                      }}
-                    >
-                      Paste
-                    </button>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
+      <div className = "win98-msdos">
+        {/* Toolbar — Auto dropdown + icon buttons */}
+        <div className = "msdos-toolbar">
+          <select defaultValue = "Auto">
+            <option>Auto</option>
+            <option>Manual</option>
+          </select>
+          <button className = "msdos-toolbar-btn" title = "Mark" onClick = {() => output_ref.current?.focus()}>
+            <svg width = "14" height = "14" viewBox = "0 0 14 14" fill = "currentColor"><rect x = "1" y = "1" width = "12" height = "12" fill = "none" stroke = "currentColor" strokeWidth = "1" strokeDasharray = "2 1" /></svg>
+          </button>
+          <button className = "msdos-toolbar-btn" title = "Copy" onClick = {handle_copy}>
+            <svg width = "14" height = "14" viewBox = "0 0 14 14" fill = "currentColor"><rect x = "2" y = "2" width = "8" height = "10" fill = "none" stroke = "currentColor" strokeWidth = "1" /><rect x = "4" y = "4" width = "8" height = "10" fill = "none" stroke = "currentColor" strokeWidth = "1" /></svg>
+          </button>
+          <button className = "msdos-toolbar-btn" title = "Paste" onClick = {async () => {
+            let t = '';
+            try { t = navigator.clipboard ? await navigator.clipboard.readText() : ''; } catch(_) { t = prompt('Paste:') || ''; }
+            if(t) set_input((prev) => prev + t);
+          }}>
+            <svg width = "14" height = "14" viewBox = "0 0 14 14" fill = "currentColor"><rect x = "2" y = "2" width = "10" height = "12" fill = "none" stroke = "currentColor" strokeWidth = "1" /><path d = "M4 4h6v1H4zM4 6h6v1H4zM4 8h4v1H4z" fill = "currentColor" /></svg>
+          </button>
+          <button className = "msdos-toolbar-btn" title = "Scroll">↕</button>
+          <button className = "msdos-toolbar-btn" title = "Find">◉</button>
+          <button className = "msdos-toolbar-btn" title = "Properties">⚙</button>
+          <button className = "msdos-toolbar-btn" title = "Font" style = {{ fontWeight: 'bold', fontFamily: 'serif' }}>A</button>
         </div>
 
-        {/* Terminal area — 80x25 character grid feel (640x400 classic size) */}
+        {/* Terminal */}
         <div
+          className = "msdos-terminal"
           ref = {output_ref}
+          tabIndex = {0}
           onClick = {() => input_ref.current?.focus()}
-          style = {{
-            flex: 1,
-            padding: '8px',
-            overflow: 'auto',
-            cursor: 'text',
-            minHeight: 0
-          }}
         >
           {output.map((line, i) => (
             <div key = {i} style = {{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
@@ -308,16 +216,6 @@ const Win98_msdos = ({ onClose, onFocus, isActive, zIndex }) => {
               onKeyDown = {handle_key_down}
               autoComplete = "off"
               spellCheck = {false}
-              style = {{
-                flex: 1,
-                minWidth: 0,
-                background: 'transparent',
-                border: 'none',
-                outline: 'none',
-                color: '#00ff00',
-                fontFamily: 'inherit',
-                fontSize: 'inherit'
-              }}
             />
           </div>
         </div>

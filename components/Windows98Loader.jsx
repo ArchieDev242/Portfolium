@@ -59,11 +59,17 @@ const Windows98Loader = ({ onComplete }) => {
     document.body.classList.add('win98-mode');
 
     const base = (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_BASE_PATH) || '';
-    const custom_link = document.createElement('link');
-    custom_link.rel = 'stylesheet';
-    custom_link.href = `${base}/win98/win98.css`;
-    custom_link.id = 'win98-loader-custom-css';
-    document.head.appendChild(custom_link);
+    const link_98 = document.createElement('link');
+    link_98.rel = 'stylesheet';
+    link_98.href = `${base}/win98/98.css`;
+    link_98.id = 'win98-loader-98css';
+    document.head.appendChild(link_98);
+
+    const link_overlay = document.createElement('link');
+    link_overlay.rel = 'stylesheet';
+    link_overlay.href = `${base}/win98/win98.css`;
+    link_overlay.id = 'win98-loader-custom-css';
+    document.head.appendChild(link_overlay);
 
     // matrix rain
     const generate_matrix_rain = () => {
@@ -314,22 +320,18 @@ const Windows98Loader = ({ onComplete }) => {
       
       return () => {
         window.removeEventListener('resize', handle_resize);
-        const existing_custom_link = document.getElementById('win98-loader-custom-css');
-
-        if(existing_custom_link)
-          {
-          document.head.removeChild(existing_custom_link);
-        }
+        const el_98 = document.getElementById('win98-loader-98css');
+        if(el_98) document.head.removeChild(el_98);
+        const el_overlay = document.getElementById('win98-loader-custom-css');
+        if(el_overlay) document.head.removeChild(el_overlay);
       };
     }
 
     return () => {
-      const existing_custom_link = document.getElementById('win98-loader-custom-css');
-
-      if(existing_custom_link)
-        {
-        document.head.removeChild(existing_custom_link);
-      }
+      const el_98 = document.getElementById('win98-loader-98css');
+      if(el_98) document.head.removeChild(el_98);
+      const el_overlay = document.getElementById('win98-loader-custom-css');
+      if(el_overlay) document.head.removeChild(el_overlay);
     };
   }, []);
 
