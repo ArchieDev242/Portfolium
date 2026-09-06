@@ -1,10 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 
 // minecraft-style блоки
-export const MinecraftBlock = ({ type = "stone", className = "", children, onClick }) => {
+export const MinecraftBlock = ({
+  type = "stone",
+  className = "",
+  children,
+  onClick,
+}) => {
   const blockStyles = {
     stone: "bg-gray-500 border-gray-400 border-b-gray-700 border-r-gray-700",
     dirt: "bg-amber-800 border-amber-700 border-b-amber-900 border-r-amber-900",
@@ -32,8 +37,12 @@ export const MinecraftBlock = ({ type = "stone", className = "", children, onCli
   );
 };
 
-export const TexturedBlock = ({ type = "stone", className = "", children, onClick }) => {
-  // замість зображень використовуємо кольори
+export const TexturedBlock = ({
+  type = "stone",
+  className = "",
+  children,
+  onClick,
+}) => {
   const blockStyles = {
     stone: "bg-gray-500",
     dirt: "bg-amber-800",
@@ -55,17 +64,25 @@ export const TexturedBlock = ({ type = "stone", className = "", children, onClic
   );
 };
 
-// компонент для створення крафтінг-столу
 export const CraftingTable = ({ children, className = "" }) => {
   return (
-    <div className = {`bg-amber-800 border-4 border-amber-900 p-4 pixelated ${className}`}>
+    <div
+      className = {`bg-amber-800 border-4 border-amber-900 p-4 pixelated ${className}`}
+    >
       <div className = "text-center mb-4">
-        <h3 className = "text-xl text-yellow-300 minecraft-font">CRAFTING TABLE</h3>
+        <h3 className = "text-xl text-yellow-300 minecraft-font">
+          CRAFTING TABLE
+        </h3>
       </div>
       <div className = "grid grid-cols-3 gap-2 mb-4">
-        {Array(9).fill(0).map((_, index) => (
-          <div key = {index} className = "bg-gray-800 border-2 border-gray-700 aspect-square"></div>
-        ))}
+        {Array(9)
+          .fill(0)
+          .map((_, index) => (
+            <div
+              key = {index}
+              className = "bg-gray-800 border-2 border-gray-700 aspect-square"
+            ></div>
+          ))}
       </div>
       <div className = "flex justify-center">
         <div className = "bg-gray-800 border-2 border-gray-700 w-16 h-16"></div>
@@ -75,34 +92,59 @@ export const CraftingTable = ({ children, className = "" }) => {
   );
 };
 
-// компонент для створення інвентарю
 export const Inventory = ({ children, className = "" }) => {
   return (
-    <div className = {`bg-gray-900/80 border-4 border-gray-800 p-6 pixelated ${className}`}>
+    <div
+      className={`bg-gray-900/80 border-4 border-gray-800 p-6 pixelated ${className}`}
+    >
       {children}
     </div>
   );
 };
 
-// компонент для створення кнопки в стилі Minecraft
-export const MinecraftButton = ({ text, onClick, type = "button", disabled = false, className = "" }) => {
+export const MinecraftButton = ({
+  text,
+  onClick,
+  type = "button",
+  disabled = false,
+  className = "",
+}) => {
   return (
     <motion.button
       type = {type}
       onClick = {onClick}
       disabled = {disabled}
-      className = {`px-6 py-3 bg-gray-700 border-b-4 border-t-2 border-l-2 border-r-4 border-t-gray-500 border-l-gray-500 border-r-gray-900 border-b-gray-900 text-white minecraft-font transition-all pixelated ${disabled ? 'opacity-50' : 'hover:bg-gray-600'} ${className}`}
+      className = {`px-6 py-3 bg-gray-700 border-b-4 border-t-2 border-l-2 border-r-4 border-t-gray-500 border-l-gray-500 border-r-gray-900 border-b-gray-900 text-white minecraft-font transition-all pixelated ${disabled ? "opacity-50" : "hover:bg-gray-600"} ${className}`}
       whileHover = {disabled ? {} : { y: -2 }}
-      whileTap = {disabled ? {} : { y: 2, borderBottomWidth: '2px', borderRightWidth: '2px', borderTopWidth: '4px', borderLeftWidth: '4px' }}
+      whileTap = {
+        disabled
+          ? {}
+          : {
+              y: 2,
+              borderBottomWidth: "2px",
+              borderRightWidth: "2px",
+              borderTopWidth: "4px",
+              borderLeftWidth: "4px",
+            }
+      }
     >
       {text}
     </motion.button>
   );
 };
 
-// компонент для створення поля вводу в стилі Minecraft
-export const MinecraftInput = ({ type = "text", name, value, onChange, placeholder, required = false, rows = "1", className = "" }) => {
-  if(type === "textarea") {
+export const MinecraftInput = ({
+  type = "text",
+  name,
+  value,
+  onChange,
+  placeholder,
+  required = false,
+  rows = "1",
+  className = "",
+}) => {
+  if(type === "textarea")
+  {
     return (
       <textarea
         name = {name}
@@ -129,43 +171,63 @@ export const MinecraftInput = ({ type = "text", name, value, onChange, placehold
   );
 };
 
-// компонент для створення предметів Minecraft (кирка, меч, сокира)
-export const MinecraftItem = ({ type = "pickaxe", animate = false, className = "" }) => {
+export const MinecraftItem = ({
+  type = "pickaxe",
+  animate = false,
+  className = "",
+}) => {
   const itemStyles = {
-    pickaxe: "border-l-transparent border-r-transparent border-b-transparent border-t-8 border-l-8 border-r-8 border-b-8 border-t-gray-500 border-l-gray-500 border-r-gray-700 border-b-gray-700 after:content-[''] after:absolute after:w-4 after:h-12 after:bg-amber-800 after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:translate-y-1",
-    sword: "border-l-transparent border-r-transparent border-b-transparent border-t-8 border-l-8 border-r-8 border-b-8 border-t-gray-500 border-l-gray-500 border-r-gray-700 border-b-gray-700 after:content-[''] after:absolute after:w-2 after:h-12 after:bg-amber-800 after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:translate-y-1",
+    pickaxe:
+      "border-l-transparent border-r-transparent border-b-transparent border-t-8 border-l-8 border-r-8 border-b-8 border-t-gray-500 border-l-gray-500 border-r-gray-700 border-b-gray-700 after:content-[''] after:absolute after:w-4 after:h-12 after:bg-amber-800 after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:translate-y-1",
+    sword:
+      "border-l-transparent border-r-transparent border-b-transparent border-t-8 border-l-8 border-r-8 border-b-8 border-t-gray-500 border-l-gray-500 border-r-gray-700 border-b-gray-700 after:content-[''] after:absolute after:w-2 after:h-12 after:bg-amber-800 after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:translate-y-1",
     axe: "border-l-transparent border-r-transparent border-b-transparent border-t-8 border-l-8 border-r-8 border-b-8 border-t-gray-500 border-l-gray-500 border-r-gray-700 border-b-gray-700 after:content-[''] after:absolute after:w-3 after:h-12 after:bg-amber-800 after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:translate-y-1",
   };
 
   return (
     <motion.div
       className = {`relative w-12 h-12 bg-cyan-500 pixelated ${itemStyles[type]} ${className}`}
-      animate = {animate ? { 
-        rotate: [0, -20, 0, 20, 0],
-        y: [0, -5, 0]
-      } : {}}
+      animate = {
+        animate
+          ? {
+              rotate: [0, -20, 0, 20, 0],
+              y: [0, -5, 0],
+            }
+          : {}
+      }
       transition = {animate ? { repeat: Infinity, duration: 0.5 } : {}}
     />
   );
 };
 
-// компонент для відображення інтерфейсу гравця (здоров'я, голод, досвід)
-export const PlayerInterface = ({ health = 10, hunger = 10, xp = 0, className = "" }) => {
+export const PlayerInterface = ({
+  health = 10,
+  hunger = 10,
+  xp = 0,
+  className = "",
+}) => {
   // максимальні значення
   const maxHealth = 10;
   const maxHunger = 10;
   const maxXp = 100;
 
   return (
-    <div className = {`bg-gray-900/60 p-4 border-2 border-gray-800 pixelated ${className}`}>
+    <div
+      className = {`bg-gray-900/60 p-4 border-2 border-gray-800 pixelated ${className}`}
+    >
       <div className = "flex justify-between items-center">
         {/* Здоров'я */}
         <div className = "flex items-center">
           <span className = "text-white minecraft-font mr-2">HP:</span>
           <div className = "flex">
-            {Array(maxHealth).fill(0).map((_, index) => (
-              <div key = {`health-${index}`} className = {`w-5 h-5 mx-0.5 ${index < health ? 'bg-red-600' : 'bg-gray-700'}`}></div>
-            ))}
+            {Array(maxHealth)
+              .fill(0)
+              .map((_, index) => (
+                <div
+                  key = {`health-${index}`}
+                  className = {`w-5 h-5 mx-0.5 ${index < health ? "bg-red-600" : "bg-gray-700"}`}
+                ></div>
+              ))}
           </div>
         </div>
 
@@ -173,9 +235,14 @@ export const PlayerInterface = ({ health = 10, hunger = 10, xp = 0, className = 
         <div className = "flex items-center">
           <span className = "text-white minecraft-font mr-2">Hunger:</span>
           <div className = "flex">
-            {Array(maxHunger).fill(0).map((_, index) => (
-              <div key = {`hunger-${index}`} className = {`w-5 h-5 mx-0.5 ${index < hunger ? 'bg-yellow-600' : 'bg-gray-700'}`}></div>
-            ))}
+            {Array(maxHunger)
+              .fill(0)
+              .map((_, index) => (
+                <div
+                  key = {`hunger-${index}`}
+                  className = {`w-5 h-5 mx-0.5 ${index < hunger ? "bg-yellow-600" : "bg-gray-700"}`}
+                ></div>
+              ))}
           </div>
         </div>
       </div>
@@ -185,8 +252,8 @@ export const PlayerInterface = ({ health = 10, hunger = 10, xp = 0, className = 
         <div className = "flex items-center">
           <span className = "text-white minecraft-font mr-2">XP:</span>
           <div className = "flex-1 bg-gray-800 h-4">
-            <div 
-              className = "h-full bg-green-500" 
+            <div
+              className = "h-full bg-green-500"
               style = {{ width: `${xp}%` }}
             ></div>
           </div>
@@ -197,19 +264,23 @@ export const PlayerInterface = ({ health = 10, hunger = 10, xp = 0, className = 
   );
 };
 
-// компонент для анімації розбивання блоку
-export const BreakingBlock = ({ type = "stone", stage = 0, onComplete, className = "" }) => {
+export const BreakingBlock = ({
+  type = "stone",
+  stage = 0,
+  onComplete,
+  className = "",
+}) => {
   const max_stage = 10;
   const [current_stage, setCurrentStage] = useState(stage);
 
   useEffect(() => {
-    if(stage > 0 && current_stage < max_stage) {
+    if(stage > 0 && current_stage < max_stage)
+    {
       const timer = setTimeout(() => {
-        setCurrentStage(prev => {
+        setCurrentStage((prev) => {
           const new_stage = prev + 1;
 
-          if(new_stage >= max_stage && onComplete) 
-            {
+          if (new_stage >= max_stage && onComplete) {
             onComplete();
           }
           return new_stage;
@@ -247,22 +318,47 @@ export const BreakingBlock = ({ type = "stone", stage = 0, onComplete, className
 };
 
 export const StarField = ({ count = 100, className = "" }) => {
-  const stars = Array(count).fill(0).map((_, index) => {
-    const size = Math.random() * 3 + 1;
-    const x = Math.random() * 100;
-    const y = Math.random() * 100;
-    const opacity = Math.random() * 0.5 + 0.5;
-    const animation_delay = Math.random() * 5;
-    
-    return { size, x, y, opacity, animationDelay: animation_delay, id: index };
-  });
+  const [is_mounted, set_is_mounted] = useState(false);
+
+  useEffect(() => {
+    set_is_mounted(true);
+  }, []);
+
+  const stars = useMemo(
+    () =>
+      Array(count)
+        .fill(0)
+        .map((_, index) => {
+          const size = Math.random() * 3 + 1;
+          const x = Math.random() * 100;
+          const y = Math.random() * 100;
+          const opacity = Math.random() * 0.5 + 0.5;
+          const animation_delay = Math.random() * 5;
+          const duration = 2 + Math.random() * 3;
+
+          return {
+            size,
+            x,
+            y,
+            opacity,
+            animationDelay: animation_delay,
+            duration,
+            id: index,
+          };
+        }),
+    [count],
+  );
+
+  if(!is_mounted) return null;
 
   return (
-    <div className = {`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
-      {stars.map(star => (
+    <div
+      className = {`absolute inset-0 overflow-hidden pointer-events-none ${className}`}
+    >
+      {stars.map((star) => (
         <motion.div
           key = {star.id}
-          className = "absolute bg-white rounded-full"
+          className = {"absolute bg-white rounded-full"}
           style = {{
             width: `${star.size}px`,
             height: `${star.size}px`,
@@ -276,7 +372,7 @@ export const StarField = ({ count = 100, className = "" }) => {
           }}
           transition = {{
             repeat: Infinity,
-            duration: 2 + Math.random() * 3,
+            duration: star.duration,
             delay: star.animationDelay,
           }}
         />

@@ -24,6 +24,8 @@
 .DS_Store
 *.pem
 ./vscode
+CLAUDE.md
+/.rtk/
 
 # debug
 npm-debug.log*

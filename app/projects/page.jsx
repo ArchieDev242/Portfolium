@@ -7,32 +7,36 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
 import { projectsData } from "@/data/projects";
+import { withBasePath } from "@/lib/asset-path";
+import AddProjectModal from "@/components/AddProjectModal";
+
+// dev-only: flip to true locally to show the "+ Add Project" button, keep false before committing/deploying
+const IS_ADMIN = false;
 
 const IconComponent = ({ name }) => {
-  switch(name) 
+  switch(name)
   {
-    case 'FaGamepad': return <FaGamepad className = "text-2xl" />;
-    case 'FaCode': return <FaCode className = "text-2xl" />;
-    case 'FaPuzzlePiece': return <FaPuzzlePiece className = "text-2xl" />;
-    case 'FaGlobe': return <FaGlobe className = "text-2xl" />;
+    case "FaGamepad": return <FaGamepad className = "text-2xl" />;
+    case "FaCode": return <FaCode className = "text-2xl" />;
+    case "FaPuzzlePiece": return <FaPuzzlePiece className = "text-2xl" />;
+    case "FaGlobe": return <FaGlobe className = "text-2xl" />;
     default: return <FaCode className = "text-2xl" />;
   }
 };
 
 // icons for categorys
 const category_icons = {
-  'Game Development': 'FaGamepad',
-  'Software Development': 'FaCode',
-  'Game Modding': 'FaPuzzlePiece',
-  'Web Development': 'FaGlobe'
+  "Game Development": "FaGamepad",
+  "Software Development": "FaCode",
+  "Game Modding": "FaPuzzlePiece",
+  "Web Development": "FaGlobe",
 };
 
 const Projects = {
-  categories: projectsData.categories.map(category => ({
+  categories: projectsData.categories.map((category) => ({
     ...category,
-    icon: category_icons[category.name] || 'FaCode'
+    icon: category_icons[category.name] || "FaCode",
   })),
-
 };
 
 const ProjectCard = ({ project, index }) => {
@@ -44,22 +48,21 @@ const ProjectCard = ({ project, index }) => {
       className = "group relative bg-[#232329] rounded-xl overflow-hidden"
     >
       <div className = "aspect-video relative overflow-hidden">
-        <div className ="absolute inset-0 bg-gradient-to-br from-accent-default/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className = "absolute inset-0 bg-gradient-to-br from-accent-default/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         <img
-          src = {project.image}
+          src = {withBasePath(project.image)}
           alt = {project.title}
           className = "w-full h-full object-contain bg-gray-800 transform group-hover:scale-110 transition-transform duration-500"
         />
       </div>
       <div className = "p-6">
-        <h3 className ="text-xl font-semibold mb-2 group-hover:text-accent-default transition-colors duration-300">
+        <h3 className = "text-xl font-semibold mb-2 group-hover:text-accent-default transition-colors duration-300">
           {project.title}
         </h3>
         <p className = "text-white/60 mb-4">
-          {project.description.length > 100 
-            ? `${project.description.substring(0, 100)}...` 
-            : project.description
-          }
+          {project.description.length > 100
+            ? `${project.description.substring(0, 100)}...`
+            : project.description}
         </p>
         <div className = "flex flex-wrap gap-2 mb-4">
           {project.technologies.map((tech, i) => (
@@ -84,7 +87,7 @@ const ProjectCard = ({ project, index }) => {
           >
             <path
               fillRule = "evenodd"
-              d ="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+              d = "M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
               clipRule = "evenodd"
             />
           </svg>
@@ -95,12 +98,17 @@ const ProjectCard = ({ project, index }) => {
 };
 
 const ProjectsPage = () => {
-  const [selected_category, set_selected_category] = useState(Projects.categories[0]?.name || '');
-  
-  const current_category = Projects.categories.find(cat => cat.name === selected_category) || Projects.categories[0];
+  const [selected_category, set_selected_category] = useState(
+    Projects.categories[0]?.name || "",
+  );
+  const [is_add_modal_open, set_is_add_modal_open] = useState(false);
 
-  if(Projects.categories.length === 0) 
-    {
+  const current_category =
+    Projects.categories.find((cat) => cat.name === selected_category) ||
+    Projects.categories[0];
+
+  if(Projects.categories.length === 0)
+  {
     return (
       <div className = "min-h-screen flex items-center justify-center">
         <p className = "text-foreground-muted">No projects found</p>
@@ -116,6 +124,18 @@ const ProjectsPage = () => {
       transition = {{ duration: 0.5 }}
       className = "min-h-[80vh] flex items-center justify-center py-12 xl:py-0"
     >
+      {IS_ADMIN && (
+        <button
+          onClick = {() => set_is_add_modal_open(true)}
+          className = "fixed bottom-8 right-8 z-40 w-14 h-14 rounded-full bg-accent-default text-black text-2xl font-bold shadow-lg hover:scale-110 transition-transform"
+          title = "Add Project"
+        >
+          +
+        </button>
+      )}
+      {is_add_modal_open && (
+        <AddProjectModal onClose = {() => set_is_add_modal_open(false)} />
+      )}
       <div className = "container mx-auto">
         <div className = "flex flex-col gap-8">
           <div className = "text-center">
@@ -151,7 +171,7 @@ const ProjectsPage = () => {
             exit = {{ opacity: 0, y: -20 }}
             className = "text-center text-white/60"
           >
-            {current_category?.description || 'No description available'}
+            {current_category?.description || "No description available"}
           </motion.div>
 
           {/* Projects Grid */}
@@ -160,11 +180,17 @@ const ProjectsPage = () => {
               <AnimatePresence mode = "wait">
                 {current_category?.projects?.length > 0 ? (
                   current_category.projects.map((project, index) => (
-                    <ProjectCard key = {project.slug || index} project = {project} index = {index} />
+                    <ProjectCard
+                      key = {project.slug || index}
+                      project = {project}
+                      index = {index}
+                    />
                   ))
                 ) : (
                   <div className = "col-span-full text-center py-12">
-                    <p className = "text-foreground-muted">No projects found in this category</p>
+                    <p className = "text-foreground-muted">
+                      No projects found in this category
+                    </p>
                   </div>
                 )}
               </AnimatePresence>

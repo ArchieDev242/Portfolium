@@ -1,11 +1,24 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FaGithub, FaExternalLinkAlt, FaDownload, FaArrowLeft, FaEye, FaStar, FaCalendar, FaTimes, FaSearchPlus, FaSearchMinus, FaCompress } from "react-icons/fa";
+import {
+  FaGithub,
+  FaExternalLinkAlt,
+  FaDownload,
+  FaArrowLeft,
+  FaEye,
+  FaStar,
+  FaCalendar,
+  FaTimes,
+  FaSearchPlus,
+  FaSearchMinus,
+  FaCompress,
+} from "react-icons/fa";
 import Link from "next/link";
-import { notFound } from 'next/navigation';
-import { getProjectBySlug } from '@/data/projects';
-import { useEffect, useState } from 'react';
+import { notFound } from "next/navigation";
+import { getProjectBySlug } from "@/data/projects";
+import { withBasePath } from "@/lib/asset-path";
+import { useEffect, useState } from "react";
 
 const ProjectPageClient = ({ params }) => {
   const [project, set_project] = useState(null);
@@ -18,15 +31,15 @@ const ProjectPageClient = ({ params }) => {
 
   useEffect(() => {
     const load_project = async () => {
-      try 
+      try
       {
         const resolved_params = await params;
         const found_project = getProjectBySlug(resolved_params.slug);
         set_project(found_project);
-      } catch(error) 
+      } catch(error)
       {
-        console.error('Error loading project:', error);
-      } finally 
+        console.error("Error loading project:", error);
+      } finally
       {
         set_loading(false);
       }
@@ -39,19 +52,18 @@ const ProjectPageClient = ({ params }) => {
     set_lightbox_image(image);
     set_zoom_level(1);
     set_pan_position({ x: 0, y: 0 });
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   };
 
   const close_light_box = () => {
     set_lightbox_image(null);
     set_zoom_level(1);
     set_pan_position({ x: 0, y: 0 });
-    document.body.style.overflow = 'unset';
+    document.body.style.overflow = "unset";
   };
 
-  const handle_zoom_in = () => { set_zoom_level(prev => Math.min(prev + 0.25, 3)); };
-
-  const handle_zoom_out = () => { set_zoom_level(prev => Math.max(prev - 0.25, 0.5)); };
+  const handle_zoom_in = () => { set_zoom_level((prev) => Math.min(prev + 0.25, 3)); };
+  const handle_zoom_out = () => { set_zoom_level((prev) => Math.max(prev - 0.25, 0.5)); };
 
   const handle_reset_zoom = () => {
     set_zoom_level(1);
@@ -59,20 +71,20 @@ const ProjectPageClient = ({ params }) => {
   };
 
   const handle_mouse_down = (e) => {
-    if(zoom_level > 1) 
-      {
+    if(zoom_level > 1)
+    {
       e.preventDefault();
       set_is_dragging(true);
       set_drag_start({
         x: e.clientX - pan_position.x,
-        y: e.clientY - pan_position.y
+        y: e.clientY - pan_position.y,
       });
     }
   };
 
   const handle_touch_start = (e) => {
-    if(zoom_level > 1 && e.touches.length === 1) 
-      {
+    if (zoom_level > 1 && e.touches.length === 1)
+    {
       e.preventDefault();
       set_is_dragging(true);
 
@@ -80,38 +92,38 @@ const ProjectPageClient = ({ params }) => {
 
       set_drag_start({
         x: touch.clientX - pan_position.x,
-        y: touch.clientY - pan_position.y
+        y: touch.clientY - pan_position.y,
       });
     }
   };
 
   const handle_mouse_move = (e) => {
-    if(is_dragging && zoom_level > 1) 
-      {
+    if(is_dragging && zoom_level > 1)
+    {
       e.preventDefault();
       const new_x = e.clientX - drag_start.x;
       const new_y = e.clientY - drag_start.y;
-      
+
       const max_pan = 200 * zoom_level;
       const bounded_x = Math.max(-max_pan, Math.min(new_x, max_pan));
       const bounded_y = Math.max(-max_pan, Math.min(new_y, max_pan));
-      
+
       set_pan_position({ x: bounded_x, y: bounded_y });
     }
   };
 
   const handle_touch_move = (e) => {
-    if(is_dragging && zoom_level > 1 && e.touches.length === 1) 
-      {
+    if(is_dragging && zoom_level > 1 && e.touches.length === 1)
+    {
       e.preventDefault();
       const touch = e.touches[0];
       const new_x = touch.clientX - drag_start.x;
       const new_y = touch.clientY - drag_start.y;
-      
+
       const max_pan = 200 * zoom_level;
       const bounded_x = Math.max(-max_pan, Math.min(new_x, max_pan));
       const bounded_y = Math.max(-max_pan, Math.min(new_y, max_pan));
-      
+
       set_pan_position({ x: bounded_x, y: bounded_y });
     }
   };
@@ -128,44 +140,40 @@ const ProjectPageClient = ({ params }) => {
 
   useEffect(() => {
     const handle_escape = (e) => {
-      if(e.key === 'Escape') close_light_box(); 
+      if(e.key === "Escape") close_light_box();
     };
 
     const handle_wheel = (e) => {
-      if(lightbox_image) 
-        {
+      if(lightbox_image)
+      {
         e.preventDefault();
-        if(e.deltaY < 0) 
-          {
-          handle_zoom_in();
-        } else 
-        {
-          handle_zoom_out();
-        }
+
+        if(e.deltaY < 0) handle_zoom_in();
+        else handle_zoom_out();
       }
     };
 
-    if(lightbox_image) 
-      {
-      document.addEventListener('keydown', handle_escape);
-      document.addEventListener('wheel', handle_wheel, { passive: false });
-      
+    if (lightbox_image)
+    {
+      document.addEventListener("keydown", handle_escape);
+      document.addEventListener("wheel", handle_wheel, { passive: false });
+
       return () => {
-        document.removeEventListener('keydown', handle_escape);
-        document.removeEventListener('wheel', handle_wheel);
+        document.removeEventListener("keydown", handle_escape);
+        document.removeEventListener("wheel", handle_wheel);
       };
     }
   }, [lightbox_image]);
 
-  if(loading) 
-    {
+  if(loading)
+  {
     return (
       <div className="min-h-screen bg-background-default text-foreground-default py-12 flex items-center justify-center">
         <div>Loading...</div>
       </div>
     );
   }
-  
+
   if(!project) notFound();
 
   return (
@@ -177,9 +185,8 @@ const ProjectPageClient = ({ params }) => {
       className = "min-h-screen bg-background-default text-foreground-default py-12"
     >
       <div className = "container mx-auto px-4">
-        
         {/* Back Button */}
-        <Link 
+        <Link
           href = "/projects"
           className = "inline-flex items-center gap-2 text-accent-default hover:text-accent-default/80 transition-colors duration-300 mb-8"
         >
@@ -191,12 +198,12 @@ const ProjectPageClient = ({ params }) => {
           {/* Project Images */}
           <div className = "space-y-4">
             {/* Main Image */}
-            <div 
+            <div
               className = "relative overflow-hidden rounded-xl aspect-video cursor-pointer group hover:shadow-2xl transition-all duration-300"
-              onClick={() => open_light_box(project.image)}
+              onClick = {() => open_light_box(withBasePath(project.image))}
             >
-              <img 
-                src = {project.image} 
+              <img
+                src = {withBasePath(project.image)}
                 alt = {project.title}
                 className = "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
@@ -206,35 +213,44 @@ const ProjectPageClient = ({ params }) => {
                 </div>
               </div>
             </div>
-            
+
             {/* Additional Images */}
-            {project.additionalImages && project.additionalImages.map((image, index) => (
-              <div 
-                key = {index} 
-                className = "relative overflow-hidden rounded-xl aspect-video cursor-pointer group hover:shadow-2xl transition-all duration-300"
-                onClick={() => open_light_box(image)}
-              >
-                <img 
-                  src = {image}
-                  alt = {`${project.title} - Additional Image ${index + 1}`}
-                  className = "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className = "absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                  <div className = "opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-lg font-semibold">
-                    Click to enlarge
+            {project.additionalImages &&
+              project.additionalImages.map((image, index) => (
+                <div
+                  key = {index}
+                  className = "relative overflow-hidden rounded-xl aspect-video cursor-pointer group hover:shadow-2xl transition-all duration-300"
+                  onClick = {() => open_light_box(withBasePath(image))}
+                >
+                  <img
+                    src = {withBasePath(image)}
+                    alt = {`${project.title} - Additional Image ${index + 1}`}
+                    className = "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className = "absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                    <div className = "opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-lg font-semibold">
+                      Click to enlarge
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
 
             {/* Video Demo */}
             {project.videoDemo && (
               <div className = "space-y-3">
-                <h3 className = "text-lg font-semibold text-accent-default">🎥 Gameplay Demo</h3>
+                <h3 className = "text-lg font-semibold text-accent-default">
+                  🎥 Gameplay Demo
+                </h3>
                 <div className = "relative overflow-hidden rounded-xl aspect-video bg-[#232329]">
-                  {project.videoDemo.includes('youtube.com') || project.videoDemo.includes('youtu.be') ? (
+                  {project.videoDemo.includes("youtube.com") ||
+                  project.videoDemo.includes("youtu.be") ? (
                     <iframe
-                      src = {project.videoDemo.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/').split('&')[0]}
+                      src={
+                        project.videoDemo
+                          .replace("watch?v=", "embed/")
+                          .replace("youtu.be/", "youtube.com/embed/")
+                          .split("&")[0]
+                      }
                       title = {`${project.title} - Gameplay Demo`}
                       className = "w-full h-full"
                       frameBorder = "0"
@@ -283,21 +299,27 @@ const ProjectPageClient = ({ params }) => {
                 {project.stats.downloads && (
                   <div className = "text-center p-4 bg-[#232329] rounded-lg">
                     <FaDownload className = "mx-auto mb-2 text-accent-default" />
-                    <div className = "text-2xl font-bold">{project.stats.downloads}</div>
+                    <div className = "text-2xl font-bold">
+                      {project.stats.downloads}
+                    </div>
                     <div className = "text-sm text-white/70">Downloads</div>
                   </div>
                 )}
                 {project.stats.views && (
                   <div className = "text-center p-4 bg-[#232329] rounded-lg">
                     <FaEye className = "mx-auto mb-2 text-accent-default" />
-                    <div className = "text-2xl font-bold">{project.stats.views}</div>
+                    <div className = "text-2xl font-bold">
+                      {project.stats.views}
+                    </div>
                     <div className = "text-sm text-white/70">Views</div>
                   </div>
                 )}
                 {project.stats.likes && (
                   <div className = "text-center p-4 bg-[#232329] rounded-lg">
                     <FaStar className = "mx-auto mb-2 text-accent-default" />
-                    <div className = "text-2xl font-bold">{project.stats.likes}</div>
+                    <div className = "text-2xl font-bold">
+                      {project.stats.likes}
+                    </div>
                     <div className = "text-sm text-white/70">Likes</div>
                   </div>
                 )}
@@ -309,7 +331,7 @@ const ProjectPageClient = ({ params }) => {
               <h3 className = "text-xl font-semibold mb-3">Technologies Used</h3>
               <div className = "flex flex-wrap gap-2">
                 {project.technologies.map((tech, index) => (
-                  <span 
+                  <span
                     key = {index}
                     className = "px-3 py-1 bg-accent-default/20 text-accent-default rounded-full text-sm"
                   >
@@ -325,7 +347,10 @@ const ProjectPageClient = ({ params }) => {
                 <h3 className = "text-xl font-semibold mb-3">Key Features</h3>
                 <ul className = "space-y-2">
                   {project.features.map((feature, index) => (
-                    <li key = {index} className = "flex items-start gap-2 text-white/80">
+                    <li
+                      key = {index}
+                      className = "flex items-start gap-2 text-white/80"
+                    >
                       <span className = "text-accent-default mt-1">•</span>
                       {feature}
                     </li>
@@ -385,95 +410,120 @@ const ProjectPageClient = ({ params }) => {
         </div>
 
         {/* Detailed Description for FNF Project */}
-        {project.slug === 'fnf-cutscene-lua-script' && (
+        {project.slug === "fnf-cutscene-lua-script" && (
           <div className = "mb-12">
             <h2 className = "text-2xl font-bold mb-6">About This Project</h2>
             <div className = "bg-[#232329] rounded-xl p-6 space-y-4">
               <p className = "text-white/80 leading-relaxed">
-                This was my first Lua script uploaded to both GitHub and GameBanana. I created this tool because 
-                I believe cutscenes are one of the main components of FNF mods, and while experienced modders 
-                know how to write such code, many people who want to create mods might not have programming experience.
+                This was my first Lua script uploaded to both GitHub and
+                GameBanana. I created this tool because I believe cutscenes are
+                one of the main components of FNF mods, and while experienced
+                modders know how to write such code, many people who want to
+                create mods might not have programming experience.
               </p>
-              
+
               <h3 className = "text-xl font-semibold">How to Use</h3>
               <ol className = "list-decimal list-inside space-y-2 text-white/80">
-                <li>Upload your video into the "videos" folder in Psych Engine</li>
+                <li>
+                  Upload your video into the "videos" folder in Psych Engine
+                </li>
                 <li>Ensure your video is sized at 1280x720 resolution</li>
                 <li>Add the Lua script to your mod</li>
                 <li>Enjoy your custom cutscenes!</li>
               </ol>
-              
+
               <div className = "bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
                 <h4 className = "text-yellow-400 font-semibold mb-2">Note:</h4>
                 <p className = "text-white/80 text-sm">
-                  You may encounter a "return value not supported" message when playing songs with cutscenes. 
-                  This doesn't affect gameplay or the mod's functionality, so it can be safely ignored.
+                  You may encounter a "return value not supported" message when
+                  playing songs with cutscenes. This doesn't affect gameplay or
+                  the mod's functionality, so it can be safely ignored.
                 </p>
               </div>
 
               <h3 className = "text-xl font-semibold">Impact</h3>
               <p className = "text-white/80 leading-relaxed">
-                This simple tool has helped over 3,000 modders easily add cutscenes to their Friday Night Funkin' 
-                mods without needing to learn Lua programming. It demonstrates how small utilities can have a 
-                significant impact on the modding community.
+                This simple tool has helped over 3,000 modders easily add
+                cutscenes to their Friday Night Funkin' mods without needing to
+                learn Lua programming. It demonstrates how small utilities can
+                have a significant impact on the modding community.
               </p>
             </div>
           </div>
         )}
 
         {/* Team Information for Ucode Calculator */}
-        {project.slug === 'ucode-calculator' && project.teamInfo && (
+        {project.slug === "ucode-calculator" && project.teamInfo && (
           <div className = "mb-12">
             <h2 className = "text-2xl font-bold mb-6">Team & Development</h2>
             <div className = "bg-[#232329] rounded-xl p-6 space-y-6">
-              
               {/* My Role */}
               <div>
-                <h3 className = "text-xl font-semibold mb-3 text-accent-default">My Role & Responsibilities</h3>
+                <h3 className = "text-xl font-semibold mb-3 text-accent-default">
+                  My Role & Responsibilities
+                </h3>
                 <div className = "mb-4">
                   <span className = "inline-block bg-accent-default/20 px-3 py-1 rounded-full text-accent-default text-sm font-medium">
                     {project.teamInfo.myRole}
                   </span>
                 </div>
                 <ul className = "space-y-2">
-                  {project.teamInfo.responsibilities.map((responsibility, index) => (
-                    <li key = {index} className = "flex items-start gap-2 text-white/80">
-                      <span className = "text-accent-default mt-1">•</span>
-                      {responsibility}
-                    </li>
-                  ))}
+                  {project.teamInfo.responsibilities.map(
+                    (responsibility, index) => (
+                      <li
+                        key = {index}
+                        className = "flex items-start gap-2 text-white/80"
+                      >
+                        <span className = "text-accent-default mt-1">•</span>
+                        {responsibility}
+                      </li>
+                    ),
+                  )}
                 </ul>
               </div>
 
               {/* Team Members */}
               <div>
-                <h3 className = "text-xl font-semibold mb-4 text-accent-default">Team Members</h3>
+                <h3 className = "text-xl font-semibold mb-4 text-accent-default">
+                  Team Members
+                </h3>
                 <div className = "grid md:grid-cols-2 gap-4">
                   {project.teamInfo.teamMembers.map((member, index) => (
                     <div key = {index} className = "bg-[#1a1a1f] rounded-lg p-4">
                       <div className = "flex items-center gap-3 mb-3">
                         <div>
-                          <h4 className = "font-semibold text-white">{member.name}</h4>
+                          <h4 className = "font-semibold text-white">
+                            {member.name}
+                          </h4>
                           {member.githubUsername && (
-                            <p className = "text-xs text-white/60 mb-1">@{member.githubUsername}</p>
+                            <p className = "text-xs text-white/60 mb-1">
+                              @{member.githubUsername}
+                            </p>
                           )}
-                          <p className = "text-sm text-accent-default">{member.role}</p>
+                          <p className = "text-sm text-accent-default">
+                            {member.role}
+                          </p>
                         </div>
                         {member.github && (
-                          <a 
+                          <a
                             href = {member.github}
                             target = "_blank"
                             rel = "noopener noreferrer"
                             className = "ml-auto text-white/60 hover:text-white transition-colors"
                           >
-                            <FaGithub size = {20} />
+                            <FaGithub size={20} />
                           </a>
                         )}
                       </div>
                       <ul className = "space-y-1">
                         {member.contributions.map((contribution, cIndex) => (
-                          <li key = {cIndex} className = "text-sm text-white/70 flex items-start gap-2">
-                            <span className = "text-accent-default/60 mt-1">•</span>
+                          <li
+                            key = {cIndex}
+                            className = "text-sm text-white/70 flex items-start gap-2"
+                          >
+                            <span className = "text-accent-default/60 mt-1">
+                              •
+                            </span>
                             {contribution}
                           </li>
                         ))}
@@ -485,7 +535,9 @@ const ProjectPageClient = ({ params }) => {
 
               {/* Collaboration */}
               <div className = "bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
-                <h4 className = "text-blue-400 font-semibold mb-2">Team Collaboration</h4>
+                <h4 className = "text-blue-400 font-semibold mb-2">
+                  Team Collaboration
+                </h4>
                 <p className = "text-white/80 text-sm">
                   {project.teamInfo.collaboration}
                 </p>
@@ -493,13 +545,17 @@ const ProjectPageClient = ({ params }) => {
 
               {/* Project Context */}
               <div>
-                <h3 className = "text-xl font-semibold mb-3 text-accent-default">Project Context</h3>
+                <h3 className = "text-xl font-semibold mb-3 text-accent-default">
+                  Project Context
+                </h3>
                 <p className = "text-white/80 leading-relaxed">
-                  This calculator was developed as part of the <strong>Ucode Marathon Race00</strong> challenge, 
-                  where teams of 2 developers competed to create a fully functional web calculator. The project 
-                  served as a culmination of knowledge from five course sprints, testing our ability to combine 
-                  HTML5, CSS3, JavaScript ES2015+, DOM manipulation, and Git collaboration skills in a real-world 
-                  development scenario.
+                  This calculator was developed as part of the{" "}
+                  <strong>Ucode Marathon Race00</strong> challenge, where teams
+                  of 2 developers competed to create a fully functional web
+                  calculator. The project served as a culmination of knowledge
+                  from five course sprints, testing our ability to combine
+                  HTML5, CSS3, JavaScript ES2015+, DOM manipulation, and Git
+                  collaboration skills in a real-world development scenario.
                 </p>
               </div>
             </div>
@@ -507,29 +563,30 @@ const ProjectPageClient = ({ params }) => {
         )}
 
         {/* Video Demo Section for SDL Game Project */}
-        {project.slug === 'sdl-game-project' && project.videoDemo && (
+        {project.slug === "sdl-game-project" && project.videoDemo && (
           <div className = "mb-12">
             <h2 className = "text-2xl font-bold mb-6">🎮 Gameplay Demo</h2>
             <div className = "bg-[#232329] rounded-xl p-6">
-              <div className = "mb-4">
-              </div>
-              
+              <div className = "mb-4"></div>
+
               {/* YouTube Video Embed */}
               <div className = "relative aspect-video rounded-xl overflow-hidden bg-black/20">
                 <iframe
                   src = {(() => {
                     let video_url = project.videoDemo;
-                    
+
                     // converting youtu.be URLs to embed format
-                    if(video_url.includes('youtu.be/')) 
-                      {
-                      const video_id = video_url.split('youtu.be/')[1].split('?')[0];
+                    if(video_url.includes("youtu.be/"))
+                    {
+                      const video_id = video_url
+                        .split("youtu.be/")[1]
+                        .split("?")[0];
 
                       return `https://www.youtube.com/embed/${video_id}`;
                     }
-                    if(video_url.includes('youtube.com/watch?v=')) 
-                      {
-                      const video_id = video_url.split('v=')[1].split('&')[0];
+                    if(video_url.includes("youtube.com/watch?v="))
+                    {
+                      const video_id = video_url.split("v=")[1].split("&")[0];
 
                       return `https://www.youtube.com/embed/${video_id}`;
                     }
@@ -542,54 +599,70 @@ const ProjectPageClient = ({ params }) => {
                   className = "w-full h-full"
                 />
               </div>
-
             </div>
           </div>
         )}
 
         {/* Detailed Information for SDL Game Project */}
-        {project.slug === 'sdl-game-project' && (
+        {project.slug === "sdl-game-project" && (
           <div className = "mb-12">
             <h2 className = "text-2xl font-bold mb-6">📋 Project Details</h2>
             <div className = "grid lg:grid-cols-2 gap-8">
-              
               {/* Gameplay & Instructions */}
               <div className = "bg-[#232329] rounded-xl p-6 space-y-6">
                 {project.gameplay && (
                   <div>
-                    <h3 className = "text-xl font-semibold mb-3 text-accent-default">🎮 Gameplay</h3>
+                    <h3 className = "text-xl font-semibold mb-3 text-accent-default">
+                      🎮 Gameplay
+                    </h3>
                     {project.gameplay.description && (
                       <p className = "text-white/80 leading-relaxed mb-4">
                         {project.gameplay.description}
                       </p>
                     )}
-                    
+
                     {/* Gameplay Mechanics */}
                     {project.gameplay.mechanics && (
                       <div className = "mb-4">
-                        <h4 className = "text-lg font-semibold mb-2 text-accent-default">Game Mechanics</h4>
+                        <h4 className = "text-lg font-semibold mb-2 text-accent-default">
+                          Game Mechanics
+                        </h4>
                         <ul className = "space-y-1">
                           {project.gameplay.mechanics.map((mechanic, index) => (
-                            <li key = {index} className = "flex items-start gap-2 text-white/70 text-sm">
-                              <span className = "text-accent-default mt-1">•</span>
+                            <li
+                              key = {index}
+                              className = "flex items-start gap-2 text-white/70 text-sm"
+                            >
+                              <span className = "text-accent-default mt-1">
+                                •
+                              </span>
                               {mechanic}
                             </li>
                           ))}
                         </ul>
                       </div>
                     )}
-                    
+
                     {/* Gameplay Objectives */}
                     {project.gameplay.objectives && (
                       <div>
-                        <h4 className = "text-lg font-semibold mb-2 text-accent-default">Objectives</h4>
+                        <h4 className = "text-lg font-semibold mb-2 text-accent-default">
+                          Objectives
+                        </h4>
                         <ul className = "space-y-1">
-                          {project.gameplay.objectives.map((objective, index) => (
-                            <li key = {index} className = "flex items-start gap-2 text-white/70 text-sm">
-                              <span className = "text-accent-default mt-1">•</span>
-                              {objective}
-                            </li>
-                          ))}
+                          {project.gameplay.objectives.map(
+                            (objective, index) => (
+                              <li
+                                key = {index}
+                                className = "flex items-start gap-2 text-white/70 text-sm"
+                              >
+                                <span className = "text-accent-default mt-1">
+                                  •
+                                </span>
+                                {objective}
+                              </li>
+                            ),
+                          )}
                         </ul>
                       </div>
                     )}
@@ -601,14 +674,23 @@ const ProjectPageClient = ({ params }) => {
                     {/* Gameplay Instructions */}
                     {project.instructions.gameplay && (
                       <div>
-                        <h3 className = "text-xl font-semibold mb-3 text-accent-default">🎯 How to Play</h3>
+                        <h3 className = "text-xl font-semibold mb-3 text-accent-default">
+                          🎯 How to Play
+                        </h3>
                         <ul className = "space-y-2">
-                          {project.instructions.gameplay.map((instruction, index) => (
-                            <li key = {index} className = "flex items-start gap-2 text-white/80">
-                              <span className = "text-accent-default mt-1">•</span>
-                              {instruction}
-                            </li>
-                          ))}
+                          {project.instructions.gameplay.map(
+                            (instruction, index) => (
+                              <li
+                                key = {index}
+                                className = "flex items-start gap-2 text-white/80"
+                              >
+                                <span className = "text-accent-default mt-1">
+                                  •
+                                </span>
+                                {instruction}
+                              </li>
+                            ),
+                          )}
                         </ul>
                       </div>
                     )}
@@ -616,14 +698,23 @@ const ProjectPageClient = ({ params }) => {
                     {/* System Requirements */}
                     {project.instructions.requirements && (
                       <div>
-                        <h3 className = "text-xl font-semibold mb-3 text-accent-default">� Requirements</h3>
+                        <h3 className = "text-xl font-semibold mb-3 text-accent-default">
+                          � Requirements
+                        </h3>
                         <ul className = "space-y-2">
-                          {project.instructions.requirements.map((requirement, index) => (
-                            <li key = {index} className = "flex items-start gap-2 text-white/80">
-                              <span className = "text-accent-default mt-1">•</span>
-                              {requirement}
-                            </li>
-                          ))}
+                          {project.instructions.requirements.map(
+                            (requirement, index) => (
+                              <li
+                                key = {index}
+                                className = "flex items-start gap-2 text-white/80"
+                              >
+                                <span className = "text-accent-default mt-1">
+                                  •
+                                </span>
+                                {requirement}
+                              </li>
+                            ),
+                          )}
                         </ul>
                       </div>
                     )}
@@ -632,37 +723,50 @@ const ProjectPageClient = ({ params }) => {
               </div>
 
               {/* Technical Details */}
-              <div className = "space-y-6">
-              </div>
+              <div className = "space-y-6"></div>
             </div>
 
             {/* VSCode Setup */}
             {project.vscodeSetup && (
               <div className = "mt-8 bg-[#232329] rounded-xl p-6">
-                <h3 className = "text-xl font-semibold mb-4 text-accent-default">🛠️ VSCode Development Setup</h3>
+                <h3 className = "text-xl font-semibold mb-4 text-accent-default">
+                  🛠️ VSCode Development Setup
+                </h3>
                 <div className = "bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
-                  <h4 className = "text-blue-400 font-semibold mb-3">Development Environment</h4>
+                  <h4 className = "text-blue-400 font-semibold mb-3">
+                    Development Environment
+                  </h4>
                   <p className = "text-white/80 text-sm leading-relaxed mb-4">
                     {project.vscodeSetup.description}
                   </p>
-                  
+
                   <div className = "space-y-3">
                     <div>
-                      <h5 className = "text-white font-medium mb-2">Required Extensions:</h5>
+                      <h5 className = "text-white font-medium mb-2">
+                        Required Extensions:
+                      </h5>
                       <div className = "flex flex-wrap gap-2">
                         {project.vscodeSetup.extensions.map((ext, index) => (
-                          <span key = {index} className = "px-2 py-1 bg-blue-500/20 text-blue-300 rounded text-xs">
+                          <span
+                            key={index}
+                            className="px-2 py-1 bg-blue-500/20 text-blue-300 rounded text-xs"
+                          >
                             {ext}
                           </span>
                         ))}
                       </div>
                     </div>
-                    
+
                     <div>
-                      <h5 className = "text-white font-medium mb-2">Key Features:</h5>
+                      <h5 className = "text-white font-medium mb-2">
+                        Key Features:
+                      </h5>
                       <ul className = "space-y-1">
                         {project.vscodeSetup.features.map((feature, index) => (
-                          <li key = {index} className = "text-white/70 text-sm flex items-start gap-2">
+                          <li
+                            key = {index}
+                            className = "text-white/70 text-sm flex items-start gap-2"
+                          >
                             <span className = "text-blue-400 mt-1">•</span>
                             {feature}
                           </li>
@@ -679,12 +783,15 @@ const ProjectPageClient = ({ params }) => {
         {/* Team Section for SDL Game */}
         {project.team && (
           <div className = "mb-12">
-            <h2 className = "text-2xl font-bold mb-6">{project.team.name} - Development Team</h2>
+            <h2 className = "text-2xl font-bold mb-6">
+              {project.team.name} - Development Team
+            </h2>
             <div className = "bg-[#232329] rounded-xl p-6 space-y-6">
-              
               {/* Team Description */}
               <div className = "bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
-                <h4 className = "text-blue-400 font-semibold mb-2">About the Team</h4>
+                <h4 className = "text-blue-400 font-semibold mb-2">
+                  About the Team
+                </h4>
                 <p className = "text-white/80 text-sm leading-relaxed">
                   {project.team.description}
                 </p>
@@ -692,32 +799,45 @@ const ProjectPageClient = ({ params }) => {
 
               {/* Team Members */}
               <div>
-                <h3 className = "text-xl font-semibold mb-4 text-accent-default">Team Members</h3>
+                <h3 className = "text-xl font-semibold mb-4 text-accent-default">
+                  Team Members
+                </h3>
                 <div className = "grid md:grid-cols-2 gap-4">
                   {project.team.members.map((member, index) => (
-                    <div key = {index} className = "bg-[#1a1a1f] rounded-lg p-4 hover:bg-[#1e1e24] transition-colors duration-200">
+                    <div
+                      key = {index}
+                      className = "bg-[#1a1a1f] rounded-lg p-4 hover:bg-[#1e1e24] transition-colors duration-200"
+                    >
                       <div className = "flex items-center gap-3 mb-3">
                         <div className = "flex-1">
-                          <h4 className = "font-semibold text-white">{member.name}</h4>
+                          <h4 className = "font-semibold text-white">
+                            {member.name}
+                          </h4>
                           {member.username && (
-                            <p className = "text-xs text-white/60 mb-1">@{member.username}</p>
+                            <p className = "text-xs text-white/60 mb-1">
+                              @{member.username}
+                            </p>
                           )}
-                          <p className = "text-sm text-accent-default font-medium">{member.role}</p>
+                          <p className = "text-sm text-accent-default font-medium">
+                            {member.role}
+                          </p>
                         </div>
                         {member.github && (
-                          <a 
+                          <a
                             href = {member.github}
                             target = "_blank"
                             rel = "noopener noreferrer"
                             className = "text-white/60 hover:text-white transition-colors duration-200 hover:scale-110 transform"
-                            title = {`Visit ${member.name}'s GitHub`}
+                            title={`Visit ${member.name}'s GitHub`}
                           >
-                            <FaGithub size = {20} />
+                            <FaGithub size={20} />
                           </a>
                         )}
                       </div>
                       <div className = "bg-[#0d0d0f] rounded-md p-3 mt-3">
-                        <h5 className = "text-xs font-semibold text-accent-default mb-2 uppercase tracking-wide">Contribution</h5>
+                        <h5 className = "text-xs font-semibold text-accent-default mb-2 uppercase tracking-wide">
+                          Contribution
+                        </h5>
                         <p className = "text-sm text-white/80 leading-relaxed">
                           {member.contribution}
                         </p>
@@ -753,7 +873,7 @@ const ProjectPageClient = ({ params }) => {
               <FaSearchMinus size = {16} />
             </button>
             <button
-              onClick={(e) => {
+              onClick = {(e) => {
                 e.stopPropagation();
                 handle_zoom_in();
               }}
@@ -787,7 +907,7 @@ const ProjectPageClient = ({ params }) => {
           </div>
 
           {/* Image Container */}
-          <div 
+          <div
             className = "relative w-full h-full flex items-center justify-center overflow-hidden"
             onClick = {(e) => e.stopPropagation()}
             onMouseMove = {handle_mouse_move}
@@ -800,12 +920,16 @@ const ProjectPageClient = ({ params }) => {
               src = {lightbox_image}
               alt = "Enlarged view"
               className = {`max-w-[70vw] max-h-[70vh] object-contain select-none ${
-                zoom_level > 1 ? (is_dragging ? 'cursor-grabbing' : 'cursor-grab') : 'cursor-default'
+                zoom_level > 1
+                  ? is_dragging
+                    ? "cursor-grabbing"
+                    : "cursor-grab"
+                  : "cursor-default"
               }`}
               style = {{
                 transform: `scale(${zoom_level}) translate(${pan_position.x / zoom_level}px, ${pan_position.y / zoom_level}px)`,
-                transformOrigin: 'center center',
-                transition: is_dragging ? 'none' : 'transform 0.1s ease-out'
+                transformOrigin: "center center",
+                transition: is_dragging ? "none" : "transform 0.1s ease-out",
               }}
               onMouseDown = {handle_mouse_down}
               onTouchStart = {handle_touch_start}

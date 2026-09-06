@@ -17,37 +17,49 @@ const ClientLayout = ({ children }) => {
     setIsClient(true);
   }, []);
 
-  const is_Win98_mode = isClient && (pathname === '/win98' || pathname.startsWith('/win98/'));
+  const is_Win98_mode =
+    isClient && (pathname === "/win98" || pathname.startsWith("/win98/"));
 
   // сleanup Win98 styles when leaving win98
   useEffect(() => {
     if(!isClient || is_Win98_mode) return;
-    document.body.classList.remove('win98-mode', 'matrix-theme', 'cyber-theme');
-    ['win98-custom-css', 'win98-loader-custom-css'].forEach(id => {
+    document.body.classList.remove("win98-mode", "matrix-theme", "cyber-theme");
+    [
+      "win98-98css",
+      "win98-loader-98css",
+      "win98-custom-css",
+      "win98-loader-custom-css",
+    ].forEach((id) => {
       const el = document.getElementById(id);
       if(el) el.remove();
     });
-    document.body.style.removeProperty('font-family');
-    document.body.style.removeProperty('background');
-    document.body.style.removeProperty('overflow');
-    document.body.style.removeProperty('margin');
-    document.body.style.removeProperty('padding');
+    document.body.style.removeProperty("font-family");
+    document.body.style.removeProperty("background");
+    document.body.style.removeProperty("overflow");
+    document.body.style.removeProperty("margin");
+    document.body.style.removeProperty("padding");
     const root = document.documentElement;
-    ['--win98-primary', '--win98-secondary', '--win98-accent', '--win98-window', '--win98-text', '--win98-highlight'].forEach(v => root.style.removeProperty(v));
-    
+    [
+      "--win98-primary",
+      "--win98-secondary",
+      "--win98-accent",
+      "--win98-window",
+      "--win98-text",
+      "--win98-highlight",
+    ].forEach((v) => root.style.removeProperty(v));
+
     // override 98.css
-    document.body.style.fontFamily = "var(--font-press-start), 'Press Start 2P', 'Courier New', monospace";
+    document.body.style.fontFamily =
+      "var(--font-press-start), 'Press Start 2P', 'Courier New', monospace";
     document.body.style.fontSize = "16px";
     document.body.style.webkitFontSmoothing = "";
   }, [isClient, is_Win98_mode]);
 
-  if(is_Win98_mode) 
-    {
+  if(is_Win98_mode)
+  {
     return (
       <>
-        <main>
-          {children}
-        </main>
+        <main>{children}</main>
       </>
     );
   }
@@ -56,9 +68,7 @@ const ClientLayout = ({ children }) => {
     <>
       <Background />
       <Header />
-      <main>
-        {children}
-      </main>
+      <main>{children}</main>
       <PageTransition />
       <ThemeSettings />
       <FlyingKitty />
@@ -66,4 +76,4 @@ const ClientLayout = ({ children }) => {
   );
 };
 
-export default ClientLayout; 
+export default ClientLayout;

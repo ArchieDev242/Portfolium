@@ -32,7 +32,7 @@ const getColor = (name) => GITHUB_COLORS[name] || GITHUB_COLORS.default;
 const GitHubLanguagesRing = ({ username = 'ArchieDev242' }) => {
   const { languages, is_loading, error } = useGitHubLanguages(username);
 
-  if(is_loading) 
+  if(is_loading)
     return (
       <div className = "flex flex-col items-center gap-4">
         <div className = "w-32 h-32 rounded-full border-4 border-white/10 animate-pulse" />
@@ -40,7 +40,7 @@ const GitHubLanguagesRing = ({ username = 'ArchieDev242' }) => {
       </div>
     );
 
-  if(error || languages.length === 0) 
+  if(error || languages.length === 0)
     return null;
 
   const size = 120;
@@ -83,9 +83,9 @@ const GitHubLanguagesRing = ({ username = 'ArchieDev242' }) => {
       <div className = "flex flex-wrap justify-center gap-x-3 gap-y-1">
         {languages.map(({ name, percent }) => (
           <div key = {name} className = "flex items-center gap-1.5">
-            <span 
-              className = "w-2 h-2 rounded-full shrink-0" 
-              style = {{ backgroundColor: getColor(name) }} 
+            <span
+              className = "w-2 h-2 rounded-full shrink-0"
+              style = {{ backgroundColor: getColor(name) }}
             />
             <span className = "text-xs text-white/80">
               {name} <span className = "text-white/50">{(percent || 0).toFixed(0)}%</span>

@@ -19,7 +19,7 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
   const textarea_ref = useRef(null);
 
   useEffect(() => {
-    try 
+    try
     {
 
       // get saved text from localStorage
@@ -44,7 +44,7 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
   }, [get_line_col]);
 
   const handle_save = () => {
-    try 
+    try
     {
       localStorage.setItem(STORAGE_KEY, text);
       set_saved_msg('Saved');
@@ -77,12 +77,12 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
 
   const handle_find = () => {
     const t = prompt('Find what:', find_text);
-    if(t != null) 
+    if(t != null)
       {
       set_find_text(t);
       const idx = text.toLowerCase().indexOf(t.toLowerCase());
       set_find_index(idx >= 0 ? idx : -1);
-      if(idx >= 0 && textarea_ref.current) 
+      if(idx >= 0 && textarea_ref.current)
         {
         textarea_ref.current.focus();
         textarea_ref.current.setSelectionRange(idx, idx + t.length);
@@ -93,9 +93,11 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
 
   const handle_find_next = () => {
     if(!find_text) return handle_find();
+
     const start = find_index >= 0 ? find_index + 1 : 0;
     const idx = text.toLowerCase().indexOf(find_text.toLowerCase(), start);
-    if(idx >= 0) 
+
+    if(idx >= 0)
       {
       set_find_index(idx);
       textarea_ref.current?.focus();
@@ -106,12 +108,14 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
 
   const handle_cut = async () => {
     const el = textarea_ref.current;
+
     if(!el) return set_menu_open(null);
+
     const start = el.selectionStart, end = el.selectionEnd;
     const sel = text.substring(start, end);
-    if(sel) 
+    if(sel)
       {
-      try 
+      try
       {
         if(navigator.clipboard) await navigator.clipboard.writeText(sel);
       } catch(_) {}
@@ -123,9 +127,11 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
 
   const handle_copy = async () => {
     const el = textarea_ref.current;
+
     if(!el) return set_menu_open(null);
+
     const sel = text.substring(el.selectionStart, el.selectionEnd);
-    try 
+    try
     {
       if(sel && navigator.clipboard) await navigator.clipboard.writeText(sel);
     } catch(_) {}
@@ -135,10 +141,10 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
   const handle_paste = async () => {
     set_menu_open(null);
     let t = '';
-    try 
+    try
     {
       t = navigator.clipboard ? await navigator.clipboard.readText() : '';
-    } catch(_) 
+    } catch(_)
     {
       t = prompt('Paste text (Ctrl+V):') || '';
     }
