@@ -7,6 +7,7 @@ import kittyImage from "@/public/assets/kitty.jpg";
 const Photo = () => {
   return (
     <div className = "w-full h-full flex justify-center items-center relative">
+      
       {/* Image */}
       <motion.div
         initial = {{ opacity: 0 }}

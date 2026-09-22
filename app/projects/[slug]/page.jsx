@@ -10,7 +10,7 @@ export async function generateStaticParams()
   }));
 }
 
-export async function generate_metadata({ params }) 
+export async function generateMetadata({ params }) 
 {
   const resolved_params = await params;
   const project = get_all_projects().find(p => p.slug === resolved_params.slug);
@@ -23,6 +23,6 @@ export async function generate_metadata({ params })
   };
 }
 
-const project_page = ({ params }) => { return <ProjectPageClient params = {params} />; };
+const ProjectPage = ({ params }) => { return <ProjectPageClient params = {params} />; };
 
-export default project_page;
+export default ProjectPage;

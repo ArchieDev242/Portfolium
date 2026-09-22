@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://archiedev242.github.io/Portfolium/sitemap.xml
+

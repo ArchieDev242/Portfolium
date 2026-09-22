@@ -22,11 +22,13 @@
     radial-gradient(ellipse 60% 40% at 100% 50%, var(--accent-shadow) 0%, transparent 50%),
     radial-gradient(ellipse 50% 30% at 0% 80%, var(--accent-glow) 0%, transparent 50%);
 }
+
 .bg-accent-orb
 {
   background: radial-gradient(circle, var(--accent-bg) 0%, transparent 65%);
   filter: blur(55px);
 }
+
 .bg-grid
 {
   background-image:
@@ -34,11 +36,13 @@
     linear-gradient(90deg, var(--accent-default) 1px, transparent 1px);
   background-size: 60px 60px;
 }
+
 .bg-particle
 {
   background: white;
   box-shadow: 0 0 6px var(--accent-shadow);
 }
+
 .bg-vignette { background: radial-gradient(ellipse 80% 70% at 50% 50%, transparent 50%, rgba(0, 0, 0, 0.5) 100%); }
 .bg-horizon { background: linear-gradient(180deg, var(--accent-bg) 0%, transparent 100%); }
 
@@ -47,6 +51,7 @@
   0%, 100% { opacity: 0.04; }
   50% { opacity: 0.07; }
 }
+
 @keyframes bg-horizon-breathe
 {
   0%, 100% { opacity: 0.6; }

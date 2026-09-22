@@ -23,21 +23,15 @@ const SkillNode = ({
       : "";
 
   const get_skill_level_info = (skill_level) => {
-    switch (skill_level) {
-      case "Beginner":
-        return { color: "#94a3b8", short: "BEG" };
-      case "Basic":
-        return { color: "#22c55e", short: "BAS" };
-      case "Advanced":
-        return { color: "#f59e0b", short: "ADV" };
-      case "Professional":
-        return { color: "#ef4444", short: "PRO" };
-      case "Core":
-        return { color: "#8b5cf6", short: "CORE" };
-      case "Legacy":
-        return { color: "#64748b", short: "LEG" };
-      default:
-        return { color: "#64748b", short: "" };
+    switch(skill_level) 
+    {
+      case "Beginner": return { color: "#94a3b8", short: "BEG" };
+      case "Basic": return { color: "#22c55e", short: "BAS" };
+      case "Advanced": return { color: "#f59e0b", short: "ADV" };
+      case "Professional": return { color: "#ef4444", short: "PRO" };
+      case "Core": return { color: "#8b5cf6", short: "CORE" };
+      case "Legacy": return { color: "#64748b", short: "LEG" };
+      default: return { color: "#64748b", short: "" };
     }
   };
 
@@ -45,17 +39,17 @@ const SkillNode = ({
 
   return (
     <motion.div
-      className="absolute cursor-pointer"
-      style={{ left: `${x}px`, top: `${y}px` }}
-      initial={{ scale: 0 }}
-      animate={{ scale: 1 }}
-      whileHover={{ scale: 1.1 }}
-      onClick={(e) => onClick(e)}
-      onMouseDown={onMouseDown}
+      className = "absolute cursor-pointer"
+      style = {{ left: `${x}px`, top: `${y}px` }}
+      initial = {{ scale: 0 }}
+      animate = {{ scale: 1 }}
+      whileHover = {{ scale: 1.1 }}
+      onClick = {(e) => onClick(e)}
+      onMouseDown = {onMouseDown}
     >
       <motion.div
-        className={`rounded-full w-16 h-16 flex items-center justify-center ${node_styles} ${glow_effect}`}
-        animate={{
+        className = {`rounded-full w-16 h-16 flex items-center justify-center ${node_styles} ${glow_effect}`}
+        animate = {{
           boxShadow: isActive
             ? [
                 "0 0 15px 5px rgba(255,255,255,0.7)",
@@ -70,18 +64,18 @@ const SkillNode = ({
                 ]
               : "none",
         }}
-        transition={{ duration: 2, repeat: Infinity }}
+        transition = {{ duration: 2, repeat: Infinity }}
       >
-        <div className="text-center">
+        <div className = "text-center">
           <div
-            className={`text-xs ${isUnlocked ? "text-white" : "text-gray-500"} pixel-text`}
+            className = {`text-xs ${isUnlocked ? "text-white" : "text-gray-500"} pixel-text`}
           >
             {title}
           </div>
           {skillLevel && (
             <div
-              className="text-[9px] pixel-text font-bold"
-              style={{ color: level_info.color }}
+              className = "text-[9px] pixel-text font-bold"
+              style = {{ color: level_info.color }}
             >
               {level_info.short}
             </div>
@@ -97,17 +91,17 @@ const TreeBranch = ({ path, isActive, color = "rgba(100, 100, 100, 0.3)" }) => {
 
   return (
     <motion.path
-      d={path}
-      fill="none"
-      strokeWidth={isActive ? 3 : 2}
-      stroke={isActive ? active_color : color}
-      initial={{ pathLength: 0, opacity: 0 }}
-      animate={{
+      d = {path}
+      fill = "none"
+      strokeWidth = {isActive ? 3 : 2}
+      stroke = {isActive ? active_color : color}
+      initial = {{ pathLength: 0, opacity: 0 }}
+      animate = {{
         pathLength: 1,
         opacity: 1,
         stroke: isActive ? active_color : color,
       }}
-      transition={{ duration: 1 }}
+      transition = {{ duration: 1 }}
     />
   );
 };
@@ -117,18 +111,18 @@ const GlowingEffect = ({
   isActive,
   color = "rgba(255, 255, 255, 0.2)",
 }) => {
-  if (!isActive) return null;
+  if(!isActive) return null;
 
   return (
     <motion.path
-      d={path}
-      fill="none"
-      strokeWidth={6}
-      stroke={color}
-      filter="blur(4px)"
-      initial={{ pathLength: 0, opacity: 0 }}
-      animate={{ pathLength: 1, opacity: 1 }}
-      transition={{ duration: 1 }}
+      d = {path}
+      fill = "none"
+      strokeWidth = {6}
+      stroke = {color}
+      filter = "blur(4px)"
+      initial = {{ pathLength: 0, opacity: 0 }}
+      animate = {{ pathLength: 1, opacity: 1 }}
+      transition = {{ duration: 1 }}
     />
   );
 };
@@ -144,30 +138,30 @@ const TimelineEvent = ({
 }) => {
   return (
     <motion.div
-      className="absolute"
-      style={{ left: `${x}px`, top: `${y}px` }}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: 0.3, duration: 0.5 }}
+      className = "absolute"
+      style = {{ left: `${x}px`, top: `${y}px` }}
+      initial = {{ opacity: 0, scale: 0.8 }}
+      animate = {{ opacity: 1, scale: 1 }}
+      transition = {{ delay: 0.3, duration: 0.5 }}
     >
-      <div className="flex items-start gap-3">
+      <div className = "flex items-start gap-3">
         <div
-          className={`${isCritical ? "w-6 h-6" : "w-4 h-4"} rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-1 ${isCritical ? "animate-pulse" : ""}`}
-          style={{
+          className = {`${isCritical ? "w-6 h-6" : "w-4 h-4"} rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-1 ${isCritical ? "animate-pulse" : ""}`}
+          style = {{
             borderColor: color,
             backgroundColor: `${color}30`,
             boxShadow: isCritical ? `0 0 15px ${color}80` : "none",
           }}
         >
           <div
-            className={`${isCritical ? "w-3 h-3" : "w-2 h-2"} rounded-full`}
-            style={{ backgroundColor: color }}
+            className = {`${isCritical ? "w-3 h-3" : "w-2 h-2"} rounded-full`}
+            style = {{ backgroundColor: color }}
           ></div>
         </div>
-        <div className={isCritical ? "max-w-40" : "max-w-32"}>
+        <div className = {isCritical ? "max-w-40" : "max-w-32"}>
           <div
-            className={`pixel-text ${isCritical ? "text-base font-black" : "text-sm font-bold"} mb-1`}
-            style={{
+            className = {`pixel-text ${isCritical ? "text-base font-black" : "text-sm font-bold"} mb-1`}
+            style = {{
               color: color,
               textShadow: isCritical ? `2px 2px 8px ${color}80` : "none",
             }}
@@ -175,8 +169,8 @@ const TimelineEvent = ({
             {year}
           </div>
           <div
-            className={`pixel-text ${isCritical ? "text-sm font-bold" : "text-xs font-semibold"} leading-relaxed mb-1`}
-            style={{
+            className = {`pixel-text ${isCritical ? "text-sm font-bold" : "text-xs font-semibold"} leading-relaxed mb-1`}
+            style = {{
               color: "#f8fafc",
               textShadow: isCritical
                 ? "3px 3px 6px rgba(0, 0, 0, 0.9)"
@@ -187,8 +181,8 @@ const TimelineEvent = ({
           </div>
           {description && (
             <div
-              className={`pixel-text ${isCritical ? "text-xs" : "text-[10px]"} leading-relaxed px-2 py-1 rounded border`}
-              style={{
+              className = {`pixel-text ${isCritical ? "text-xs" : "text-[10px]"} leading-relaxed px-2 py-1 rounded border`}
+              style = {{
                 color: "#e2e8f0",
                 backgroundColor: isCritical
                   ? "rgba(15, 23, 42, 0.95)"
@@ -213,16 +207,16 @@ const TimelineEvent = ({
 const TimelineLine = ({ startX, startY, endX, endY }) => {
   return (
     <motion.line
-      x1={startX}
-      y1={startY}
-      x2={endX}
-      y2={endY}
-      stroke="rgba(100, 116, 139, 0.5)"
-      strokeWidth="2"
-      strokeDasharray="5,5"
-      initial={{ pathLength: 0, opacity: 0 }}
-      animate={{ pathLength: 1, opacity: 1 }}
-      transition={{ delay: 0.5, duration: 2 }}
+      x1 = {startX}
+      y1 = {startY}
+      x2 = {endX}
+      y2 = {endY}
+      stroke = "rgba(100, 116, 139, 0.5)"
+      strokeWidth = "2"
+      strokeDasharray = "5,5"
+      initial = {{ pathLength: 0, opacity: 0 }}
+      animate = {{ pathLength: 1, opacity: 1 }}
+      transition = {{ delay: 0.5, duration: 2 }}
     />
   );
 };
@@ -230,15 +224,15 @@ const TimelineLine = ({ startX, startY, endX, endY }) => {
 const SkillLevelLabel = ({ title, x, y, color }) => {
   return (
     <motion.div
-      className="absolute"
-      style={{ left: `${x}px`, top: `${y}px` }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.7, duration: 0.5 }}
+      className = "absolute"
+      style = {{ left: `${x}px`, top: `${y}px` }}
+      initial = {{ opacity: 0 }}
+      animate = {{ opacity: 1 }}
+      transition = {{ delay: 0.7, duration: 0.5 }}
     >
       <div
-        className="pixel-text text-xs px-2 py-1 rounded-md border backdrop-blur-sm"
-        style={{
+        className = "pixel-text text-xs px-2 py-1 rounded-md border backdrop-blur-sm"
+        style = {{
           color: color,
           borderColor: `${color}50`,
           backgroundColor: `${color}15`,
@@ -253,15 +247,15 @@ const SkillLevelLabel = ({ title, x, y, color }) => {
 const CategoryLabel = ({ title, x, y, color }) => {
   return (
     <motion.div
-      className="absolute"
-      style={{ left: `${x}px`, top: `${y}px` }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.5, duration: 0.5 }}
+      className = "absolute"
+      style = {{ left: `${x}px`, top: `${y}px` }}
+      initial = {{ opacity: 0 }}
+      animate = {{ opacity: 1 }}
+      transition = {{ delay: 0.5, duration: 0.5 }}
     >
       <div
-        className="pixel-text text-sm px-3 py-1 rounded-md border backdrop-blur-sm"
-        style={{
+        className = "pixel-text text-sm px-3 py-1 rounded-md border backdrop-blur-sm"
+        style = {{
           color: color,
           borderColor: `${color}50`,
           backgroundColor: `${color}15`,
@@ -274,26 +268,20 @@ const CategoryLabel = ({ title, x, y, color }) => {
 };
 
 const SkillDetails = ({ skill, position }) => {
-  if (!skill) return null;
+  if(!skill) return null;
 
   const { title, level, description, points, category, skillLevel } = skill;
 
   const get_level_color = (skill_level) => {
-    switch (skill_level) {
-      case "Beginner":
-        return "#94a3b8";
-      case "Basic":
-        return "#22c55e";
-      case "Advanced":
-        return "#f59e0b";
-      case "Professional":
-        return "#ef4444";
-      case "Core":
-        return "#8b5cf6";
-      case "Legacy":
-        return "#64748b";
-      default:
-        return "#64748b";
+    switch(skill_level) 
+    {
+      case "Beginner": return "#94a3b8";
+      case "Basic": return "#22c55e";
+      case "Advanced": return "#f59e0b";
+      case "Professional": return "#ef4444";
+      case "Core": return "#8b5cf6"; 
+      case "Legacy": return "#64748b";
+      default: return "#64748b";
     }
   };
 
@@ -304,16 +292,16 @@ const SkillDetails = ({ skill, position }) => {
 
   return (
     <motion.div
-      className="absolute z-10 bg-slate-800/90 backdrop-blur-sm border border-white/20 rounded-lg p-4 w-72"
-      style={popup_style}
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
+      className = "absolute z-10 bg-slate-800/90 backdrop-blur-sm border border-white/20 rounded-lg p-4 w-72"
+      style = {popup_style}
+      initial = {{ opacity: 0, y: -10 }}
+      animate = {{ opacity: 1, y: 0 }}
+      exit = {{ opacity: 0, y: -10 }}
     >
-      <div className="flex items-center justify-between mb-2">
-        <h3 className="pixel-text text-xl text-white">{title}</h3>
+      <div className = "flex items-center justify-between mb-2">
+        <h3 className = "pixel-text text-xl text-white">{title}</h3>
         {points > 0 && (
-          <div className="pixel-text text-sm text-amber-400">
+          <div className = "pixel-text text-sm text-amber-400">
             {points} {points === 1 ? "point" : "points"}
           </div>
         )}
@@ -321,14 +309,14 @@ const SkillDetails = ({ skill, position }) => {
 
       {/* Category and Skill Level */}
       {category && (
-        <div className="flex gap-2 mb-2">
-          <div className="pixel-text text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">
+        <div className = "flex gap-2 mb-2">
+          <div className = "pixel-text text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">
             {category}
           </div>
           {skillLevel && (
             <div
-              className="pixel-text text-xs px-2 py-1 rounded border"
-              style={{
+              className = "pixel-text text-xs px-2 py-1 rounded border"
+              style = {{
                 backgroundColor: `${get_level_color(skillLevel)}20`,
                 color: get_level_color(skillLevel),
                 borderColor: `${get_level_color(skillLevel)}50`,
@@ -341,24 +329,24 @@ const SkillDetails = ({ skill, position }) => {
       )}
 
       {level > 0 && (
-        <div className="mb-2">
-          <div className="flex items-center">
-            <div className="text-xs mr-2 pixel-text text-gray-400">
+        <div className = "mb-2">
+          <div className = "flex items-center">
+            <div className = "text-xs mr-2 pixel-text text-gray-400">
               Level {level}
             </div>
-            <div className="w-32 bg-gray-800 h-1.5 rounded-full overflow-hidden">
+            <div className = "w-32 bg-gray-800 h-1.5 rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-white"
-                initial={{ width: 0 }}
-                animate={{ width: `${level * 10}%` }}
-                transition={{ duration: 1 }}
+                className = "h-full bg-white"
+                initial = {{ width: 0 }}
+                animate = {{ width: `${level * 10}%` }}
+                transition = {{ duration: 1 }}
               />
             </div>
           </div>
         </div>
       )}
 
-      <p className="pixel-text text-sm text-gray-300">{description}</p>
+      <p className = "pixel-text text-sm text-gray-300">{description}</p>
     </motion.div>
   );
 };
@@ -936,35 +924,34 @@ const SkillTree = () => {
   };
 
   const get_category_color = (category) => {
-    switch (category) {
-      case "Web Development":
-        return "#38bdf8";
-      case "Software Development":
-        return "#4ade80";
-      case "Game Development":
-        return "#e879f9";
-      case "Modding":
-        return "#f97316";
-      case "Legacy Skills":
-        return "#64748b";
-      default:
-        return "rgba(100, 100, 100, 0.3)";
+    switch(category) 
+    {
+      case "Web Development": return "#38bdf8";
+      case "Software Development": return "#4ade80";
+      case "Game Development": return "#e879f9";
+      case "Modding": return "#f97316";
+      case "Legacy Skills": return "#64748b";
+      default: return "rgba(100, 100, 100, 0.3)";
     }
   };
 
   const set_active_skill_by_id = (skillId, x, y) => {
-    if (active_skill && active_skill.id === skillId) {
+    if(active_skill && active_skill.id === skillId) 
+      {
       set_active_skill(null);
       return;
     }
 
-    if (skillId === "root") {
+    if(skillId === "root") 
+      {
       set_active_skill({ ...skills_data.root, id: "root" });
       set_popup_position({ x: skills_data.root.x, y: skills_data.root.y });
-    } else {
+    } else 
+      {
       const skill = skills_data.skills.find((s) => s.id === skillId);
 
-      if (skill) {
+      if(skill) 
+        {
         set_active_skill(skill);
         set_popup_position({ x, y });
       }
@@ -974,16 +961,18 @@ const SkillTree = () => {
   const unlock_skill = (skillId) => {
     const skill = skills_data.skills.find((s) => s.id === skillId);
 
-    if (!skill || skill.level > 0) return;
+    if(!skill || skill.level > 0) return;
 
-    if (skill_points >= skill.points) {
+    if(skill_points >= skill.points) 
+      {
       const can_unlock = skill.connections.some((connId) => {
-        if (connId === "root") return true;
+        if(connId === "root") return true;
 
         return unlocked_skills.includes(connId);
       });
 
-      if (can_unlock) {
+      if(can_unlock) 
+        {
         set_skill_points((prev) => prev - skill.points);
         set_unlocked_skills((prev) => [...prev, skillId]);
 
@@ -993,7 +982,8 @@ const SkillTree = () => {
   };
 
   const handle_node_click = (skillId, x, y, e) => {
-    if (has_dragged || is_node_dragging) {
+    if(has_dragged || is_node_dragging) 
+      {
       e.stopPropagation();
       return;
     }
@@ -1001,13 +991,11 @@ const SkillTree = () => {
     e.stopPropagation();
     set_active_skill_by_id(skillId, x, y);
 
-    if (!unlocked_skills.includes(skillId)) {
-      unlock_skill(skillId);
-    }
+    if(!unlocked_skills.includes(skillId)) unlock_skill(skillId);
   };
 
   const handle_mouse_down = (e) => {
-    if (dragged_node_id) return;
+    if(dragged_node_id) return;
 
     e.preventDefault();
     set_is_dragging(true);
@@ -1019,13 +1007,11 @@ const SkillTree = () => {
   };
 
   const handle_background_click = (e) => {
-    if (!has_dragged && !is_node_dragging && active_skill) {
-      set_active_skill(null);
-    }
+    if(!has_dragged && !is_node_dragging && active_skill) set_active_skill(null);
   };
 
   const handle_mouse_move = (e) => {
-    if (!is_dragging) return;
+    if(!is_dragging) return;
 
     e.preventDefault();
     set_has_dragged(true);
@@ -1036,8 +1022,9 @@ const SkillTree = () => {
   };
 
   const handle_mouse_up = (e) => {
-    if (is_dragging) {
-      if (e) e.preventDefault();
+    if(is_dragging) 
+      {
+      if(e) e.preventDefault();
       set_is_dragging(false);
       // reset has_dragged after a short delay to allow click handlers to check it
       setTimeout(() => set_has_dragged(false), 10);
@@ -1051,7 +1038,8 @@ const SkillTree = () => {
     const zoom_delta = e.deltaY > 0 ? -zoom_factor : zoom_factor;
     const new_scale = Math.max(0.5, Math.min(3, scale + zoom_delta));
 
-    if (new_scale !== scale) {
+    if(new_scale !== scale) 
+      {
       const rect = e.currentTarget.getBoundingClientRect();
       const mouse_x = e.clientX - rect.left;
       const mouse_y = e.clientY - rect.top;
@@ -1068,9 +1056,7 @@ const SkillTree = () => {
   };
 
   const get_node_position = (skill) => {
-    if (custom_node_positions[skill.id]) {
-      return custom_node_positions[skill.id];
-    }
+    if(custom_node_positions[skill.id]) return custom_node_positions[skill.id];
 
     return { x: skill.x, y: skill.y };
   };
@@ -1084,7 +1070,7 @@ const SkillTree = () => {
   };
 
   const handle_node_drag_start = (skill, e) => {
-    if (!ENABLE_NODE_DRAG) return;
+    if(!ENABLE_NODE_DRAG) return;
 
     e.stopPropagation();
     e.preventDefault();
@@ -1107,7 +1093,8 @@ const SkillTree = () => {
   };
 
   const handle_node_drag = (e) => {
-    if (!ENABLE_NODE_DRAG || !dragged_node_id) return;
+    if(!ENABLE_NODE_DRAG || !dragged_node_id) return;
+    
     e.preventDefault();
 
     const container_rect = document
@@ -1126,15 +1113,13 @@ const SkillTree = () => {
   };
 
   const handle_node_drag_end = () => {
-    if (!ENABLE_NODE_DRAG) return;
+    if(!ENABLE_NODE_DRAG) return;
 
     set_dragged_node_id(null);
     set_is_node_dragging(false);
 
-    if (
-      typeof window !== "undefined" &&
-      Object.keys(custom_node_positions).length > 0
-    ) {
+    if(typeof window !== "undefined" && Object.keys(custom_node_positions).length > 0) 
+      {
       localStorage.setItem(
         "skillTree_nodePositions",
         JSON.stringify(custom_node_positions),
@@ -1143,12 +1128,14 @@ const SkillTree = () => {
   };
 
   useEffect(() => {
-    if (!ENABLE_NODE_DRAG) return;
+    if(!ENABLE_NODE_DRAG) return;
 
-    if (dragged_node_id) {
+    if(dragged_node_id) 
+      {
       window.addEventListener("mousemove", handle_node_drag);
       window.addEventListener("mouseup", handle_node_drag_end);
-    } else {
+    } else 
+      {
       window.removeEventListener("mousemove", handle_node_drag);
       window.removeEventListener("mouseup", handle_node_drag_end);
       setTimeout(() => set_is_node_dragging(false), 10);
@@ -1178,9 +1165,7 @@ const SkillTree = () => {
     const prevent_scroll = (e) => {
       const skill_tree_container = e.target.closest(".skill-tree-container");
 
-      if (skill_tree_container) {
-        e.preventDefault();
-      }
+      if(skill_tree_container) e.preventDefault();
     };
 
     document.addEventListener("wheel", prevent_scroll, { passive: false });
@@ -1196,15 +1181,18 @@ const SkillTree = () => {
   }, []);
 
   useEffect(() => {
-    if (!is_client) return;
+    if(!is_client) return;
 
     const saved = localStorage.getItem("skillTree_nodePositions");
 
-    if (saved) {
-      try {
+    if(saved) 
+      {
+      try 
+      {
         const parsed = JSON.parse(saved);
         set_custom_node_positions(parsed);
-      } catch (e) {
+      } catch(e) 
+      {
         console.error("Error parsing saved node positions:", e);
       }
     }
@@ -1216,7 +1204,8 @@ const SkillTree = () => {
   }, []);
 
   useEffect(() => {
-    if (is_client && Object.keys(custom_node_positions).length > 0) {
+    if(is_client && Object.keys(custom_node_positions).length > 0) 
+      {
       localStorage.setItem(
         "skillTree_nodePositions",
         JSON.stringify(custom_node_positions),
@@ -1226,36 +1215,37 @@ const SkillTree = () => {
 
   return (
     <div
-      className="skill-tree-container relative w-full h-[1600px] overflow-hidden select-none"
-      onMouseDown={handle_mouse_down}
-      onWheel={handle_wheel}
-      onClick={handle_background_click}
-      style={{ cursor: is_dragging ? "grabbing" : "grab" }}
+      className = "skill-tree-container relative w-full h-[1600px] overflow-hidden select-none"
+      onMouseDown = {handle_mouse_down}
+      onWheel = {handle_wheel}
+      onClick = {handle_background_click}
+      style = {{ cursor: is_dragging ? "grabbing" : "grab" }}
     >
       {/* Background with stars */}
-      <div className="absolute inset-0 bg-[url('/images/stars-bg.png')] opacity-30"></div>
+      <div className = "absolute inset-0 bg-[url('/images/stars-bg.png')] opacity-30"></div>
 
       {/* Draggable and zoomable content container */}
       <div
-        className="absolute inset-0"
-        style={{
+        className = "absolute inset-0"
+        style = {{
           transform: `translate(${offset.x}px, ${offset.y}px) scale(${scale})`,
           transformOrigin: "0 0",
           transition: is_dragging ? "none" : "transform 0.1s ease-out",
         }}
-        onClick={(e) => e.stopPropagation()}
+        onClick = {(e) => e.stopPropagation()}
       >
         {/* SVG for tree branches */}
         <svg
-          className="absolute inset-0 w-full h-full"
-          xmlns="http://www.w3.org/2000/svg"
+          className = "absolute inset-0 w-full h-full"
+          xmlns = "http://www.w3.org/2000/svg"
         >
           {/* Glowing effects for active branches */}
           {skills_data.skills.map((skill) =>
             skill.connections.map((connId, idx) => {
               let start_node, end_node;
 
-              if (connId === "root") {
+              if(connId === "root") 
+                {
                 const root_pos = get_root_position();
 
                 start_node = {
@@ -1263,11 +1253,14 @@ const SkillTree = () => {
                   x: root_pos.x,
                   y: root_pos.y,
                 };
-              } else {
+              } else 
+                {
                 const start_skill = skills_data.skills.find(
                   (s) => s.id === connId,
                 );
-                if (start_skill) {
+
+                if(start_skill) 
+                  {
                   const start_pos = get_node_position(start_skill);
 
                   start_node = {
@@ -1281,7 +1274,7 @@ const SkillTree = () => {
               const end_pos = get_node_position(skill);
               end_node = { ...skill, x: end_pos.x, y: end_pos.y };
 
-              if (!start_node || !end_node) return null;
+              if(!start_node || !end_node) return null;
 
               const is_active =
                 (unlocked_skills.includes(start_node.id) ||
@@ -1301,10 +1294,10 @@ const SkillTree = () => {
 
               return (
                 <GlowingEffect
-                  key={`glow-${skill.id}-${connId}-${idx}`}
-                  path={path}
-                  isActive={is_active}
-                  color={glow_color}
+                  key = {`glow-${skill.id}-${connId}-${idx}`}
+                  path = {path}
+                  isActive = {is_active}
+                  color = {glow_color}
                 />
               );
             }),
@@ -1315,19 +1308,22 @@ const SkillTree = () => {
             skill.connections.map((connId, idx) => {
               let start_node, end_node;
 
-              if (connId === "root") {
+              if(connId === "root") 
+                {
                 const root_pos = get_root_position();
                 start_node = {
                   ...skills_data.root,
                   x: root_pos.x,
                   y: root_pos.y,
                 };
-              } else {
+              } else 
+                {
                 const start_skill = skills_data.skills.find(
                   (s) => s.id === connId,
                 );
 
-                if (start_skill) {
+                if(start_skill) 
+                  {
                   const start_pos = get_node_position(start_skill);
 
                   start_node = {
@@ -1361,10 +1357,10 @@ const SkillTree = () => {
 
               return (
                 <TreeBranch
-                  key={`branch-${skill.id}-${connId}-${idx}`}
-                  path={path}
-                  isActive={is_active}
-                  color={line_color}
+                  key = {`branch-${skill.id}-${connId}-${idx}`}
+                  path = {path}
+                  isActive = {is_active}
+                  color = {line_color}
                 />
               );
             }),
@@ -1374,25 +1370,25 @@ const SkillTree = () => {
         {/* Category labels */}
         {categories.map((category, idx) => (
           <CategoryLabel
-            key={`category-${idx}`}
-            title={category.title}
-            x={category.x}
-            y={category.y}
-            color={category.color}
+            key = {`category-${idx}`}
+            title = {category.title}
+            x = {category.x}
+            y = {category.y}
+            color = {category.color}
           />
         ))}
 
         {/* Timeline Section */}
-        <div className="absolute" style={{ left: "50px", top: "900px" }}>
-          <div className="pixel-text text-lg font-bold text-white mb-6">
+        <div className = "absolute" style={{ left: "50px", top: "900px" }}>
+          <div className = "pixel-text text-lg font-bold text-white mb-6">
             Journey Timeline
           </div>
         </div>
 
         {/* Timeline Lines */}
         <svg
-          className="absolute inset-0 w-full h-full"
-          xmlns="http://www.w3.org/2000/svg"
+          className = "absolute inset-0 w-full h-full"
+          xmlns = "http://www.w3.org/2000/svg"
         >
           {/* Single timeline line from 2018 to 2023 */}
           <TimelineLine startX={120} startY={960} endX={1120} endY={960} />
@@ -1401,25 +1397,25 @@ const SkillTree = () => {
         {/* Timeline Events */}
         {timeline_events.map((event, idx) => (
           <TimelineEvent
-            key={`timeline-${idx}`}
-            year={event.year}
-            title={event.title}
-            description={event.description}
-            x={event.x}
-            y={event.y}
-            color={event.color}
-            isCritical={event.year === "Feb 24, 2022"}
+            key = {`timeline-${idx}`}
+            year = {event.year}
+            title = {event.title}
+            description = {event.description}
+            x = {event.x}
+            y = {event.y}
+            color = {event.color}
+            isCritical = {event.year === "Feb 24, 2022"}
           />
         ))}
 
         {/* Root node */}
         <SkillNode
-          title={skills_data.root.title}
-          level={skills_data.root.level}
-          skillLevel="Core"
-          x={get_root_position().x - 8}
-          y={get_root_position().y - 8}
-          onClick={(e) =>
+          title = {skills_data.root.title}
+          level = {skills_data.root.level}
+          skillLevel = "Core"
+          x = {get_root_position().x - 8}
+          y = {get_root_position().y - 8}
+          onClick = {(e) =>
             handle_node_click(
               "root",
               get_root_position().x,
@@ -1427,9 +1423,9 @@ const SkillTree = () => {
               e,
             )
           }
-          isActive={active_skill && active_skill.id === "root"}
-          isUnlocked={true}
-          onMouseDown={
+          isActive = {active_skill && active_skill.id === "root"}
+          isUnlocked = {true}
+          onMouseDown = {
             ENABLE_NODE_DRAG
               ? (e) =>
                   handle_node_drag_start({ ...skills_data.root, id: "root" }, e)
@@ -1442,16 +1438,16 @@ const SkillTree = () => {
           const pos = get_node_position(skill);
           return (
             <SkillNode
-              key={skill.id}
-              title={skill.title}
-              level={skill.level}
-              skillLevel={skill.skillLevel}
-              x={pos.x - 8}
-              y={pos.y - 8}
-              onClick={(e) => handle_node_click(skill.id, pos.x, pos.y, e)}
-              isActive={active_skill && active_skill.id === skill.id}
-              isUnlocked={unlocked_skills.includes(skill.id)}
-              onMouseDown={
+              key = {skill.id}
+              title = {skill.title}
+              level = {skill.level}
+              skillLevel = {skill.skillLevel}
+              x = {pos.x - 8}
+              y = {pos.y - 8}
+              onClick = {(e) => handle_node_click(skill.id, pos.x, pos.y, e)}
+              isActive = {active_skill && active_skill.id === skill.id}
+              isUnlocked = {unlocked_skills.includes(skill.id)}
+              onMouseDown = {
                 ENABLE_NODE_DRAG
                   ? (e) => handle_node_drag_start(skill, e)
                   : undefined
@@ -1464,8 +1460,8 @@ const SkillTree = () => {
         <AnimatePresence>
           {active_skill && (
             <div
-              className="absolute"
-              style={{
+              className = "absolute"
+              style = {{
                 transform: `translate(${offset.x}px, ${offset.y}px) scale(${scale})`,
                 transformOrigin: "0 0",
                 transition: is_dragging ? "none" : "transform 0.1s ease-out",
@@ -1480,64 +1476,64 @@ const SkillTree = () => {
       {/* Fixed UI elements that don't move with panning */}
       {/* Skill levels legend - Fixed on the left side */}
       <div
-        className="absolute top-4 left-4 bg-slate-800/80 backdrop-blur-sm border border-white/20 rounded-lg p-4 z-20"
-        onClick={(e) => e.stopPropagation()}
+        className = "absolute top-4 left-4 bg-slate-800/80 backdrop-blur-sm border border-white/20 rounded-lg p-4 z-20"
+        onClick = {(e) => e.stopPropagation()}
       >
-        <div className="pixel-text text-sm font-bold text-white mb-3">
+        <div className = "pixel-text text-sm font-bold text-white mb-3">
           Skill Levels:
         </div>
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
+        <div className = "space-y-1">
+          <div className = "flex items-center gap-2">
             <div
-              className="w-3 h-3 rounded"
-              style={{ backgroundColor: "#94a3b8" }}
+              className = "w-3 h-3 rounded"
+              style = {{ backgroundColor: "#94a3b8" }}
             ></div>
-            <span className="pixel-text text-xs text-gray-300">
+            <span className = "pixel-text text-xs text-gray-300">
               BEG - Beginner
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className = "flex items-center gap-2">
             <div
-              className="w-3 h-3 rounded"
-              style={{ backgroundColor: "#22c55e" }}
+              className = "w-3 h-3 rounded"
+              style = {{ backgroundColor: "#22c55e" }}
             ></div>
-            <span className="pixel-text text-xs text-gray-300">
+            <span className = "pixel-text text-xs text-gray-300">
               BAS - Basic
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className = "flex items-center gap-2">
             <div
-              className="w-3 h-3 rounded"
-              style={{ backgroundColor: "#f59e0b" }}
+              className = "w-3 h-3 rounded"
+              style = {{ backgroundColor: "#f59e0b" }}
             ></div>
-            <span className="pixel-text text-xs text-gray-300">
+            <span className = "pixel-text text-xs text-gray-300">
               ADV - Advanced
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className = "flex items-center gap-2">
             <div
-              className="w-3 h-3 rounded"
-              style={{ backgroundColor: "#ef4444" }}
+              className = "w-3 h-3 rounded"
+              style = {{ backgroundColor: "#ef4444" }}
             ></div>
-            <span className="pixel-text text-xs text-gray-300">
+            <span className = "pixel-text text-xs text-gray-300">
               PRO - Professional
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className = "flex items-center gap-2">
             <div
-              className="w-3 h-3 rounded"
-              style={{ backgroundColor: "#8b5cf6" }}
+              className = "w-3 h-3 rounded"
+              style = {{ backgroundColor: "#8b5cf6" }}
             ></div>
-            <span className="pixel-text text-xs text-gray-300">
+            <span className = "pixel-text text-xs text-gray-300">
               CORE - Core Skills
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className = "flex items-center gap-2">
             <div
-              className="w-3 h-3 rounded"
-              style={{ backgroundColor: "#64748b" }}
+              className = "w-3 h-3 rounded"
+              style = {{ backgroundColor: "#64748b" }}
             ></div>
-            <span className="pixel-text text-xs text-gray-300">
+            <span className = "pixel-text text-xs text-gray-300">
               LEG - Legacy
             </span>
           </div>
@@ -1546,30 +1542,30 @@ const SkillTree = () => {
 
       {/* Skill points indicator - Moved to the bottom left */}
       <div
-        className="absolute bottom-4 left-4 bg-slate-800/80 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-2 z-20"
-        onClick={(e) => e.stopPropagation()}
+        className = "absolute bottom-4 left-4 bg-slate-800/80 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-2 z-20"
+        onClick = {(e) => e.stopPropagation()}
       >
-        <div className="pixel-text text-amber-400 text-center">
+        <div className = "pixel-text text-amber-400 text-center">
           {skill_points} SKILL {skill_points === 1 ? "POINT" : "POINTS"}{" "}
           AVAILABLE
         </div>
-        <div className="w-32 h-1 bg-amber-900 mx-auto mt-1 rounded-full overflow-hidden">
+        <div className = "w-32 h-1 bg-amber-900 mx-auto mt-1 rounded-full overflow-hidden">
           <motion.div
-            className="h-full bg-amber-500"
-            style={{ width: "100%" }}
+            className = "h-full bg-amber-500"
+            style = {{ width: "100%" }}
           />
         </div>
       </div>
 
       {/* Zoom and Reset Controls */}
       <div
-        className="absolute bottom-4 right-4 bg-slate-800/80 backdrop-blur-sm border border-white/20 rounded-lg p-2 z-20"
-        onClick={(e) => e.stopPropagation()}
+        className = "absolute bottom-4 right-4 bg-slate-800/80 backdrop-blur-sm border border-white/20 rounded-lg p-2 z-20"
+        onClick = {(e) => e.stopPropagation()}
       >
-        <div className="flex gap-2 mb-2">
+        <div className = "flex gap-2 mb-2">
           <button
-            className="pixel-text text-xs px-2 py-1 bg-blue-500/20 text-blue-300 border border-blue-500/30 rounded hover:bg-blue-500/30 transition-colors"
-            onClick={() => {
+            className = "pixel-text text-xs px-2 py-1 bg-blue-500/20 text-blue-300 border border-blue-500/30 rounded hover:bg-blue-500/30 transition-colors"
+            onClick = {() => {
               set_scale(1);
               set_offset({ x: 0, y: 0 });
             }}
@@ -1577,8 +1573,8 @@ const SkillTree = () => {
             Reset View
           </button>
           <button
-            className="pixel-text text-xs px-2 py-1 bg-green-500/20 text-green-300 border border-green-500/30 rounded hover:bg-green-500/30 transition-colors"
-            onClick={() => {
+            className = "pixel-text text-xs px-2 py-1 bg-green-500/20 text-green-300 border border-green-500/30 rounded hover:bg-green-500/30 transition-colors"
+            onClick = {() => {
               set_offset({ x: -200, y: -100 });
             }}
           >
@@ -1587,23 +1583,20 @@ const SkillTree = () => {
         </div>
 
         {/* Node Position Controls */}
-        <div className="flex gap-2">
+        <div className = "flex gap-2">
           <button
-            className="pixel-text text-xs px-2 py-1 bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 rounded hover:bg-yellow-500/30 transition-colors"
-            onClick={() => {
-              if (Object.keys(custom_node_positions).length > 0) {
-                if (
-                  confirm(
-                    "Reset all node positions to default? This cannot be undone.",
-                  )
-                ) {
+            className = "pixel-text text-xs px-2 py-1 bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 rounded hover:bg-yellow-500/30 transition-colors"
+            onClick = {() => {
+              if(Object.keys(custom_node_positions).length > 0) 
+                {
+                if(confirm("Reset all node positions to default? This cannot be undone.",)) 
+                  {
                   set_custom_node_positions({});
 
-                  if (typeof window !== "undefined") {
-                    localStorage.removeItem("skillTree_nodePositions");
-                  }
+                  if(typeof window !== "undefined") localStorage.removeItem("skillTree_nodePositions");
                 }
-              } else {
+              } else 
+                {
                 alert("No custom positions to reset");
               }
             }}
@@ -1611,27 +1604,28 @@ const SkillTree = () => {
             Reset Nodes
           </button>
           <button
-            className="pixel-text text-xs px-2 py-1 bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded hover:bg-purple-500/30 transition-colors"
-            onClick={async () => {
-              if (Object.keys(custom_node_positions).length > 0) {
+            className = "pixel-text text-xs px-2 py-1 bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded hover:bg-purple-500/30 transition-colors"
+            onClick = {async () => {
+              if(Object.keys(custom_node_positions).length > 0) 
+                {
                 const json_data = JSON.stringify(
                   custom_node_positions,
                   null,
                   2,
                 );
 
-                try {
+                try 
+                {
                   await navigator.clipboard.writeText(json_data);
                   alert("Coordinates copied to clipboard!");
-                } catch (err) {
+                } catch(err) 
+                {
                   console.error("Failed to copy to clipboard:", err);
                   alert(
                     "Coordinates logged to console (clipboard access denied)",
                   );
                 }
-              } else {
-                alert("No custom positions to export");
-              }
+              } else alert("No custom positions to export");
             }}
           >
             Export
@@ -1641,13 +1635,13 @@ const SkillTree = () => {
 
       {/* Instructions */}
       <div
-        className="absolute top-4 right-4 bg-slate-800/80 backdrop-blur-sm p-2 rounded-lg border border-white/20 z-20"
-        onClick={(e) => e.stopPropagation()}
+        className = "absolute top-4 right-4 bg-slate-800/80 backdrop-blur-sm p-2 rounded-lg border border-white/20 z-20"
+        onClick = {(e) => e.stopPropagation()}
       >
-        <p className="pixel-text text-xs text-gray-400 mb-1">
+        <p className = "pixel-text text-xs text-gray-400 mb-1">
           Click and drag to pan • Scroll to zoom
         </p>
-        <p className="pixel-text text-xs text-gray-500">
+        <p className = "pixel-text text-xs text-gray-500">
           Zoom: {(scale * 100).toFixed(0)}%
         </p>
       </div>
@@ -1655,12 +1649,12 @@ const SkillTree = () => {
       {/* debug drag mode */}
       {ENABLE_NODE_DRAG && (
         <div
-          className="fixed top-2 left-1/2 -translate-x-1/2 z-50 px-4 py-2 bg-yellow-500 text-black font-bold rounded shadow-lg border border-yellow-700"
-          onClick={(e) => e.stopPropagation()}
+          className = "fixed top-2 left-1/2 -translate-x-1/2 z-50 px-4 py-2 bg-yellow-500 text-black font-bold rounded shadow-lg border border-yellow-700"
+          onClick = {(e) => e.stopPropagation()}
         >
-          <div className="text-center">
+          <div className = "text-center">
             <div>DRAG MODE: Move nodes with mouse (DEV ONLY)</div>
-            <div className="text-xs mt-1">
+            <div className = "text-xs mt-1">
               Positions auto-saved to localStorage •{" "}
               {Object.keys(custom_node_positions).length} nodes moved
             </div>

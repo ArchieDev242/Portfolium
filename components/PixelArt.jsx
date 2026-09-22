@@ -95,7 +95,7 @@ export const CraftingTable = ({ children, className = "" }) => {
 export const Inventory = ({ children, className = "" }) => {
   return (
     <div
-      className={`bg-gray-900/80 border-4 border-gray-800 p-6 pixelated ${className}`}
+      className = {`bg-gray-900/80 border-4 border-gray-800 p-6 pixelated ${className}`}
     >
       {children}
     </div>
@@ -206,7 +206,7 @@ export const PlayerInterface = ({
   xp = 0,
   className = "",
 }) => {
-  // максимальні значення
+  // maximum values
   const maxHealth = 10;
   const maxHunger = 10;
   const maxXp = 100;

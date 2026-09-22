@@ -26,6 +26,7 @@
 ./vscode
 CLAUDE.md
 /.rtk/
+/.claude
 
 # debug
 npm-debug.log*

@@ -1,6 +1,5 @@
 "use client";
 
-import { Item } from "@radix-ui/react-select";
 import CountUp from "react-countup";
 import useGitHubStats from "../hooks/useGitHubStats";
 

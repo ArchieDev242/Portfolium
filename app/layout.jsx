@@ -11,8 +11,24 @@ const press = Press_Start_2P({
 });
 
 export const metadata = {
-  title: "Portfolio",
-  description: "My portfolio website",
+  title: {
+    default: "Maksym Kopychko | Game & Software Developer",
+    template: "%s | Maksym Kopychko",
+  },
+  description: "Game and software developer skilled in Unreal Engine, C++, Lua, Python, and modern web technologies. Portfolio showcasing projects in game development, modding, and web applications.",
+  authors: [{ name: "Maksym Kopychko", url: "https://github.com/ArchieDev242" }],
+  creator: "Maksym Kopychko",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Maksym Kopychko Portfolio",
+    title: "Maksym Kopychko | Game & Software Developer",
+    description: "Game and software developer skilled in Unreal Engine, C++, Lua, Python, and modern web technologies.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({ children }) {

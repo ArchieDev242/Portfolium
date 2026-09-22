@@ -34,10 +34,13 @@ const ClientLayout = ({ children }) => {
       if(el) el.remove();
     });
     document.body.style.removeProperty("font-family");
+    document.body.style.removeProperty("font-size");
+    document.body.style.removeProperty("-webkit-font-smoothing");
     document.body.style.removeProperty("background");
     document.body.style.removeProperty("overflow");
     document.body.style.removeProperty("margin");
     document.body.style.removeProperty("padding");
+    document.body.style.removeProperty("user-select");
     const root = document.documentElement;
     [
       "--win98-primary",
@@ -47,12 +50,6 @@ const ClientLayout = ({ children }) => {
       "--win98-text",
       "--win98-highlight",
     ].forEach((v) => root.style.removeProperty(v));
-
-    // override 98.css
-    document.body.style.fontFamily =
-      "var(--font-press-start), 'Press Start 2P', 'Courier New', monospace";
-    document.body.style.fontSize = "16px";
-    document.body.style.webkitFontSmoothing = "";
   }, [isClient, is_Win98_mode]);
 
   if(is_Win98_mode)
