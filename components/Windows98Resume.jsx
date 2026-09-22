@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Windows98Window from './Windows98Window';
 
-import { WIN98_ICONS } from '@/lib/win98-icons';
+import { getWin98Icon, WIN98_ICONS } from '@/lib/win98-icons';
 
 const Win98_resume = ({ onClose, onFocus, isActive, zIndex }) => {
   const About = {
@@ -84,6 +84,17 @@ const Win98_resume = ({ onClose, onFocus, isActive, zIndex }) => {
           <div>
             <fieldset style = {{ marginBottom: '15px' }}>
               <legend style  ={{ fontWeight: 'bold' }}>📋 Personal Information</legend>
+              <legend style = {{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Image 
+                  src = {getWin98Icon(WIN98_ICONS.users)} 
+                  alt = "" 
+                  width = {16} 
+                  height = {16} 
+                  unoptimized 
+                  style = {{ imageRendering: 'pixelated' }} 
+                />
+                Personal Information
+              </legend>
               <div style = {{ padding: '10px' }}>
                 {About.info.map((item, index) => (
                   <div key = {index} style = {{ display: 'flex', marginBottom: '8px', alignItems: 'center' }}>
@@ -111,6 +122,17 @@ const Win98_resume = ({ onClose, onFocus, isActive, zIndex }) => {
 
             <fieldset>
               <legend style = {{ fontWeight: 'bold' }}>🎓 Education</legend>
+              <legend style = {{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Image 
+                  src = {getWin98Icon(WIN98_ICONS.file_lines)} 
+                  alt = "" 
+                  width = {16} 
+                  height = {16} 
+                  unoptimized 
+                  style = {{ imageRendering: 'pixelated' }} 
+                />
+                Education
+              </legend>
               <div style = {{ padding: '10px' }}>
                 {Education.items.map((item, index) => (
                   <div key = {index} style = {{ marginBottom: '15px', padding: '8px', background: '#f0f0f0', border: '1px inset #c0c0c0' }}>
@@ -134,6 +156,17 @@ const Win98_resume = ({ onClose, onFocus, isActive, zIndex }) => {
             {Experience.items.length === 0 && (
               <fieldset style = {{ marginTop: '15px' }}>
                 <legend style = {{ fontWeight: 'bold' }}>💼 Professional Experience</legend>
+                <legend style = {{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Image 
+                    src = {getWin98Icon(WIN98_ICONS.gears)} 
+                    alt = "" 
+                    width = {16} 
+                    height = {16} 
+                    unoptimized 
+                    style = {{ imageRendering: 'pixelated' }} 
+                  />
+                  Professional Experience
+                </legend>
                 <div style = {{ padding: '10px', textAlign: 'center', fontStyle: 'italic', color: '#666' }}>
                   Currently building experience through projects and education.
                   <br />

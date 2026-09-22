@@ -78,7 +78,17 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
     >
       <div style = {{ fontFamily: 'MS Sans Serif, sans-serif', fontSize: '11px' }}>
         <fieldset style = {{ marginBottom: '15px' }}>
-          <legend style = {{ fontWeight: 'bold' }}>📧 Send me a message</legend>
+          <legend style = {{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Image 
+              src = {getWin98Icon(WIN98_ICONS.envelope)} 
+              alt = "" 
+              width = {16} 
+              height = {16} 
+              unoptimized 
+              style = {{ imageRendering: 'pixelated' }} 
+            />
+            Send Message
+          </legend>
           <div style = {{ padding: '15px' }}>
             <form onSubmit = {handle_submit}>
               {/* Name Field */}
@@ -158,10 +168,6 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
                     width = {16}
                     height = {16}
                     style = {{ imageRendering: 'pixelated' }}
-                    onError = {(e) => {
-                      e.target.style.display = 'none';
-                      e.target.insertAdjacentHTML('afterend', '<span>📧</span>');
-                    }}
                   />
                   {is_submitting ? 'Sending...' : 'Send Message'}
                 </button>
@@ -183,10 +189,6 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
                     width = {16}
                     height = {16}
                     style = {{ imageRendering: 'pixelated' }}
-                    onError = {(e) => {
-                      e.target.style.display = 'none';
-                      e.target.insertAdjacentHTML('afterend', '<span>🔄</span>');
-                    }}
                   />
                   Clear
                 </button>
@@ -197,7 +199,17 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
 
         {/* Contact Information */}
         <fieldset style = {{ marginBottom: '15px' }}>
-          <legend style = {{ fontWeight: 'bold' }}>📞 Contact Information</legend>
+          <legend style = {{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Image 
+              src = {getWin98Icon(WIN98_ICONS.phone)} 
+              alt = "" 
+              width = {16} 
+              height = {16} 
+              unoptimized 
+              style = {{ imageRendering: 'pixelated' }} 
+            />
+            Contact Information
+          </legend>
           <div style = {{ padding: '10px' }}>
             <div style = {{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
               <Image 
@@ -205,13 +217,10 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
                 alt = "Email"
                 width = {16}
                 height = {16}
+                unoptimized
                 style = {{ imageRendering: 'pixelated', marginRight: '8px' }}
-                onError = {(e) => {
-                  e.target.style.display = 'none';
-                  e.target.insertAdjacentHTML('afterend', '<span>📧</span>');
-                }}
               />
-              <strong>Email:</strong>&nbsp;maksym.kopychko@gmail.com
+              <strong>Email:</strong>&nbsp;MaxymKopychko@gmail.com
             </div>
             <div style = {{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
               <Image 
@@ -219,11 +228,8 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
                 alt = "Phone"
                 width = {16}
                 height = {16}
+                unoptimized
                 style = {{ imageRendering: 'pixelated', marginRight: '8px' }}
-                onError = {(e) => {
-                  e.target.style.display = 'none';
-                  e.target.insertAdjacentHTML('afterend', '<span>📞</span>');
-                }}
               />
               <strong>Phone:</strong>&nbsp;+380669702817
             </div>
@@ -233,25 +239,22 @@ const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
                 alt = "Location"
                 width = {16}
                 height = {16}
+                unoptimized
                 style = {{ imageRendering: 'pixelated', marginRight: '8px' }}
-                onError = {(e) => {
-                  e.target.style.display = 'none';
-                  e.target.insertAdjacentHTML('afterend', '<span>🌍</span>');
-                }}
               />
               <strong>Location:</strong>&nbsp;Okhtyrka, Sumy Region, Ukraine
             </div>
           </div>
         </fieldset>
 
-        {/* Status Bar */}
-        <div className = "status-bar">
-          <div className = "status-bar-field">
+        {/* 98.css Status Bar */}
+        <div className = "status-bar" style = {{ marginTop: "10px" }}>
+          <p className = "status-bar-field">
             {submit_status || "Ready to send your message"}
-          </div>
-          <div className = "status-bar-field">
-            {submit_status ? (submit_status.includes("success") ? "✓" : submit_status.includes("Error") ? "✗" : "⏳") : "📧"}
-          </div>
+          </p>
+          <p className = "status-bar-field" style = {{ textAlign: "right" }}>
+            {submit_status ? (submit_status.includes("success") ? "✓ Sent" : submit_status.includes("Error") ? "✗ Error" : "Sending...") : "Online"}
+          </p>
         </div>
       </div>
     </Windows98Window>

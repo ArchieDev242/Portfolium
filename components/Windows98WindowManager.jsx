@@ -11,6 +11,7 @@ const Win98_window_manager = ({
   activeWindows,
   onCloseWindow,
   onFocusWindow,
+  onOpenWindow,
   activeWindowId,
   windowZIndexes
 }) => {
@@ -29,7 +30,13 @@ const Win98_window_manager = ({
         <Win98_notepad onClose = {() => onCloseWindow('notepad')} onFocus = {() => onFocusWindow('notepad')} isActive = {activeWindowId === 'notepad'} zIndex = {windowZIndexes.notepad} />
       )}
       {activeWindows.includes('msdos') && (
-        <Win98_msdos onClose = {() => onCloseWindow('msdos')} onFocus = {() => onFocusWindow('msdos')} isActive = {activeWindowId === 'msdos'} zIndex = {windowZIndexes.msdos} />
+        <Win98_msdos 
+          onClose = {() => onCloseWindow('msdos')} 
+          onFocus = {() => onFocusWindow('msdos')} 
+          onOpenWindow = {onOpenWindow}
+          isActive = {activeWindowId === 'msdos'} 
+          zIndex = {windowZIndexes.msdos} 
+        />
       )}
     </>
   );

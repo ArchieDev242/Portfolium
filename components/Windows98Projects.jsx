@@ -30,47 +30,57 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
           height: "100%",
         }}
       >
-        {/* Tabs */}
-        <div style={{ marginBottom: "10px" }}>
-          <menu role = "tablist" style = {{ margin: 0, padding: 0 }}>
-            {projectsData.categories.map((category, index) => (
-              <li
-                key = {index}
-                role = "tab"
-                aria-selected = {selected_category === index}
-                onClick = {() => set_selected_category(index)}
-                style = {{
-                  display: "inline-block",
-                  padding: "4px 12px",
-                  background:
-                    selected_category === index ? "#c0c0c0" : "#f0f0f0",
-                  border: "1px solid #808080",
-                  borderBottom:
-                    selected_category === index ? "none" : "1px solid #808080",
-                  borderTop:
-                    selected_category === index ? "1px solid #808080" : "none",
-                  marginRight: "2px",
-                  cursor: "pointer",
+        {/* 98.css Tabs */}
+        <menu role = "tablist">
+          {projectsData.categories.map((category, index) => (
+            <li
+              key = {index}
+              role = "tab"
+              aria-selected = {selected_category === index}
+            >
+              <a
+                href = "#projects"
+                onClick = {(e) => {
+                  e.preventDefault();
+                  set_selected_category(index);
                 }}
               >
                 {category.name}
-              </li>
-            ))}
-          </menu>
-        </div>
+              </a>
+            </li>
+          ))}
+        </menu>
 
-        {/* Tab Content */}
+        {/* Tab Content Panel */}
         <div
-          className = "sunken-panel"
+          className = "window"
+          role = "tabpanel"
           style = {{
-            padding: "10px",
-            height: "calc(100% - 80px)",
-            overflow: "auto",
+            height: "calc(100% - 60px)",
+            display: "flex",
+            flexDirection: "column"
           }}
         >
+          <div
+            className = "window-body"
+            style = {{
+              padding: "10px",
+              height: "100%",
+              overflow: "auto",
+              margin: 0
+            }}
+          >
           <fieldset style = {{ marginBottom: "15px" }}>
-            <legend style = {{ fontWeight: "bold" }}>
-              📁 {projectsData.categories[selected_category].name}
+            <legend style = {{ fontWeight: "bold", display: "flex", alignItems: "center", gap: "6px" }}>
+              <Image 
+                src = {getWin98Icon(WIN98_ICONS.directory_open)} 
+                alt = "" 
+                width = {16} 
+                height = {16} 
+                unoptimized 
+                style = {{ imageRendering: "pixelated" }} 
+              />
+              {projectsData.categories[selected_category].name}
             </legend>
             <div
               style = {{ padding: "10px", fontSize: "11px", fontStyle: "italic" }}
@@ -112,13 +122,6 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
                       style = {{
                         marginRight: "5px",
                         imageRendering: "pixelated",
-                      }}
-                      onError = {(e) => {
-                        e.target.style.display = "none";
-                        e.target.insertAdjacentHTML(
-                          "afterend",
-                          '<span style="margin-right: 5px;">📁</span>',
-                        );
                       }}
                     />
                     {project.title}
@@ -220,13 +223,13 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
                       }}
                     >
                       {project.stats.downloads && (
-                        <span>📥 {project.stats.downloads}</span>
+                        <span>Downloads: {project.stats.downloads}</span>
                       )}
                       {project.stats.views && (
-                        <span>👁️ {project.stats.views}</span>
+                        <span>Views: {project.stats.views}</span>
                       )}
                       {project.stats.likes && (
-                        <span>👍 {project.stats.likes}</span>
+                        <span>Likes: {project.stats.likes}</span>
                       )}
                     </div>
                   )}
@@ -253,14 +256,8 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
                           alt = "Play Game"
                           width = {12}
                           height = {12}
+                          unoptimized
                           style = {{ imageRendering: "pixelated" }}
-                          onError = {(e) => {
-                            e.target.style.display = "none";
-                            e.target.insertAdjacentHTML(
-                              "afterend",
-                              "<span>🎮</span>",
-                            );
-                          }}
                         />
                         Play Game
                       </button>
@@ -283,14 +280,8 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
                           alt = "GameBanana"
                           width = {12}
                           height = {12}
+                          unoptimized
                           style = {{ imageRendering: "pixelated" }}
-                          onError = {(e) => {
-                            e.target.style.display = "none";
-                            e.target.insertAdjacentHTML(
-                              "afterend",
-                              "<span>🌐</span>",
-                            );
-                          }}
                         />
                         GameBanana
                       </button>
@@ -313,14 +304,8 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
                           alt = "Code"
                           width = {12}
                           height = {12}
+                          unoptimized
                           style = {{ imageRendering: "pixelated" }}
-                          onError = {(e) => {
-                            e.target.style.display = "none";
-                            e.target.insertAdjacentHTML(
-                              "afterend",
-                              "<span>💻</span>",
-                            );
-                          }}
                         />
                         GitHub
                       </button>
@@ -343,14 +328,8 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
                           alt = "Download"
                           width = {12}
                           height = {12}
+                          unoptimized
                           style = {{ imageRendering: "pixelated" }}
-                          onError = {(e) => {
-                            e.target.style.display = "none";
-                            e.target.insertAdjacentHTML(
-                              "afterend",
-                              "<span>📥</span>",
-                            );
-                          }}
                         />
                         Download
                       </button>
@@ -376,14 +355,8 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
                 alt = "Info"
                 width = {32}
                 height = {32}
+                unoptimized
                 style = {{ imageRendering: "pixelated", marginBottom: "10px" }}
-                onError = {(e) => {
-                  e.target.style.display = "none";
-                  e.target.insertAdjacentHTML(
-                    "afterend",
-                    '<span style="font-size: 32px; margin-bottom: 10px;">ℹ️</span>',
-                  );
-                }}
               />
               <br />
               No projects in this category yet.
@@ -391,15 +364,16 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
               Check back soon for updates!
             </div>
           )}
+          </div>
         </div>
 
-        {/* Status Bar */}
-        <div className = "status-bar" style = {{ marginTop: "10px" }}>
-          <div className = "status-bar-field">
+        {/* 98.css Status Bar */}
+        <div className = "status-bar" style = {{ flexShrink: 0, marginTop: "4px" }}>
+          <p className = "status-bar-field">
             {projectsData.categories[selected_category].projects.length}{" "}
             project(s) in {projectsData.categories[selected_category].name}
-          </div>
-          <div className = "status-bar-field">Ready</div>
+          </p>
+          <p className = "status-bar-field" style = {{ textAlign: "right" }}>Ready</p>
         </div>
       </div>
     </Windows98Window>

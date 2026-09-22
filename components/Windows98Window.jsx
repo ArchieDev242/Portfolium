@@ -20,12 +20,12 @@ const Windows98Window = ({
 }) => {
   const [icon_error, set_icon_error] = useState(false);
   const icon_src = typeof icon === 'string' && (icon.startsWith('data:') || icon.startsWith('http')) ? icon : getWin98Icon(icon);
-  const [is_dragging, setIsDragging] = useState(false);
-  const [position, setPosition] = useState({ x: 100, y: 100 });
-  const [drag_offset, setDragOffset] = useState({ x: 0, y: 0 });
-  const [is_maximized, setIsMaximized] = useState(false);
-  const [previous_position, setPreviousPosition] = useState({ x: 100, y: 100 });
-  const [window_size, setWindowSize] = useState({ width, height });
+  const [is_dragging, set_is_dragging] = useState(false);
+  const [position, set_position] = useState({ x: 100, y: 100 });
+  const [drag_offset, set_drag_offset] = useState({ x: 0, y: 0 });
+  const [is_maximized, set_is_maximized] = useState(false);
+  const [previous_position, set_previous_position] = useState({ x: 100, y: 100 });
+  const [window_size, set_window_size] = useState({ width, height });
 
   const handle_mouse_down = (e) => {
     if(e.target.closest('button') || e.target.closest('.window-control')) return;
@@ -34,8 +34,8 @@ const Windows98Window = ({
     
     if(onFocus) onFocus();
     
-    setIsDragging(true);
-    setDragOffset({
+    set_is_dragging(true);
+    set_drag_offset({
       x: e.clientX - position.x,
       y: e.clientY - position.y
     });
@@ -53,25 +53,25 @@ const Windows98Window = ({
     const bounded_x = Math.max(-width + 200, Math.min(new_x, max_x));
     const bounded_y = Math.max(0, Math.min(new_y, max_y));
     
-    setPosition({ x: bounded_x, y: bounded_y });
+    set_position({ x: bounded_x, y: bounded_y });
   };
 
   const handle_mouse_up = () => {
-    setIsDragging(false);
+    set_is_dragging(false);
   };
 
   const handle_maximize = () => {
     if(is_maximized) 
-      {
-      setIsMaximized(false);
-      setPosition(previous_position);
-      setWindowSize({ width, height });
+    {
+      set_is_maximized(false);
+      set_position(previous_position);
+      set_window_size({ width, height });
     } else 
     {
-      setPreviousPosition(position);
-      setIsMaximized(true);
-      setPosition({ x: 0, y: 0 });
-      setWindowSize({ 
+      set_previous_position(position);
+      set_is_maximized(true);
+      set_position({ x: 0, y: 0 });
+      set_window_size({ 
         width: window.innerWidth - 8, 
         height: window.innerHeight - 40 
       });
@@ -80,7 +80,7 @@ const Windows98Window = ({
 
   useEffect(() => {
     if(is_dragging) 
-      {
+    {
       document.addEventListener('mousemove', handle_mouse_move);
       document.addEventListener('mouseup', handle_mouse_up);
       
@@ -107,13 +107,12 @@ const Windows98Window = ({
       }}
       onClick = {(e) => {
         e.stopPropagation();
-
         if(onFocus) onFocus();
       }}
     >
-      {/* Title Bar */}
+      {/* Title Bar — inactive class when unfocused per 98.css */}
       <div 
-        className = "title-bar"
+        className = {`title-bar ${isActive ? '' : 'inactive'}`}
         onMouseDown = {handle_mouse_down}
         style = {{ cursor: is_dragging ? 'grabbing' : 'grab' }}
       >
@@ -129,7 +128,14 @@ const Windows98Window = ({
               onError = {() => set_icon_error(true)}
             />
           ) : (
-            <span style = {{ marginRight: '2px' }}>{title.includes('Resume') ? '📄' : title.includes('Projects') ? '📁' : title.includes('Contact') ? '📧' : '💼'}</span>
+            <Image 
+              src = {getWin98Icon(WIN98_ICONS.default_window)} 
+              alt = "" 
+              width = {16} 
+              height = {16} 
+              unoptimized 
+              style = {{ imageRendering: 'pixelated', flexShrink: 0 }} 
+            />
           )}
           {title}
         </div>

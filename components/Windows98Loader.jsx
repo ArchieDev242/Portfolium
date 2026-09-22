@@ -913,23 +913,18 @@ const Windows98Loader = ({ onComplete }) => {
           position: 'relative',
           overflow: 'hidden'
         }}>
-          {!img_fallback.windows ? (
-            <Image 
-              src = {getWin98Icon(WIN98_ICONS.windows)}
-              alt = "Windows 98"
-              width = {48}
-              height = {48}
-              style = {{
-                imageRendering: 'pixelated',
-                filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.5))',
-                zIndex: 2
-              }}
-              unoptimized
-              onError = {() => set_img_fallback(f => ({ ...f, windows: true }))}
-            />
-          ) : (
-            <span style = {{ fontSize: '32px', zIndex: 2 }}>🪟</span>
-          )}
+          <Image 
+            src = {getWin98Icon(WIN98_ICONS.windows)}
+            alt = "Windows 98"
+            width = {48}
+            height = {48}
+            style = {{
+              imageRendering: 'pixelated',
+              filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.5))',
+              zIndex: 2
+            }}
+            unoptimized
+          />
           
           {/* Sound Waves Animation */}
           <div className = "sound-waves">
@@ -1003,6 +998,7 @@ const Windows98Loader = ({ onComplete }) => {
           <span className = "pulse">Progress: {progress}%</span>
           <span style = {{ fontSize: '10px', color: '#666666' }}>
             {progress === 100 ? '✓ Complete' : '⏳ Loading...'}
+            {progress === 100 ? 'Done' : 'Loading...'}
           </span>
         </div>
 
@@ -1043,31 +1039,31 @@ const Windows98Loader = ({ onComplete }) => {
         backdropFilter: 'blur(5px)'
       }}>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          {!img_fallback.computer ? <Image src = {getWin98Icon(WIN98_ICONS.computer)} alt = "Computer" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_img_fallback(f => ({ ...f, computer: true }))} /> : <span>💻</span>}
+          <Image src = {getWin98Icon(WIN98_ICONS.computer)} alt = "Computer" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} />
           System: Windows 98 Portfolio Edition
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          {!img_fallback.cd ? <Image src = {getWin98Icon(WIN98_ICONS.cd_audio)} alt = "CD Audio" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_img_fallback(f => ({ ...f, cd: true }))} /> : <span>💿</span>}
+          <Image src = {getWin98Icon(WIN98_ICONS.cd_audio)} alt = "CD Audio" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} />
           Version: 4.10.1998 Build 1998
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          {!img_fallback.users ? <Image src = {getWin98Icon(WIN98_ICONS.users)} alt = "User" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_img_fallback(f => ({ ...f, users: true }))} /> : <span>👤</span>}
+          <Image src = {getWin98Icon(WIN98_ICONS.users)} alt = "User" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} />
           Owner: Maksym Kopychko
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          {!img_fallback.monitor ? <Image src = {getWin98Icon(WIN98_ICONS.monitor)} alt = "Monitor" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_img_fallback(f => ({ ...f, monitor: true }))} /> : <span>🖥️</span>}
+          <Image src = {getWin98Icon(WIN98_ICONS.monitor)} alt = "Monitor" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} />
           Resolution: {window_size.width}x{window_size.height}
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          {!img_fallback.memory ? <Image src = {getWin98Icon(WIN98_ICONS.memory)} alt = "Memory" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_img_fallback(f => ({ ...f, memory: true }))} /> : <span>💾</span>}
+          <Image src = {getWin98Icon(WIN98_ICONS.memory)} alt = "Memory" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} />
           Memory: 128 MB RAM
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          {!img_fallback.network ? <Image src = {getWin98Icon(WIN98_ICONS.network)} alt = "Network" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_img_fallback(f => ({ ...f, network: true }))} /> : <span>🌐</span>}
+          <Image src = {getWin98Icon(WIN98_ICONS.network)} alt = "Network" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} />
           Network: Connected
         </div>
         <div className = "fade-in" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          {!img_fallback.battery ? <Image src = {getWin98Icon(WIN98_ICONS.battery)} alt = "Battery" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} onError = {() => set_img_fallback(f => ({ ...f, battery: true }))} /> : <span>⚡</span>}
+          <Image src = {getWin98Icon(WIN98_ICONS.battery)} alt = "Battery" width = {12} height = {12} unoptimized style = {{ imageRendering: 'pixelated' }} />
           Status: Optimized
         </div>
       </div>
@@ -1088,19 +1084,14 @@ const Windows98Loader = ({ onComplete }) => {
         alignItems: 'center',
         gap: '5px'
       }}>
-        {!img_fallback.hourglass ? (
-          <Image 
-            src = {getWin98Icon(WIN98_ICONS.hourglass)}
-            alt = "Loading"
-            width = {12}
-            height = {12}
-            style = {{ imageRendering: 'pixelated' }}
-            unoptimized
-            onError = {() => set_img_fallback(f => ({ ...f, hourglass: true }))}
-          />
-        ) : (
-          <span>⏳</span>
-        )}
+        <Image 
+          src = {getWin98Icon(WIN98_ICONS.hourglass)}
+          alt = "Loading"
+          width = {12}
+          height = {12}
+          style = {{ imageRendering: 'pixelated' }}
+          unoptimized
+        />
         Loading{dots}
       </div>
 
@@ -1117,7 +1108,7 @@ const Windows98Loader = ({ onComplete }) => {
                 animationDelay: `${sparkle.delay}s`
               }}
             >
-              ✨
+              *
             </div>
           ))}
         </div>
@@ -1136,7 +1127,7 @@ const Windows98Loader = ({ onComplete }) => {
                 animationDelay: `${firework.delay}s`
               }}
             >
-              🎆
+              +
             </div>
           ))}
         </div>

@@ -1,5 +1,23 @@
 @font-face 
 {
+    font-family: "Pixelated MS Sans Serif";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/win98/ms_sans_serif.woff2") format("woff2"),
+         url("/win98/ms_sans_serif.woff") format("woff");
+}
+
+@font-face 
+{
+    font-family: "Pixelated MS Sans Serif";
+    font-style: normal;
+    font-weight: 700;
+    src: url("/win98/ms_sans_serif_bold.woff2") format("woff2"),
+         url("/win98/ms_sans_serif_bold.woff") format("woff");
+}
+
+@font-face 
+{
     font-family: "Fixedsys Excelsior";
     src:
         url("https://cdn.jsdelivr.net/npm/@south-paw/typeface-fixed-system-excelsior@1.0.0/font/fsex300-webfont.woff")
@@ -106,18 +124,19 @@ body.win98-mode
     margin: 0 !important;
     padding: 0 !important;
     overflow: hidden !important;
-    font-family:
-        "MS Sans Serif", "Segoe UI", "Apple Color Emoji", "Noto Color Emoji",
-        sans-serif !important;
+    font-family: "Pixelated MS Sans Serif", Arial, sans-serif !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
     background: #008080 !important;
 }
 
 .win98-container 
 {
     min-height: 100vh;
-    font-family:
-        "MS Sans Serif", "Segoe UI", "Apple Color Emoji", "Noto Color Emoji",
-        sans-serif !important;
+    font-family: "Pixelated MS Sans Serif", Arial, sans-serif !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
     background: #008080 !important;
     margin: 0;
     padding: 0;
@@ -129,9 +148,9 @@ body.win98-mode
 
 .win98-container * 
 {
-    font-family:
-        "MS Sans Serif", "Segoe UI", "Apple Color Emoji", "Noto Color Emoji",
-        sans-serif !important;
+    font-family: "Pixelated MS Sans Serif", Arial, sans-serif !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
     box-sizing: border-box;
 }
 
@@ -140,7 +159,7 @@ body.win98-mode
 .win98-container select,
 .win98-container textarea 
 {
-    font-family: "MS Sans Serif", "Segoe UI", sans-serif !important;
+    font-family: "Pixelated MS Sans Serif", Arial, sans-serif !important;
     font-size: 11px;
 }
 
@@ -1957,4 +1976,10 @@ body.win98-mode.cyber-theme
 {
     pointer-events: none;
     user-select: none;
+}
+
+@keyframes dos-blink 
+{
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
 }

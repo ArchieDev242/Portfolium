@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import Image from 'next/image';
 import Windows98Window from './Windows98Window';
-import { WIN98_ICONS } from '@/lib/win98-icons';
+import { WIN98_ICONS, getWin98Icon } from '@/lib/win98-icons';
 
 const STORAGE_KEY = 'win98-notepad-content';
 
@@ -16,16 +17,15 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
   const [find_index, set_find_index] = useState(-1);
   const [cursor_pos, set_cursor_pos] = useState({ line: 1, col: 1 });
   const [prev_text, set_prev_text] = useState('');
+  const [about_open, set_about_open] = useState(false);
+
   const textarea_ref = useRef(null);
+  const file_input_ref = useRef(null);
 
   useEffect(() => {
-    try
+    try 
     {
-
-      // get saved text from localStorage
-
       const saved = localStorage.getItem(STORAGE_KEY);
-
       if(saved) set_text(saved);
     } catch(_) {}
   }, []);
@@ -44,13 +44,50 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
   }, [get_line_col]);
 
   const handle_save = () => {
-    try
+    try 
     {
       localStorage.setItem(STORAGE_KEY, text);
       set_saved_msg('Saved');
       setTimeout(() => set_saved_msg('Ready'), 1500);
     } catch(_) {}
     set_menu_open(null);
+  };
+
+  const handle_save_as = () => {
+    try 
+    {
+      const default_name = filename.endsWith('.txt') ? filename : `${filename}.txt`;
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = default_name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      set_saved_msg(`Saved as ${default_name}`);
+      setTimeout(() => set_saved_msg('Ready'), 1500);
+    } catch(_) {}
+    set_menu_open(null);
+  };
+
+  const handle_open_file = (e) => {
+    const file = e.target.files?.[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const content = event.target?.result;
+      if(typeof content === 'string') 
+      {
+        set_text(content);
+        set_filename(file.name);
+        set_saved_msg('Loaded');
+        setTimeout(() => set_saved_msg('Ready'), 1500);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
   };
 
   const handle_new = () => {
@@ -66,7 +103,16 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
       weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
       hour: '2-digit', minute: '2-digit', second: '2-digit'
     });
-    set_text((prev) => prev + s);
+    const el = textarea_ref.current;
+    if(el) 
+    {
+      const start = el.selectionStart;
+      const end = el.selectionEnd;
+      set_text(text.substring(0, start) + s + text.substring(end));
+    } else 
+    {
+      set_text((prev) => prev + s);
+    }
     set_menu_open(null);
   };
 
@@ -77,13 +123,13 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
 
   const handle_find = () => {
     const t = prompt('Find what:', find_text);
-    if(t != null)
-      {
+    if(t != null) 
+    {
       set_find_text(t);
       const idx = text.toLowerCase().indexOf(t.toLowerCase());
       set_find_index(idx >= 0 ? idx : -1);
-      if(idx >= 0 && textarea_ref.current)
-        {
+      if(idx >= 0 && textarea_ref.current) 
+      {
         textarea_ref.current.focus();
         textarea_ref.current.setSelectionRange(idx, idx + t.length);
       }
@@ -97,25 +143,40 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
     const start = find_index >= 0 ? find_index + 1 : 0;
     const idx = text.toLowerCase().indexOf(find_text.toLowerCase(), start);
 
-    if(idx >= 0)
-      {
+    if(idx >= 0) 
+    {
       set_find_index(idx);
-      textarea_ref.current?.focus();
-      textarea_ref.current?.setSelectionRange(idx, idx + find_text.length);
-    } else set_find_index(-1);
+      if(textarea_ref.current) 
+      {
+        textarea_ref.current.focus();
+        textarea_ref.current.setSelectionRange(idx, idx + find_text.length);
+      }
+    } else 
+    {
+      alert(`Cannot find "${find_text}"`);
+      set_find_index(-1);
+    }
+    set_menu_open(null);
+  };
+
+  const handle_undo = () => {
+    if(prev_text !== '') 
+    {
+      const cur = text;
+      set_text(prev_text);
+      set_prev_text(cur);
+    }
     set_menu_open(null);
   };
 
   const handle_cut = async () => {
     const el = textarea_ref.current;
-
     if(!el) return set_menu_open(null);
-
     const start = el.selectionStart, end = el.selectionEnd;
     const sel = text.substring(start, end);
-    if(sel)
-      {
-      try
+    if(sel) 
+    {
+      try 
       {
         if(navigator.clipboard) await navigator.clipboard.writeText(sel);
       } catch(_) {}
@@ -127,11 +188,9 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
 
   const handle_copy = async () => {
     const el = textarea_ref.current;
-
     if(!el) return set_menu_open(null);
-
     const sel = text.substring(el.selectionStart, el.selectionEnd);
-    try
+    try 
     {
       if(sel && navigator.clipboard) await navigator.clipboard.writeText(sel);
     } catch(_) {}
@@ -141,10 +200,10 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
   const handle_paste = async () => {
     set_menu_open(null);
     let t = '';
-    try
+    try 
     {
       t = navigator.clipboard ? await navigator.clipboard.readText() : '';
-    } catch(_)
+    } catch(_) 
     {
       t = prompt('Paste text (Ctrl+V):') || '';
     }
@@ -160,20 +219,10 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
     const el = textarea_ref.current;
     if(!el) return set_menu_open(null);
     const start = el.selectionStart, end = el.selectionEnd;
-    if(start === end && end < text.length) {
-      set_prev_text(text);
-      set_text(text.substring(0, start) + text.substring(end + 1));
-    } else if(start !== end) {
+    if(start !== end) 
+    {
       set_prev_text(text);
       set_text(text.substring(0, start) + text.substring(end));
-    }
-    set_menu_open(null);
-  };
-
-  const handle_undo = () => {
-    if(prev_text !== '') {
-      set_text(prev_text);
-      set_prev_text('');
     }
     set_menu_open(null);
   };
@@ -181,16 +230,22 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
   const menu_items = [
     {
       name: 'File',
+      hotkey: 'F',
       items: [
         { label: 'New', shortcut: 'Ctrl+N', action: handle_new },
-        { label: 'Open...', shortcut: 'Ctrl+O', action: () => { /* file picker */ set_menu_open(null); } },
+        { label: 'Open...', shortcut: 'Ctrl+O', action: () => { file_input_ref.current?.click(); set_menu_open(null); } },
         { label: 'Save', shortcut: 'Ctrl+S', action: handle_save },
+        { label: 'Save As...', action: handle_save_as },
         { type: 'divider' },
-        { label: 'Exit', action: onClose }
+        { label: 'Page Setup...', action: () => { alert('Page setup is configured by your browser printer settings.'); set_menu_open(null); } },
+        { label: 'Print...', shortcut: 'Ctrl+P', action: () => { window.print(); set_menu_open(null); } },
+        { type: 'divider' },
+        { label: 'Exit', action: () => { set_menu_open(null); onClose?.(); } }
       ]
     },
     {
       name: 'Edit',
+      hotkey: 'E',
       items: [
         { label: 'Undo', shortcut: 'Ctrl+Z', action: handle_undo },
         { type: 'divider' },
@@ -200,26 +255,32 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
         { label: 'Delete', shortcut: 'Del', action: handle_delete },
         { type: 'divider' },
         { label: 'Select All', shortcut: 'Ctrl+A', action: handle_select_all },
-        { label: 'Time/Date', shortcut: 'F5', action: handle_time_date }
+        { label: 'Time/Date', shortcut: 'F5', action: handle_time_date },
+        { type: 'divider' },
+        { label: 'Word Wrap', checked: word_wrap, action: () => { set_word_wrap((w) => !w); set_menu_open(null); } }
       ]
     },
     {
       name: 'Search',
+      hotkey: 'S',
       items: [
         { label: 'Find...', shortcut: 'Ctrl+F', action: handle_find },
         { label: 'Find Next', shortcut: 'F3', action: handle_find_next }
       ]
     },
     {
-      name: 'Format',
-      items: [
-        { label: 'Word Wrap', checked: word_wrap, action: () => { set_word_wrap((w) => !w); set_menu_open(null); } }
-      ]
-    },
-    {
       name: 'Help',
+      hotkey: 'H',
       items: [
-        { label: 'About Notepad', action: () => { alert('Notepad\nVersion 4.10.1998\n\nWindows 98'); set_menu_open(null); } }
+        { 
+          label: 'Help Topics', 
+          action: () => { 
+            alert('Notepad Help\n\n• Use File > Open to edit local files\n• Use File > Save As to export your text\n• Press F5 for instant timestamp\n• Word Wrap toggles text wrapping'); 
+            set_menu_open(null); 
+          } 
+        },
+        { type: 'divider' },
+        { label: 'About Notepad', action: () => { set_about_open(true); set_menu_open(null); } }
       ]
     }
   ];
@@ -232,22 +293,30 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
       onFocus = {onFocus}
       isActive = {isActive}
       zIndex = {zIndex}
-      width = {540}
-      height = {400}
+      width = {580}
+      height = {420}
+      resizable = {true}
       maximizable = {true}
     >
+      {/* Hidden file input for Open... */}
+      <input
+        ref = {file_input_ref}
+        type = "file"
+        accept = ".txt,.text,.md,.js,.json,.html,.css"
+        style = {{ display: 'none' }}
+        onChange = {handle_open_file}
+      />
+
       <div
         className = "win98-notepad"
         style = {{
-          fontFamily: 'MS Sans Serif, sans-serif',
-          fontSize: '11px',
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          background: '#c0c0c0'
+          position: 'relative'
         }}
       >
-        {/* Menu bar — Win98 style */}
+        {/* Authentic Windows 98 Menu Bar */}
         <div
           style = {{
             display: 'flex',
@@ -264,6 +333,9 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
                   e.preventDefault();
                   set_menu_open(menu_open === menu.name ? null : menu.name);
                 }}
+                onMouseEnter = {() => {
+                  if(menu_open) set_menu_open(menu.name);
+                }}
                 style = {{
                   padding: '2px 8px',
                   fontSize: '11px',
@@ -273,8 +345,9 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
                   cursor: 'pointer'
                 }}
               >
-                {menu.name}
+                <u>{menu.hotkey}</u>{menu.name.slice(1)}
               </button>
+
               {menu_open === menu.name && (
                 <>
                   <div
@@ -288,11 +361,11 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
                       top: '100%',
                       left: 0,
                       zIndex: 9999,
-                      minWidth: '160px',
+                      minWidth: '170px',
                       padding: '2px'
                     }}
                   >
-                    <div className = "window-body" style = {{ padding: '2px' }}>
+                    <div className = "window-body" style = {{ padding: '2px', margin: 0 }}>
                       {menu.items.map((item, i) =>
                         item.type === 'divider' ? (
                           <div key = {i} style = {{ height: '1px', background: '#808080', margin: '2px 0' }} />
@@ -303,7 +376,7 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
                             style = {{
                               width: '100%',
                               justifyContent: 'flex-start',
-                              padding: '4px 20px 4px 8px',
+                              padding: '3px 18px 3px 6px',
                               fontSize: '11px',
                               background: 'transparent',
                               border: 'none',
@@ -311,11 +384,15 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
                             }}
                             onClick = {() => item.action?.()}
                           >
-                            {item.label}
+                            <span style = {{ width: '14px', display: 'inline-block' }}>
+                              {item.checked ? '✓' : ''}
+                            </span>
+                            <span>{item.label}</span>
                             {item.shortcut && (
-                              <span style={{ marginLeft: 'auto', color: '#808080' }}>{item.shortcut}</span>
+                              <span style = {{ marginLeft: 'auto', color: '#808080', paddingLeft: '12px' }}>
+                                {item.shortcut}
+                              </span>
                             )}
-                            {item.checked && ' ✓'}
                           </button>
                         )
                       )}
@@ -327,7 +404,7 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
           ))}
         </div>
 
-        {/* Text area — Fixedsys style like 98.js */}
+        {/* Text Area */}
         <textarea
           ref = {textarea_ref}
           className = "win98-notepad-textarea"
@@ -338,7 +415,9 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
           onClick = {update_cursor}
           onKeyDown = {(e) => {
             if(e.ctrlKey && e.key === 'n') { e.preventDefault(); handle_new(); }
+            if(e.ctrlKey && e.key === 'o') { e.preventDefault(); file_input_ref.current?.click(); }
             if(e.ctrlKey && e.key === 's') { e.preventDefault(); handle_save(); }
+            if(e.ctrlKey && e.key === 'p') { e.preventDefault(); window.print(); }
             if(e.ctrlKey && e.key === 'f') { e.preventDefault(); handle_find(); }
             if(e.key === 'F3') { e.preventDefault(); handle_find_next(); }
             if(e.ctrlKey && e.key === 'a') { e.preventDefault(); handle_select_all(); }
@@ -352,23 +431,88 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
             flex: 1,
             width: '100%',
             minHeight: 0,
-            padding: '2px',
+            padding: '4px',
             margin: 0,
-            lineHeight: 1.25,
+            lineHeight: 1.35,
             background: '#ffffff',
             color: '#000000',
             border: 'none',
             resize: 'none',
             outline: 'none',
+            fontFamily: 'Fixedsys, "Lucida Console", "Courier New", monospace',
+            fontSize: '13px',
             whiteSpace: word_wrap ? 'pre-wrap' : 'pre',
             wordWrap: word_wrap ? 'break-word' : 'normal'
           }}
         />
 
+        {/* Authentic Windows 98 Status Bar */}
         <div className = "status-bar" style = {{ flexShrink: 0 }}>
-          <span className="status-bar-field">Ln {cursor_pos.line}, Col {cursor_pos.col}</span>
-          <span className="status-bar-field">{saved_msg}</span>
+          <p className = "status-bar-field">Ln {cursor_pos.line}, Col {cursor_pos.col}</p>
+          <p className = "status-bar-field" style = {{ textAlign: 'right' }}>{saved_msg}</p>
         </div>
+
+        {/* Authentic "About Notepad" Modal Dialog (like 1j01/98) */}
+        {about_open && (
+          <div
+            style = {{
+              position: 'absolute',
+              inset: 0,
+              background: 'rgba(0, 0, 0, 0.25)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 10000
+            }}
+            onClick = {() => set_about_open(false)}
+          >
+            <div
+              className = "window"
+              style = {{ width: '380px', maxWidth: '90%' }}
+              onClick = {(e) => e.stopPropagation()}
+            >
+              <div className = "title-bar">
+                <div className = "title-bar-text">About Notepad</div>
+                <div className = "title-bar-controls">
+                  <button aria-label = "Close" onClick = {() => set_about_open(false)} />
+                </div>
+              </div>
+              <div className = "window-body" style = {{ padding: '16px' }}>
+                <div style = {{ display: 'flex', gap: '16px', alignItems: 'flex-start', marginBottom: '16px' }}>
+                  <Image
+                    src = {getWin98Icon(WIN98_ICONS.notepad)}
+                    alt = "Notepad"
+                    width = {32}
+                    height = {32}
+                    unoptimized
+                    style = {{ imageRendering: 'pixelated', flexShrink: 0 }}
+                  />
+                  <div style = {{ fontSize: '11px', lineHeight: '1.4' }}>
+                    <div style = {{ fontWeight: 'bold', fontSize: '12px', marginBottom: '4px' }}>
+                      Microsoft(R) Windows 98
+                    </div>
+                    <div>Notepad Text Editor</div>
+                    <div style = {{ color: '#555', marginTop: '4px' }}>
+                      Version 4.10.1998<br />
+                      Copyright (C) 1981-1998 Microsoft Corp.
+                    </div>
+                    <hr style = {{ margin: '10px 0', border: 'none', borderTop: '1px solid #808080', borderBottom: '1px solid #fff' }} />
+                    <div>Physical memory available to Windows: 65,024 KB</div>
+                    <div>System resources: 85% free</div>
+                  </div>
+                </div>
+                <div style = {{ textAlign: 'center' }}>
+                  <button
+                    onClick = {() => set_about_open(false)}
+                    style = {{ minWidth: '70px', padding: '4px 14px' }}
+                  >
+                    OK
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Windows98Window>
   );
