@@ -7,7 +7,7 @@ import { projectsData } from "@/data/projects";
 import { getWin98Icon, WIN98_ICONS } from "@/lib/win98-icons";
 import { withBasePath } from "@/lib/asset-path";
 
-const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
+const Win98_projects = ({ onClose, onFocus, onMinimize, isMinimized, isActive, zIndex }) => {
   const [selected_category, set_selected_category] = useState(0);
 
   return (
@@ -22,6 +22,9 @@ const Win98_projects = ({ onClose, onFocus, isActive, zIndex }) => {
       height = {600}
       resizable = {true}
       maximizable = {true}
+      minimizable = {true}
+      onMinimize = {onMinimize}
+      isMinimized = {isMinimized}
     >
       <div
         style = {{

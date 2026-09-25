@@ -6,7 +6,7 @@ import Windows98Window from './Windows98Window';
 
 import { getWin98Icon, WIN98_ICONS } from '@/lib/win98-icons';
 
-const Win98_resume = ({ onClose, onFocus, isActive, zIndex }) => {
+const Win98_resume = ({ onClose, onFocus, onMinimize, isMinimized, isActive, zIndex }) => {
   const About = {
     title: "About Me",
     info: 
@@ -61,6 +61,9 @@ const Win98_resume = ({ onClose, onFocus, isActive, zIndex }) => {
       height = {500}
       resizable = {true}
       maximizable = {true}
+      minimizable = {true}
+      onMinimize = {onMinimize}
+      isMinimized = {isMinimized}
     >
       <div style = {{ fontFamily: 'MS Sans Serif, sans-serif', fontSize: '11px' }}>
         {/* Tabs */}

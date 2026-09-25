@@ -1,4 +1,4 @@
-@font-face 
+@font-face
 {
     font-family: "Pixelated MS Sans Serif";
     font-style: normal;
@@ -7,7 +7,7 @@
          url("/win98/ms_sans_serif.woff") format("woff");
 }
 
-@font-face 
+@font-face
 {
     font-family: "Pixelated MS Sans Serif";
     font-style: normal;
@@ -16,7 +16,7 @@
          url("/win98/ms_sans_serif_bold.woff") format("woff");
 }
 
-@font-face 
+@font-face
 {
     font-family: "Fixedsys Excelsior";
     src:
@@ -28,7 +28,7 @@
     font-style: normal;
 }
 
-.win98-notepad .win98-notepad-textarea 
+.win98-notepad .win98-notepad-textarea
 {
     font-family:
         "Fixedsys Excelsior", "Lucida Console", Consolas, "Courier New",
@@ -37,7 +37,7 @@
 }
 
 /* MS-DOS Prompt */
-.win98-msdos 
+.win98-msdos
 {
     display: flex;
     flex-direction: column;
@@ -46,7 +46,7 @@
     overflow: hidden;
 }
 
-.win98-msdos .msdos-toolbar 
+.win98-msdos .msdos-toolbar
 {
     display: flex;
     align-items: center;
@@ -57,7 +57,7 @@
     flex-shrink: 0;
 }
 
-.win98-msdos .msdos-toolbar select 
+.win98-msdos .msdos-toolbar select
 {
     height: 20px;
     min-width: 56px;
@@ -65,7 +65,7 @@
     font-size: 11px;
 }
 
-.win98-msdos .msdos-toolbar-btn 
+.win98-msdos .msdos-toolbar-btn
 {
     width: 24px;
     height: 22px;
@@ -79,13 +79,13 @@
     color: #000;
 }
 
-.win98-msdos .msdos-toolbar-btn svg 
+.win98-msdos .msdos-toolbar-btn svg
 {
     width: 14px;
     height: 14px;
 }
 
-.win98-msdos .msdos-terminal 
+.win98-msdos .msdos-terminal
 {
     flex: 1;
     margin: 4px;
@@ -108,7 +108,7 @@
     -webkit-user-select: text;
 }
 
-.win98-msdos .msdos-terminal input 
+.win98-msdos .msdos-terminal input
 {
     background: transparent !important;
     border: none !important;
@@ -119,51 +119,126 @@
     min-width: 0;
 }
 
-body.win98-mode 
+body.win98-mode
 {
     margin: 0 !important;
     padding: 0 !important;
     overflow: hidden !important;
-    font-family: "Pixelated MS Sans Serif", Arial, sans-serif !important;
-    -webkit-font-smoothing: antialiased !important;
-    -moz-osx-font-smoothing: grayscale !important;
-    text-rendering: optimizeLegibility !important;
+    font-family: "Pixelated MS Sans Serif", "MS Sans Serif", Tahoma, Arial, sans-serif !important;
+    -webkit-font-smoothing: none !important;
+    -moz-osx-font-smoothing: unset !important;
+    font-smooth: never !important;
+    text-rendering: pixelated !important;
     background: #008080 !important;
+    color: #000000;
+    line-height: normal;
 }
 
-.win98-container 
+.win98-container
 {
     min-height: 100vh;
-    font-family: "Pixelated MS Sans Serif", Arial, sans-serif !important;
-    -webkit-font-smoothing: antialiased !important;
-    -moz-osx-font-smoothing: grayscale !important;
+    font-family: "Pixelated MS Sans Serif", "MS Sans Serif", Tahoma, Arial, sans-serif !important;
+    -webkit-font-smoothing: none !important;
+    -moz-osx-font-smoothing: unset !important;
+    font-smooth: never !important;
     background: #008080 !important;
+    color: #000000;
+    line-height: normal;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     position: relative;
     isolation: isolate;
-    contain: layout style paint;
 }
 
-.win98-container * 
+.win98-container *
 {
-    font-family: "Pixelated MS Sans Serif", Arial, sans-serif !important;
-    -webkit-font-smoothing: antialiased !important;
-    -moz-osx-font-smoothing: grayscale !important;
     box-sizing: border-box;
+}
+
+.win98-container .window,
+.win98-container .window *,
+.win98-container button,
+.win98-container input,
+.win98-container select,
+.win98-container textarea,
+.win98-container fieldset,
+.win98-container legend
+{
+    -webkit-font-smoothing: none !important;
+    -moz-osx-font-smoothing: unset !important;
+    font-smooth: never !important;
+}
+
+.win98-container .window
+{
+    color: #000000 !important;
+    font-family: "Pixelated MS Sans Serif", "MS Sans Serif", Tahoma, Arial, sans-serif;
+    font-size: 11px;
+    line-height: normal;
+}
+
+.win98-container .window-body
+{
+    color: #000000 !important;
+    font-family: "Pixelated MS Sans Serif", "MS Sans Serif", Tahoma, Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.4;
+    background: #c0c0c0;
+}
+
+.win98-container fieldset
+{
+    color: #000000 !important;
+    font-family: "Pixelated MS Sans Serif", "MS Sans Serif", Tahoma, Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.4;
+    border: 2px groove #ffffff;
+}
+
+.win98-container legend
+{
+    color: #000080 !important;
+    font-family: "Pixelated MS Sans Serif", "MS Sans Serif", Tahoma, Arial, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.win98-container .sunken-panel
+{
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 2px inset #808080 !important;
+    font-family: "Pixelated MS Sans Serif", "MS Sans Serif", Tahoma, Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.win98-container .status-bar
+{
+    color: #000000 !important;
+    font-family: "Pixelated MS Sans Serif", "MS Sans Serif", Tahoma, Arial, sans-serif;
+    font-size: 11px;
 }
 
 .win98-container button,
 .win98-container input,
 .win98-container select,
-.win98-container textarea 
+.win98-container textarea
 {
-    font-family: "Pixelated MS Sans Serif", Arial, sans-serif !important;
+    font-family: "Pixelated MS Sans Serif", "MS Sans Serif", Tahoma, Arial, sans-serif;
     font-size: 11px;
 }
 
-.win98-container .emoji-fallback 
+/* Monospace font isolation for MS-DOS and Notepad */
+.win98-msdos,
+.win98-msdos *,
+.win98-notepad .win98-notepad-textarea
+{
+    font-family: "Fixedsys Excelsior", "Lucida Console", Consolas, "Courier New", monospace !important;
+}
+
+.win98-container .emoji-fallback
 {
     font-family:
         "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
@@ -173,7 +248,7 @@ body.win98-mode
     font-variant-emoji: emoji;
 }
 
-.win98-container img 
+.win98-container img
 {
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
@@ -182,7 +257,7 @@ body.win98-mode
 
 .win98-container .window { position: relative; }
 
-.win98-container .title-bar 
+.win98-container .title-bar
 {
     cursor: grab;
     user-select: none;
@@ -193,7 +268,7 @@ body.win98-mode
 
 .win98-container .title-bar:active { cursor: grabbing; }
 
-.win98-container.dragging 
+.win98-container.dragging
 {
     user-select: none;
     -webkit-user-select: none;
@@ -205,52 +280,193 @@ body.win98-mode
 
 .win98-container .title-bar button { cursor: pointer; }
 
-.win98-container .desktop-icon:hover 
+.win98-container .desktop-icon:hover
 {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 2px;
 }
 
-.win98-container .start-menu div:hover 
+.win98-container .desktop-icon.selected
+{
+    background: rgba(0, 0, 128, 0.25);
+}
+
+.win98-container .desktop-icon.selected .desktop-icon-label
+{
+    background: #000080;
+    color: #ffffff;
+    outline: 1px dotted #ffff80;
+}
+
+.win98-container .desktop-selection-box
+{
+    position: absolute;
+    border: 1px dotted #000000;
+    background: rgba(0, 0, 128, 0.18);
+    pointer-events: none;
+    z-index: 40;
+}
+
+.win98-window-wireframe
+{
+    position: fixed;
+    border: 2px dotted #000000;
+    pointer-events: none;
+    z-index: 99999;
+}
+
+.win98-taskbar-handle
+{
+    width: 3px;
+    height: 22px;
+    border-left: 1px solid #ffffff;
+    border-right: 1px solid #808080;
+    margin: 0 2px;
+    flex-shrink: 0;
+}
+
+.win98-taskbar-divider
+{
+    width: 2px;
+    height: 22px;
+    border-left: 1px solid #808080;
+    border-right: 1px solid #ffffff;
+    margin: 0 3px;
+    flex-shrink: 0;
+}
+
+.win98-quick-launch
+{
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    padding: 0 1px;
+    flex-shrink: 0;
+}
+
+.win98-quick-launch button
+{
+    min-width: 20px;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.win98-quick-launch button:hover
+{
+    border: 1px outset #dfdfdf;
+    background: #c0c0c0;
+}
+
+.win98-quick-launch button:active
+{
+    border: 1px inset #808080;
+    background: #a0a0a0;
+}
+
+.win98-system-tray
+{
+    border: 1px inset #808080;
+    background: #c0c0c0;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    gap: 4px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.win98-tray-icon-btn
+{
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    min-width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.win98-tray-icon-btn.muted
+{
+    opacity: 0.45;
+}
+
+.win98-taskbar-item
+{
+    height: 22px;
+    font-size: 11px;
+    padding: 0 8px;
+    background: #c0c0c0;
+    color: #000000;
+    border: 1px outset #dfdfdf;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+    text-align: left;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.win98-taskbar-item.active
+{
+    background: repeating-conic-gradient(#dfdfdf 0% 25%, #c0c0c0 0% 50%) 50% / 2px 2px !important;
+    border: 1px inset #808080 !important;
+    font-weight: bold;
+}
+
+.win98-container .start-menu div:hover
 {
     background: #316ac5 !important;
     color: white !important;
 }
 
-.win98-container button 
+.win98-container button
 {
     font-family: "MS Sans Serif", sans-serif;
     font-size: 11px;
 }
 
-.win98-container fieldset 
+.win98-container fieldset
 {
     margin: 0;
     border: 2px groove #c0c0c0;
     padding: 10px;
 }
 
-.win98-container legend 
+.win98-container legend
 {
     font-weight: bold;
     font-size: 11px;
     padding: 0 5px;
 }
 
-.win98-container .sunken-panel 
+.win98-container .sunken-panel
 {
     border: 2px inset #c0c0c0;
     background: #c0c0c0;
 }
 
-.win98-container .field-row 
+.win98-container .field-row
 {
     display: flex;
     align-items: center;
     margin-bottom: 8px;
 }
 
-.win98-container .title-bar 
+.win98-container .title-bar
 {
     background: linear-gradient(90deg, #000080, #1084d0);
     color: white;
@@ -259,25 +475,24 @@ body.win98-mode
     font-weight: normal;
 }
 
-.win98-container .title-bar-text 
+.win98-container .title-bar-text
 {
     padding: 2px 6px;
     flex: 1;
 }
 
-.win98-container .title-bar-controls 
+.win98-container .title-bar-controls
 {
     display: flex;
     gap: 2px;
 }
 
-.win98-container .window-body 
+.win98-container .window-body
 {
     background: #c0c0c0;
-    border: 2px inset #c0c0c0;
 }
 
-.win98-container .status-bar 
+.win98-container .status-bar
 {
     display: flex;
     background: #c0c0c0;
@@ -285,7 +500,7 @@ body.win98-mode
     font-size: 11px;
 }
 
-.win98-container .status-bar-field 
+.win98-container .status-bar-field
 {
     padding: 2px 6px;
     border-right: 1px solid #808080;
@@ -294,19 +509,19 @@ body.win98-mode
 
 .win98-container button img[src*="start.png"] { transition: all 0.1s ease !important; }
 
-.win98-container button:has(img[src*="start.png"]):hover 
+.win98-container button:has(img[src*="start.png"]):hover
 {
     background: #dfdfdf !important;
     border: 1px outset #dfdfdf !important;
 }
 
-.win98-container button:has(img[src*="start.png"]):active 
+.win98-container button:has(img[src*="start.png"]):active
 {
     border: 1px inset #c0c0c0 !important;
     background: #a0a0a0 !important;
 }
 
-.win98-container img 
+.win98-container img
 {
     image-rendering: -moz-crisp-edges !important;
     image-rendering: -webkit-crisp-edges !important;
@@ -319,14 +534,14 @@ body.win98-mode
 
 /* ===== WINDOWS 98 LOADER STYLES ===== */
 
-.win98-loader 
+.win98-loader
 {
     font-family: "MS Sans Serif", sans-serif !important;
     position: relative;
     overflow: hidden;
 }
 
-.matrix-rain 
+.matrix-rain
 {
     position: absolute;
     top: 0;
@@ -337,7 +552,7 @@ body.win98-mode
     z-index: 1;
 }
 
-.matrix-drop 
+.matrix-drop
 {
     position: absolute;
     color: #00ff00;
@@ -348,22 +563,22 @@ body.win98-mode
     animation: matrixFall 3s linear infinite;
 }
 
-@keyframes matrixFall 
+@keyframes matrixFall
 {
-    0% 
+    0%
     {
         transform: translateY(-100vh);
         opacity: 1;
     }
 
-    100% 
+    100%
     {
         transform: translateY(100vh);
         opacity: 0;
     }
 }
 
-.digital-rain 
+.digital-rain
 {
     position: absolute;
     top: 0;
@@ -374,7 +589,7 @@ body.win98-mode
     z-index: 2;
 }
 
-.digital-drop 
+.digital-drop
 {
     position: absolute;
     font-family: "Courier New", monospace;
@@ -384,22 +599,22 @@ body.win98-mode
     animation: digitalFall 4s linear infinite;
 }
 
-@keyframes digitalFall 
+@keyframes digitalFall
 {
-    0% 
+    0%
    {
         transform: translateY(-100vh) rotate(0deg);
         opacity: 1;
     }
 
-    100% 
+    100%
    {
         transform: translateY(100vh) rotate(360deg);
         opacity: 0;
     }
 }
 
-.particles 
+.particles
 {
     position: absolute;
     top: 0;
@@ -410,7 +625,7 @@ body.win98-mode
     z-index: 3;
 }
 
-.particle 
+.particle
 {
     position: absolute;
     border-radius: 50%;
@@ -418,34 +633,34 @@ body.win98-mode
     box-shadow: 0 0 10px currentColor;
 }
 
-@keyframes particleFloat 
+@keyframes particleFloat
 {
-    0%, 100% 
+    0%, 100%
     {
         transform: translate(0, 0) scale(1);
         opacity: 0.8;
     }
 
-    25% 
+    25%
     {
         transform: translate(10px, -20px) scale(1.2);
         opacity: 1;
     }
 
-    50% 
+    50%
     {
         transform: translate(-15px, -40px) scale(0.8);
         opacity: 0.6;
     }
 
-    75% 
+    75%
     {
         transform: translate(20px, -10px) scale(1.1);
         opacity: 0.9;
     }
 }
 
-.data-stream 
+.data-stream
 {
     position: absolute;
     top: 0;
@@ -456,7 +671,7 @@ body.win98-mode
     z-index: 4;
 }
 
-.data-chunk 
+.data-chunk
 {
     position: absolute;
     color: #00ffff;
@@ -467,22 +682,22 @@ body.win98-mode
     animation: dataFlow 5s linear infinite;
 }
 
-@keyframes dataFlow 
+@keyframes dataFlow
 {
-    0% 
+    0%
     {
         transform: translateX(-100vw) rotateY(0deg);
         opacity: 1;
     }
 
-    100% 
+    100%
     {
         transform: translateX(100vw) rotateY(360deg);
         opacity: 0;
     }
 }
 
-.scanlines 
+.scanlines
 {
     position: absolute;
     top: 0;
@@ -501,20 +716,20 @@ body.win98-mode
     z-index: 10;
 }
 
-@keyframes scanlineMove 
+@keyframes scanlineMove
 {
-    0% 
+    0%
     {
         transform: translateY(0);
     }
 
-    100% 
+    100%
     {
         transform: translateY(4px);
     }
 }
 
-.crt-overlay 
+.crt-overlay
 {
     position: absolute;
     top: 0;
@@ -530,7 +745,7 @@ body.win98-mode
     z-index: 11;
 }
 
-.hologram-overlay 
+.hologram-overlay
 {
     position: absolute;
     top: 0;
@@ -548,14 +763,14 @@ body.win98-mode
     z-index: 12;
 }
 
-@keyframes hologramShift 
+@keyframes hologramShift
 {
-    0%, 100% 
+    0%, 100%
     {
         transform: translateX(-100%);
     }
 
-    50% 
+    50%
     {
         transform: translateX(100%);
     }
@@ -579,22 +794,22 @@ body.win98-mode
     z-index: 5;
 }
 
-@keyframes energyPulse 
+@keyframes energyPulse
 {
-    0%, 100% 
+    0%, 100%
     {
         transform: scale(1);
         opacity: 0.5;
     }
 
-    50% 
+    50%
     {
         transform: scale(1.2);
         opacity: 1;
     }
 }
 
-.circuit-overlay 
+.circuit-overlay
 {
     position: absolute;
     top: 0;
@@ -608,35 +823,35 @@ body.win98-mode
 .circuit-line { animation: circuitPulse 2s ease-in-out infinite; }
 .circuit-node { animation: nodePulse 1.5s ease-in-out infinite; }
 
-@keyframes circuitPulse 
+@keyframes circuitPulse
 {
-    0%, 100% 
+    0%, 100%
     {
         opacity: 0.3;
     }
 
-    50% 
+    50%
     {
         opacity: 1;
     }
 }
 
-@keyframes nodePulse 
+@keyframes nodePulse
 {
-    0%, 100% 
+    0%, 100%
     {
         r: 2;
         opacity: 0.5;
     }
 
-    50% 
+    50%
     {
         r: 4;
         opacity: 1;
     }
 }
 
-.laser-overlay 
+.laser-overlay
 {
     position: absolute;
     top: 0;
@@ -647,7 +862,7 @@ body.win98-mode
     z-index: 7;
 }
 
-.laser-beam 
+.laser-beam
 {
     position: absolute;
     top: 0;
@@ -665,22 +880,22 @@ body.win98-mode
     box-shadow: 0 0 10px currentColor;
 }
 
-@keyframes laserSweep 
+@keyframes laserSweep
 {
-    0%, 100% 
+    0%, 100%
     {
         opacity: 0;
         transform: scaleY(0);
     }
 
-    50% 
+    50%
     {
         opacity: 1;
         transform: scaleY(1);
     }
 }
 
-.ripple-overlay 
+.ripple-overlay
 {
     position: absolute;
     top: 50%;
@@ -692,7 +907,7 @@ body.win98-mode
     z-index: 8;
 }
 
-.ripple 
+.ripple
 {
     position: absolute;
     top: 50%;
@@ -705,22 +920,22 @@ body.win98-mode
     animation: rippleExpand 3s ease-out infinite;
 }
 
-@keyframes rippleExpand 
+@keyframes rippleExpand
 {
-    0% 
+    0%
     {
         transform: translate(-50%, -50%) scale(0);
         opacity: 1;
     }
-    
-    100% 
+
+    100%
     {
         transform: translate(-50%, -50%) scale(20);
         opacity: 0;
     }
 }
 
-.dna-helix 
+.dna-helix
 {
     position: absolute;
     top: 0;
@@ -731,7 +946,7 @@ body.win98-mode
     z-index: 9;
 }
 
-.dna-strand 
+.dna-strand
 {
     position: absolute;
     width: 4px;
@@ -741,10 +956,10 @@ body.win98-mode
     box-shadow: 0 0 5px currentColor;
 }
 
-@keyframes dnaRotate 
+@keyframes dnaRotate
 {
     0% { transform: rotate(0deg) translateY(0px); }
-    
+
     100% { transform: rotate(360deg) translateY(-10px); }
 }
 
@@ -1487,7 +1702,7 @@ body.win98-mode
 @keyframes logoRotate
 {
     from { transform: rotate(0deg); }
-    
+
     to { transform: rotate(360deg); }
 }
 
@@ -1669,11 +1884,121 @@ body.win98-mode
     }
 }
 
+.win98-context-menu
+{
+    position: fixed;
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    padding: 2px;
+    min-width: 170px;
+    z-index: 100002;
+    user-select: none;
+    font-family: "MS Sans Serif", "Pixelated MS Sans Serif", Tahoma, sans-serif;
+    font-size: 11px;
+}
+
+.win98-context-menu-item
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 18px 3px 6px;
+    cursor: default;
+    color: #000000;
+    white-space: nowrap;
+}
+
+.win98-context-menu-item:hover:not(.disabled)
+{
+    background: #000080;
+    color: #ffffff;
+}
+
+.win98-context-menu-item.disabled
+{
+    color: #808080;
+    text-shadow: 1px 1px 0 #ffffff;
+    cursor: default;
+}
+
+.win98-context-menu-separator
+{
+    height: 0;
+    border-top: 1px solid #808080;
+    border-bottom: 1px solid #ffffff;
+    margin: 3px 1px;
+}
+
+.win98-screensaver
+{
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    background: #000000;
+    cursor: none;
+}
+
 .win98-container .context-menu
 {
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
     border: 2px outset #c0c0c0;
     background: #c0c0c0;
+}
+
+.win98-context-menu
+{
+    position: fixed;
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    padding: 2px;
+    min-width: 170px;
+    z-index: 100002;
+    user-select: none;
+    font-family: "MS Sans Serif", "Pixelated MS Sans Serif", Tahoma, sans-serif;
+    font-size: 11px;
+}
+
+.win98-context-menu-item
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 18px 3px 6px;
+    cursor: default;
+    color: #000000;
+    white-space: nowrap;
+}
+
+.win98-context-menu-item:hover:not(.disabled)
+{
+    background: #000080;
+    color: #ffffff;
+}
+
+.win98-context-menu-item.disabled
+{
+    color: #808080;
+    text-shadow: 1px 1px 0 #ffffff;
+    cursor: default;
+}
+
+.win98-context-menu-separator
+{
+    height: 0;
+    border-top: 1px solid #808080;
+    border-bottom: 1px solid #ffffff;
+    margin: 3px 1px;
+}
+
+.win98-screensaver
+{
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    background: #000000;
+    cursor: none;
 }
 
 .win98-container .context-menu button
@@ -1685,6 +2010,61 @@ body.win98-mode
     font-size: 11px;
     padding: 4px 8px;
     cursor: pointer;
+}
+
+.win98-context-menu
+{
+    position: fixed;
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    padding: 2px;
+    min-width: 170px;
+    z-index: 100002;
+    user-select: none;
+    font-family: "MS Sans Serif", "Pixelated MS Sans Serif", Tahoma, sans-serif;
+    font-size: 11px;
+}
+
+.win98-context-menu-item
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 18px 3px 6px;
+    cursor: default;
+    color: #000000;
+    white-space: nowrap;
+}
+
+.win98-context-menu-item:hover:not(.disabled)
+{
+    background: #000080;
+    color: #ffffff;
+}
+
+.win98-context-menu-item.disabled
+{
+    color: #808080;
+    text-shadow: 1px 1px 0 #ffffff;
+    cursor: default;
+}
+
+.win98-context-menu-separator
+{
+    height: 0;
+    border-top: 1px solid #808080;
+    border-bottom: 1px solid #ffffff;
+    margin: 3px 1px;
+}
+
+.win98-screensaver
+{
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    background: #000000;
+    cursor: none;
 }
 
 .win98-container .context-menu button:hover
@@ -1978,8 +2358,94 @@ body.win98-mode.cyber-theme
     user-select: none;
 }
 
-@keyframes dos-blink 
+@keyframes dos-blink
 {
     0%, 49% { opacity: 1; }
     50%, 100% { opacity: 0; }
+}
+
+.win98-start-menu
+{
+    position: fixed;
+    bottom: 30px;
+    left: 2px;
+    z-index: 10001;
+    display: flex;
+    flex-direction: row;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    user-select: none;
+    font-family: "Pixelated MS Sans Serif", "MS Sans Serif", Tahoma, sans-serif;
+}
+
+.win98-start-menu-sidebar
+{
+    width: 26px;
+    background: linear-gradient(180deg, #000080 0%, #1084d0 100%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 8px;
+    flex-shrink: 0;
+}
+
+.win98-start-menu-sidebar span
+{
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 2px;
+    font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+.win98-start-menu-content
+{
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+    min-width: 170px;
+}
+
+.win98-start-menu-item
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 8px;
+    cursor: default;
+    color: #000000;
+    font-size: 11px;
+    position: relative;
+}
+
+.win98-start-menu-item:hover,
+.win98-start-menu-item.active
+{
+    background: #000080;
+    color: #ffffff;
+}
+
+.win98-start-submenu
+{
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+    padding: 2px;
+    min-width: 160px;
+    z-index: 10002;
+}
+
+.win98-start-menu-separator
+{
+    height: 0;
+    border-top: 1px solid #808080;
+    border-bottom: 1px solid #ffffff;
+    margin: 3px 2px;
 }

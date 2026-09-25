@@ -74,7 +74,7 @@ const COLOR_MAP = {
   'C': '#ff0000', 'D': '#ff00ff', 'E': '#ffff00', 'F': '#ffffff'
 };
 
-const Win98_msdos = ({ onClose, onFocus, onOpenWindow, isActive, zIndex }) => {
+const Win98_msdos = ({ onClose, onFocus, onMinimize, isMinimized, onOpenWindow, isActive, zIndex }) => {
   const [current_path, set_current_path] = useState(['C:', 'WINDOWS']);
   const [output, set_output] = useState([
     { type: 'text', value: 'Microsoft(R) Windows 98\n   (C)Copyright Microsoft Corp 1981-1998.\n\n' }
@@ -540,12 +540,15 @@ const Win98_msdos = ({ onClose, onFocus, onOpenWindow, isActive, zIndex }) => {
       icon = {WIN98_ICONS.cmd}
       onClose = {onClose}
       onFocus = {onFocus}
+      onMinimize = {onMinimize}
+      isMinimized = {isMinimized}
       isActive = {isActive}
       zIndex = {zIndex}
       width = {660}
       height = {420}
       resizable = {true}
       maximizable = {true}
+      minimizable = {true}
     >
       <div 
         className = "win98-msdos"

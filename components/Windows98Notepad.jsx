@@ -7,7 +7,7 @@ import { WIN98_ICONS, getWin98Icon } from '@/lib/win98-icons';
 
 const STORAGE_KEY = 'win98-notepad-content';
 
-const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
+const Win98_notepad = ({ onClose, onFocus, onMinimize, isMinimized, isActive, zIndex, initialFile = null, onSaveFile = null }) => {
   const [text, set_text] = useState('');
   const [filename, set_filename] = useState('Untitled');
   const [saved_msg, set_saved_msg] = useState('Ready');
@@ -18,6 +18,14 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
   const [cursor_pos, set_cursor_pos] = useState({ line: 1, col: 1 });
   const [prev_text, set_prev_text] = useState('');
   const [about_open, set_about_open] = useState(false);
+
+  useEffect(() => {
+    if(initialFile)
+    {
+      set_filename(initialFile.name || 'Untitled');
+      set_text(initialFile.content || '');
+    }
+  }, [initialFile]);
 
   const textarea_ref = useRef(null);
   const file_input_ref = useRef(null);
@@ -47,6 +55,10 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
     try 
     {
       localStorage.setItem(STORAGE_KEY, text);
+      if(onSaveFile && initialFile)
+      {
+        onSaveFile(initialFile.id, text);
+      }
       set_saved_msg('Saved');
       setTimeout(() => set_saved_msg('Ready'), 1500);
     } catch(_) {}
@@ -297,6 +309,9 @@ const Win98_notepad = ({ onClose, onFocus, isActive, zIndex }) => {
       height = {420}
       resizable = {true}
       maximizable = {true}
+      minimizable = {true}
+      onMinimize = {onMinimize}
+      isMinimized = {isMinimized}
     >
       {/* Hidden file input for Open... */}
       <input

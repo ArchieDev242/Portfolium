@@ -6,7 +6,7 @@ import Windows98Window from './Windows98Window';
 
 import { getWin98Icon, WIN98_ICONS } from '@/lib/win98-icons';
 
-const Win98_contact = ({ onClose, onFocus, isActive, zIndex }) => {
+const Win98_contact = ({ onClose, onFocus, onMinimize, isMinimized, isActive, zIndex }) => {
   const [form_data, set_form_data] = useState({
     name: "",
     email: "",
