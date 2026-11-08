@@ -88,7 +88,7 @@ const HirePage = () => {
                             </div>
                             <h1 className = "text-4xl font-bold mb-4">Thank You!</h1>
                             <p className = "text-xl text-white/70 mb-8">
-                                Your project inquiry has been received. I'll get back to you within 24 hours to discuss your project in detail.
+                                Your project inquiry has been received. I&apos;ll get back to you within 24 hours to discuss your project in detail.
                             </p>
                             <Button 
                                 onClick = {() => set_is_submitted(false)}
@@ -110,10 +110,10 @@ const HirePage = () => {
                     {/* Header */}
                     <div className = "text-center mb-12">
                         <h1 className = "text-4xl md:text-5xl font-bold mb-6">
-                            Let's Build Something <span className = "text-accent-default">Amazing</span> Together
+                            Let&apos;s Build Something <span className = "text-accent-default">Amazing</span> Together
                         </h1>
                         <p className = "text-xl text-white/70 max-w-2xl mx-auto">
-                            Ready to bring your project to life? Fill out the form below and let's discuss how we can turn your ideas into reality.
+                            Ready to bring your project to life? Fill out the form below and let&apos;s discuss how we can turn your ideas into reality.
                         </p>
                     </div>
 
@@ -202,7 +202,7 @@ const HirePage = () => {
                                             <SelectItem value = "10k-25k">$10,000 - $25,000</SelectItem>
                                             <SelectItem value = "25k-50k">$25,000 - $50,000</SelectItem>
                                             <SelectItem value = "50k-plus">$50,000+</SelectItem>
-                                            <SelectItem value = "discuss">Let's Discuss</SelectItem>
+                                            <SelectItem value = "discuss">Let&apos;s Discuss</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>

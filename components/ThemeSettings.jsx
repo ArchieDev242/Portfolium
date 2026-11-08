@@ -13,7 +13,7 @@ const colors = [
   { name: "cyan", value: "#00ffff" },
 ];
 
-const theme_settings = () => {
+const ThemeSettings = () => {
   const [is_open, setIsOpen] = useState(false);
   const [current_color, setCurrentColor] = useState("green");
 
@@ -109,4 +109,4 @@ const theme_settings = () => {
   );
 };
 
-export default theme_settings; 
+export default ThemeSettings; 

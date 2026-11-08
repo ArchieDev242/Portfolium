@@ -195,7 +195,7 @@ const Win98_projects = ({ onClose, onFocus, onMinimize, isMinimized, isActive, z
                       Technologies
                     </legend>
                     <div style = {{ padding: "5px" }}>
-                      {project.technologies.map((tech, techIndex) => (
+                      {(project.technologies || []).map((tech, techIndex) => (
                         <span
                           key = {techIndex}
                           style = {{

@@ -3,12 +3,23 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Windows98Window from './Windows98Window';
+import { show_win98_alert, show_win98_dialog, show_win98_prompt } from './Windows98Dialog';
 import { WIN98_ICONS, getWin98Icon } from '@/lib/win98-icons';
 
 const STORAGE_KEY = 'win98-notepad-content';
 
+const read_saved_text = () => {
+  try
+  {
+    return localStorage.getItem(STORAGE_KEY) || '';
+  } catch(_)
+  {
+    return '';
+  }
+};
+
 const Win98_notepad = ({ onClose, onFocus, onMinimize, isMinimized, isActive, zIndex, initialFile = null, onSaveFile = null }) => {
-  const [text, set_text] = useState('');
+  const [text, set_text] = useState(() => initialFile ? (initialFile.content || '') : read_saved_text());
   const [filename, set_filename] = useState('Untitled');
   const [saved_msg, set_saved_msg] = useState('Ready');
   const [word_wrap, set_word_wrap] = useState(false);
@@ -18,10 +29,12 @@ const Win98_notepad = ({ onClose, onFocus, onMinimize, isMinimized, isActive, zI
   const [cursor_pos, set_cursor_pos] = useState({ line: 1, col: 1 });
   const [prev_text, set_prev_text] = useState('');
   const [about_open, set_about_open] = useState(false);
+  const [linked_file_id, set_linked_file_id] = useState(null);
 
   useEffect(() => {
     if(initialFile)
     {
+      set_linked_file_id(initialFile.id);
       set_filename(initialFile.name || 'Untitled');
       set_text(initialFile.content || '');
     }
@@ -29,14 +42,6 @@ const Win98_notepad = ({ onClose, onFocus, onMinimize, isMinimized, isActive, zI
 
   const textarea_ref = useRef(null);
   const file_input_ref = useRef(null);
-
-  useEffect(() => {
-    try 
-    {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if(saved) set_text(saved);
-    } catch(_) {}
-  }, []);
 
   const get_line_col = useCallback(() => {
     const el = textarea_ref.current;
@@ -54,10 +59,12 @@ const Win98_notepad = ({ onClose, onFocus, onMinimize, isMinimized, isActive, zI
   const handle_save = () => {
     try 
     {
-      localStorage.setItem(STORAGE_KEY, text);
-      if(onSaveFile && initialFile)
+      if(linked_file_id)
       {
-        onSaveFile(initialFile.id, text);
+        if(onSaveFile) onSaveFile(linked_file_id, text);
+      } else
+      {
+        localStorage.setItem(STORAGE_KEY, text);
       }
       set_saved_msg('Saved');
       setTimeout(() => set_saved_msg('Ready'), 1500);
@@ -94,6 +101,7 @@ const Win98_notepad = ({ onClose, onFocus, onMinimize, isMinimized, isActive, zI
       {
         set_text(content);
         set_filename(file.name);
+        set_linked_file_id(null);
         set_saved_msg('Loaded');
         setTimeout(() => set_saved_msg('Ready'), 1500);
       }
@@ -102,10 +110,27 @@ const Win98_notepad = ({ onClose, onFocus, onMinimize, isMinimized, isActive, zI
     e.target.value = '';
   };
 
-  const handle_new = () => {
-    if(text && !confirm('Save changes to Untitled?')) return;
+  const handle_new = async () => {
+    set_menu_open(null);
+    if(text)
+    {
+      const choice = await show_win98_dialog({
+        title: 'Notepad',
+        icon: 'warning',
+        message: `The text in the ${filename} file has changed.\n\nDo you want to save the changes?`,
+        buttons: [
+          { label: 'Yes', value: 'yes' },
+          { label: 'No', value: 'no' },
+          { label: 'Cancel', value: 'cancel' }
+        ],
+        cancel_value: 'cancel'
+      });
+      if(choice === 'cancel') return;
+      if(choice === 'yes') handle_save();
+    }
     set_text('');
     set_filename('Untitled');
+    set_linked_file_id(null);
     set_menu_open(null);
   };
 
@@ -133,8 +158,9 @@ const Win98_notepad = ({ onClose, onFocus, onMinimize, isMinimized, isActive, zI
     set_menu_open(null);
   };
 
-  const handle_find = () => {
-    const t = prompt('Find what:', find_text);
+  const handle_find = async () => {
+    set_menu_open(null);
+    const t = await show_win98_prompt('Find what:', find_text, { title: 'Find' });
     if(t != null) 
     {
       set_find_text(t);
@@ -165,7 +191,7 @@ const Win98_notepad = ({ onClose, onFocus, onMinimize, isMinimized, isActive, zI
       }
     } else 
     {
-      alert(`Cannot find "${find_text}"`);
+      show_win98_alert(`Cannot find "${find_text}"`, { title: 'Notepad' });
       set_find_index(-1);
     }
     set_menu_open(null);
@@ -217,7 +243,7 @@ const Win98_notepad = ({ onClose, onFocus, onMinimize, isMinimized, isActive, zI
       t = navigator.clipboard ? await navigator.clipboard.readText() : '';
     } catch(_) 
     {
-      t = prompt('Paste text (Ctrl+V):') || '';
+      t = (await show_win98_prompt('Paste text (Ctrl+V):', '', { title: 'Paste' })) || '';
     }
     if(!t) return;
     const el = textarea_ref.current;
@@ -249,7 +275,7 @@ const Win98_notepad = ({ onClose, onFocus, onMinimize, isMinimized, isActive, zI
         { label: 'Save', shortcut: 'Ctrl+S', action: handle_save },
         { label: 'Save As...', action: handle_save_as },
         { type: 'divider' },
-        { label: 'Page Setup...', action: () => { alert('Page setup is configured by your browser printer settings.'); set_menu_open(null); } },
+        { label: 'Page Setup...', action: () => { show_win98_alert('Page setup is configured by your browser printer settings.', { title: 'Page Setup' }); set_menu_open(null); } },
         { label: 'Print...', shortcut: 'Ctrl+P', action: () => { window.print(); set_menu_open(null); } },
         { type: 'divider' },
         { label: 'Exit', action: () => { set_menu_open(null); onClose?.(); } }
@@ -287,7 +313,7 @@ const Win98_notepad = ({ onClose, onFocus, onMinimize, isMinimized, isActive, zI
         { 
           label: 'Help Topics', 
           action: () => { 
-            alert('Notepad Help\n\n• Use File > Open to edit local files\n• Use File > Save As to export your text\n• Press F5 for instant timestamp\n• Word Wrap toggles text wrapping'); 
+            show_win98_alert('• Use File > Open to edit local files\n• Use File > Save As to export your text\n• Press F5 for instant timestamp\n• Word Wrap toggles text wrapping', { title: 'Notepad Help' }); 
             set_menu_open(null); 
           } 
         },

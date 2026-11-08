@@ -130,7 +130,7 @@ const Contact = () => {
           animate = {{ y: [0, -5, 0] }}
           transition = {{ duration: 2, repeat: Infinity }}
         >
-          Зв'яжіться <span className = "text-green-400">зі мною</span>
+          Зв&apos;яжіться <span className = "text-green-400">зі мною</span>
         </motion.h1>
         
         {/* Інтерфейс гравця */}
@@ -238,7 +238,7 @@ const Contact = () => {
                       <form onSubmit = {handle_submit} className = "space-y-5">
                         <div>
                           <label className = "block text-yellow-300 mb-2 minecraft-font">
-                            ІМ'Я ГРАВЦЯ:
+                            ІМ&apos;Я ГРАВЦЯ:
                           </label>
                           <MinecraftInput 
                             type = "text" 
@@ -252,7 +252,7 @@ const Contact = () => {
                         
                         <div>
                           <label className = "block text-yellow-300 mb-2 minecraft-font">
-                            КОД ЗВ'ЯЗКУ:
+                            КОД ЗВ&apos;ЯЗКУ:
                           </label>
                           <MinecraftInput 
                             type = "email" 

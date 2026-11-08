@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const SkillNode = ({
@@ -351,9 +351,9 @@ const SkillDetails = ({ skill, position }) => {
   );
 };
 
-const SkillTree = () => {
-  const ENABLE_NODE_DRAG = false; // dev-only: should be enabled for node drag mode
+const ENABLE_NODE_DRAG = false; // dev-only: should be enabled for node drag mode
 
+const SkillTree = () => {
   const [is_client, set_is_client] = useState(false);
 
   const [active_skill, set_active_skill] = useState(null);
@@ -1127,39 +1127,50 @@ const SkillTree = () => {
     }
   };
 
+  // listeners stay attached for the whole drag; the ref always points at this render's handlers
+  const drag_handlers_ref = useRef(null);
+  drag_handlers_ref.current = {
+    node_move: handle_node_drag,
+    node_end: handle_node_drag_end,
+    pan_move: handle_mouse_move,
+    pan_up: handle_mouse_up
+  };
+
   useEffect(() => {
     if(!ENABLE_NODE_DRAG) return;
 
-    if(dragged_node_id) 
-      {
-      window.addEventListener("mousemove", handle_node_drag);
-      window.addEventListener("mouseup", handle_node_drag_end);
-    } else 
-      {
-      window.removeEventListener("mousemove", handle_node_drag);
-      window.removeEventListener("mouseup", handle_node_drag_end);
-      setTimeout(() => set_is_node_dragging(false), 10);
+    if(!dragged_node_id)
+    {
+      const timer = setTimeout(() => set_is_node_dragging(false), 10);
+      return () => clearTimeout(timer);
     }
+
+    const handle_move = (e) => drag_handlers_ref.current.node_move(e);
+    const handle_end = () => drag_handlers_ref.current.node_end();
+
+    window.addEventListener("mousemove", handle_move);
+    window.addEventListener("mouseup", handle_end);
+
     return () => {
-      window.removeEventListener("mousemove", handle_node_drag);
-      window.removeEventListener("mouseup", handle_node_drag_end);
+      window.removeEventListener("mousemove", handle_move);
+      window.removeEventListener("mouseup", handle_end);
     };
-  }, [dragged_node_id, drag_offset]);
+  }, [dragged_node_id]);
 
   useEffect(() => {
-    const handle_global_mouse_move = (e) => handle_mouse_move(e);
-    const handle_global_mouse_up = (e) => handle_mouse_up(e);
+    if(!is_dragging) return;
 
-    if (is_dragging) {
-      document.addEventListener("mousemove", handle_global_mouse_move);
-      document.addEventListener("mouseup", handle_global_mouse_up);
-    }
+    const handle_global_mouse_move = (e) => drag_handlers_ref.current.pan_move(e);
+    const handle_global_mouse_up = (e) => drag_handlers_ref.current.pan_up(e);
+
+    document.addEventListener("mousemove", handle_global_mouse_move);
+    document.addEventListener("mouseup", handle_global_mouse_up);
 
     return () => {
       document.removeEventListener("mousemove", handle_global_mouse_move);
       document.removeEventListener("mouseup", handle_global_mouse_up);
     };
-  }, [is_dragging, drag_start, last_offset]);
+  }, [is_dragging]);
 
   useEffect(() => {
     const prevent_scroll = (e) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Windows98Window from './Windows98Window';
 import { WIN98_ICONS } from '@/lib/win98-icons';
 import { play_sound } from '@/lib/win98-audio';
@@ -10,6 +10,7 @@ const Windows98Calculator = ({ onClose, onFocus, onMinimize, isMinimized, isActi
   const [prev_value, set_prev_value] = useState(null);
   const [operation, set_operation] = useState(null);
   const [waiting_operand, set_waiting_operand] = useState(false);
+  const root_ref = useRef(null);
   const [memory, set_memory] = useState(0);
 
   const input_digit = useCallback((digit) => {
@@ -139,6 +140,10 @@ const Windows98Calculator = ({ onClose, onFocus, onMinimize, isMinimized, isActi
     if(!isActive) return;
 
     const handle_key_down = (e) => {
+      // only take keys typed into nothing or into this window (not Run, dialogs, Notepad...)
+      const own_window = root_ref.current?.closest('.window');
+      if(e.target !== document.body && !(own_window && own_window.contains(e.target))) return;
+
       if(e.key >= '0' && e.key <= '9') input_digit(e.key);
       else if(e.key === '.') input_decimal();
       else if(e.key === '=' || e.key === 'Enter') calculate_equals();
@@ -170,8 +175,10 @@ const Windows98Calculator = ({ onClose, onFocus, onMinimize, isMinimized, isActi
       maximizable = {false}
       minimizable = {true}
     >
-      <div 
-        style = {{ 
+      <div
+        ref = {root_ref}
+        className = "win98-calculator"
+        style = {{
           padding: '6px', 
           fontFamily: '"Pixelated MS Sans Serif", Arial, sans-serif',
           fontSize: '11px',

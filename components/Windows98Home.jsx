@@ -1,21 +1,35 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Windows98Loader from './Windows98Loader';
-import Win98_theme_manager from './Windows98ThemeManager';
 import Win98_window_manager from './Windows98WindowManager';
 import { getWin98Icon, WIN98_ICONS } from '@/lib/win98-icons';
-import { play_sound, set_sound_muted, get_sound_muted } from '@/lib/win98-audio';
+import { play_sound, get_sound_muted } from '@/lib/win98-audio';
 import Windows98ContextMenu from './Windows98ContextMenu';
 import Windows98Screensaver from './Windows98Screensaver';
 import Windows98VolumePopup from './Windows98VolumePopup';
 import Windows98RunDialog from './Windows98RunDialog';
 import Windows98ShutdownDialog from './Windows98ShutdownDialog';
 import Windows98DisplayProperties from './Windows98DisplayProperties';
+import Windows98DialogHost, { show_win98_alert, show_win98_prompt } from './Windows98Dialog';
+import { get_desktop_background, get_scheme_vars, normalize_display } from '@/lib/win98-display';
+import { is_touch_device, useIsMobile, useLongPress } from '@/lib/win98-mobile';
 
 const BIRTHDAY = new Date(2006, 8, 18);
+const TASKBAR_HEIGHT = 30;
+const ICON_GRID_X = 85;
+const ICON_GRID_Y = 80;
+const ICON_OFFSET = 20;
+const ICON_BOTTOM_MARGIN = 110;
+const ICON_DRAG_THRESHOLD = 4;
+const RECYCLE_DROP_DISTANCE = 80;
+const Z_BASE = 1000;
+const Z_LIMIT = 9000; // stay under taskbar (9999) and menus/dialogs (10000+)
+const DESKTOP_STORAGE_KEY = 'win98-desktop';
+const DISPLAY_STORAGE_KEY = 'win98-display';
+const NON_DESKTOP_SELECTOR = '.window, .status-bar, .desktop-icon, .context-menu, .win98-context-menu, .win98-start-menu';
 
 const get_age = () => {
   const today = new Date();
@@ -28,6 +42,108 @@ const get_age = () => {
   return age;
 };
 
+const read_storage = (key) => {
+  if(typeof window === 'undefined') return null;
+  try
+  {
+    return JSON.parse(localStorage.getItem(key));
+  } catch(_)
+  {
+    return null;
+  }
+};
+
+const write_storage = (key, value) => {
+  try
+  {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch(_) {}
+};
+
+const clamp_icon_position = (position) => ({
+  x: Math.max(0, Math.min(position.x, window.innerWidth - 80)),
+  y: Math.max(0, Math.min(position.y, window.innerHeight - ICON_BOTTOM_MARGIN))
+});
+
+// clamp every icon into the screen, then move any icon that now overlaps another into the next free grid cell
+const clamp_icons = (icons) => {
+  const max_x = Math.max(ICON_OFFSET, window.innerWidth - 80);
+  const max_y = Math.max(ICON_OFFSET, window.innerHeight - ICON_BOTTOM_MARGIN);
+  const placed = [];
+  const overlaps = (position) => placed.some(other =>
+    Math.abs(other.x - position.x) < ICON_GRID_X - 10 && Math.abs(other.y - position.y) < ICON_GRID_Y - 10
+  );
+
+  const find_free_cell = () => {
+    for(let x = ICON_OFFSET; x <= max_x; x += ICON_GRID_X)
+    {
+      for(let y = ICON_OFFSET; y <= max_y; y += ICON_GRID_Y)
+      {
+        if(!overlaps({ x, y })) return { x, y };
+      }
+    }
+    return null;
+  };
+
+  return icons.map(icon => {
+    let position = clamp_icon_position(icon.position);
+    if(overlaps(position)) position = find_free_cell() || position;
+    placed.push(position);
+    return position.x === icon.position.x && position.y === icon.position.y ? icon : { ...icon, position };
+  });
+};
+
+// functions can't be stored, so files are saved without `action` and get it back on load
+const strip_action = ({ action, ...rest }) => rest;
+
+const line_up_icons = (icons) => {
+  const rows = Math.max(1, Math.floor((window.innerHeight - ICON_BOTTOM_MARGIN - ICON_OFFSET) / ICON_GRID_Y) + 1);
+
+  return icons.map((icon, idx) => ({
+    ...icon,
+    position: {
+      x: ICON_OFFSET + Math.floor(idx / rows) * ICON_GRID_X,
+      y: ICON_OFFSET + (idx % rows) * ICON_GRID_Y
+    }
+  }));
+};
+
+// 16x16 pixel speaker like the Win98 volume tray icon; muted adds the red "no" sign
+const TraySpeakerIcon = ({ muted }) => (
+  <svg width = "16" height = "16" viewBox = "0 0 16 16" shapeRendering = "crispEdges" aria-hidden = "true">
+    <path d = "M2 6h3l4-4h1v12H9l-4-4H2z" fill = "#c0c0c0" stroke = "#000000" />
+    <path d = "M3 7h2v2H3z" fill = "#808080" />
+    <path d = "M9 4h1v8H9z" fill = "#ffffff" />
+    {!muted && (
+      <path d = "M12 5v6M14 3v10" stroke = "#000000" />
+    )}
+    {muted && (
+      <>
+        <circle cx = "11.5" cy = "11.5" r = "3.5" fill = "#ffffff" stroke = "#ff0000" strokeWidth = "1.5" />
+        <path d = "M9 14L14 9" stroke = "#ff0000" strokeWidth = "1.5" />
+      </>
+    )}
+  </svg>
+);
+
+const TaskbarClock = () => {
+  const [now, set_now] = useState(() => new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => set_now(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <span
+      title = {now.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+      style = {{ fontSize: '11px', padding: '0 4px', whiteSpace: 'nowrap' }}
+    >
+      {now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+    </span>
+  );
+};
+
 const Windows98Home = () => {
   const router = useRouter();
   const window_ref = useRef(null);
@@ -37,16 +153,19 @@ const Windows98Home = () => {
   const [window_position, set_window_position] = useState({ x: 0, y: 0 });
   const [is_minimized, set_is_minimized] = useState(false);
   const [is_maximized, set_is_maximized] = useState(false);
+  const is_mobile = useIsMobile();
+  const portfolio_full = is_maximized || is_mobile;
+  // long press on touch screens opens the same menus as a right-click
+  const desktop_long_press = useLongPress((e) => open_desktop_context_menu(e));
+  const icon_long_press = useLongPress((e, icon) => open_icon_context_menu(e, icon));
   const [previous_position, set_previous_position] = useState({ x: 0, y: 0 });
   const [is_loading, set_is_loading] = useState(true);
-  const [theme_manager_open, set_theme_manager_open] = useState(false);
   
   // windows management
   const [active_windows, set_active_windows] = useState([]);
   const [minimized_windows, set_minimized_windows] = useState([]);
   const [window_drag_ghost, set_window_drag_ghost] = useState(null);
-  const [is_muted, set_is_muted] = useState(false);
-  const [window_z_index, set_window_z_index] = useState(1000);
+  const [is_muted, set_is_muted] = useState(get_sound_muted);
   const [active_window_id, set_active_window_id] = useState('portfolio');
   const [window_z_indexes, set_window_z_indexes] = useState({
     portfolio: 1000,
@@ -62,21 +181,25 @@ const Windows98Home = () => {
 
   // desktop icons state — icon = filename from WIN98_ICONS, so paths work in prod
   const [desktop_icons, set_desktop_icons] = useState([
-    { id: 'theme-manager', name: 'Theme Manager', position: { x: 20, y: 20 }, icon: WIN98_ICONS.themes, type: 'system', action: () => set_theme_manager_open(true) },
-    { id: 'resume', name: 'Resume', position: { x: 20, y: 120 }, icon: WIN98_ICONS.users, type: 'app', action: () => open_window('resume') },
-    { id: 'projects', name: 'Projects', position: { x: 20, y: 220 }, icon: WIN98_ICONS.directory_open, type: 'app', action: () => open_window('projects') },
-    { id: 'contact', name: 'Contact', position: { x: 20, y: 320 }, icon: WIN98_ICONS.envelope, type: 'app', action: () => open_window('contact') },
+    { id: 'my-computer', name: 'My Computer', position: { x: 20, y: 20 }, icon: WIN98_ICONS.computer, type: 'system', action: () => { set_is_minimized(false); focus_window('portfolio'); } },
+    { id: 'recycle-bin', name: 'Recycle Bin', position: { x: 20, y: 100 }, icon: WIN98_ICONS.recycle_empty, type: 'recycle-bin', action: () => open_window('recycle_bin') },
+    { id: 'resume', name: 'Resume', position: { x: 20, y: 180 }, icon: WIN98_ICONS.file_lines, type: 'app', action: () => open_window('resume') },
+    { id: 'projects', name: 'Projects', position: { x: 20, y: 260 }, icon: WIN98_ICONS.directory_open, type: 'app', action: () => open_window('projects') },
+    { id: 'contact', name: 'Contact', position: { x: 20, y: 340 }, icon: WIN98_ICONS.envelope, type: 'app', action: () => open_window('contact') },
     { id: 'notepad', name: 'Notepad', position: { x: 20, y: 420 }, icon: WIN98_ICONS.notepad, type: 'app', action: () => open_window('notepad') },
-    { id: 'msdos', name: 'MS-DOS Prompt', position: { x: 20, y: 520 }, icon: WIN98_ICONS.cmd, type: 'app', action: () => open_window('msdos') },
-    { id: 'recycle-bin', name: 'Recycle Bin', position: { x: 20, y: 620 }, icon: WIN98_ICONS.recycle_empty, type: 'recycle-bin', action: () => {} },
-    { id: 'my-computer', name: 'My Computer', position: { x: 20, y: 720 }, icon: WIN98_ICONS.computer, type: 'system', action: () => {} }
+    { id: 'msdos', name: 'MS-DOS Prompt', position: { x: 20, y: 500 }, icon: WIN98_ICONS.cmd, type: 'app', action: () => open_window('msdos') },
+    { id: 'theme-manager', name: 'Theme Manager', position: { x: 20, y: 580 }, icon: WIN98_ICONS.themes, type: 'system', action: () => open_window('display') },
   ]);
   const [dragging_icon, set_dragging_icon] = useState(null);
   const [drag_icon_offset, set_drag_icon_offset] = useState({ x: 0, y: 0 });
+  const drag_start_ref = useRef({ x: 0, y: 0 });
+  const drag_origin_ref = useRef({ x: 0, y: 0 });
+  const drag_position_ref = useRef(null);
   
   const [user_files, set_user_files] = useState([]);
   const [recycle_bin_files, set_recycle_bin_files] = useState([]);
   const [file_counter, set_file_counter] = useState(1);
+  const [desktop_ready, set_desktop_ready] = useState(false);
   const [context_menu_data, set_context_menu_data] = useState(null);
   const [screensaver_active, set_screensaver_active] = useState(false);
   const [volume_popup_open, set_volume_popup_open] = useState(false);
@@ -84,15 +207,20 @@ const Windows98Home = () => {
   const [shutdown_dialog_open, set_shutdown_dialog_open] = useState(false);
   const [active_start_submenu, set_active_start_submenu] = useState(null);
   const [current_notepad_file, set_current_notepad_file] = useState(null);
-  const [desktop_wallpaper, set_desktop_wallpaper] = useState('#008080');
-  const [screensaver_type, set_screensaver_type] = useState('mystify');
+  const [display_settings, set_display_settings] = useState(() => normalize_display(read_storage(DISPLAY_STORAGE_KEY)));
+  const [screensaver_preview, set_screensaver_preview] = useState(null);
   const idle_timer_ref = useRef(null);
+  const display_settings_ref = useRef(display_settings);
+  display_settings_ref.current = display_settings;
 
+  // idle timer reads the latest settings through a ref, so changing them never re-binds the listeners
   const reset_idle_timer = useCallback(() => {
     if(idle_timer_ref.current) clearTimeout(idle_timer_ref.current);
+    const { screensaver, idle_minutes } = display_settings_ref.current;
+    if(screensaver === 'none') return;
     idle_timer_ref.current = setTimeout(() => {
       set_screensaver_active(true);
-    }, 120000);
+    }, idle_minutes * 60000);
   }, []);
 
   useEffect(() => {
@@ -118,29 +246,36 @@ const Windows98Home = () => {
   const [selected_icon_ids, set_selected_icon_ids] = useState([]);
   const [selection_box, set_selection_box] = useState(null);
 
+  // refs and functional updates only: desktop icon actions keep the first-render closure
+  const bring_to_front = (windowId) => {
+    set_active_window_id(windowId);
+    set_selected_icon_ids([]);
+    set_window_z_indexes(prev => {
+      const top = Math.max(Z_BASE, ...Object.values(prev));
+      if(top + 10 < Z_LIMIT) return { ...prev, [windowId]: top + 10 };
+
+      // renumber in current stacking order so z-index never climbs over the taskbar
+      const order = Object.keys(prev).filter(id => id !== windowId).sort((a, b) => prev[a] - prev[b]);
+      const renumbered = {};
+      order.forEach((id, idx) => { renumbered[id] = Z_BASE + idx * 10; });
+      renumbered[windowId] = Z_BASE + order.length * 10;
+      return renumbered;
+    });
+  };
+
   const open_window = (windowId) => {
     play_sound('open');
-    if(!active_windows.includes(windowId)) 
-    {
-      set_active_windows(prev => [...prev, windowId]);
-    }
+    set_active_windows(prev => prev.includes(windowId) ? prev : [...prev, windowId]);
     set_minimized_windows(prev => prev.filter(id => id !== windowId));
-    set_active_window_id(windowId);
-
-    const new_z_index = window_z_index + 10;
-
-    set_window_z_index(new_z_index);
-    set_window_z_indexes(prev => ({
-      ...prev,
-      [windowId]: new_z_index
-    }));
+    bring_to_front(windowId);
   };
 
   const closeWindow = (windowId) => {
     play_sound('close');
     set_active_windows(prev => prev.filter(id => id !== windowId));
     set_minimized_windows(prev => prev.filter(id => id !== windowId));
-    if(active_window_id === windowId) 
+    if(windowId === 'notepad') set_current_notepad_file(null);
+    if(active_window_id === windowId)
     {
       set_active_window_id('portfolio');
     }
@@ -148,13 +283,7 @@ const Windows98Home = () => {
 
   const focus_window = (windowId) => {
     set_minimized_windows(prev => prev.filter(id => id !== windowId));
-    set_active_window_id(windowId);
-    const new_z_index = window_z_index + 10;
-    set_window_z_index(new_z_index);
-    set_window_z_indexes(prev => ({
-      ...prev,
-      [windowId]: new_z_index
-    }));
+    bring_to_front(windowId);
   };
 
   const toggle_window = (windowId) => {
@@ -228,16 +357,81 @@ const Windows98Home = () => {
     };
   }, []);
 
+  const get_file_action = (file_type) => {
+    if(file_type === 'text') return (self) => open_file_in_notepad(self);
+    if(file_type === 'folder') return () => open_window('projects');
+    if(file_type === 'exe') return () => open_window('msdos');
+    return (self) => show_win98_alert(`Cannot open '${self.name}'.\n\nPaint is not installed on this computer.`, { title: self.name, icon: 'error' });
+  };
+
+  // the load effect runs once; the ref hands it this render's helper without re-running it
+  const get_file_action_ref = useRef(get_file_action);
+  get_file_action_ref.current = get_file_action;
+
+  // restore saved desktop (files, recycle bin, icon positions) or lay out a fresh one
   useEffect(() => {
-    if(window_ref.current) 
-      {
-      const window_el = window_ref.current;
-      const rect = window_el.getBoundingClientRect();
-      const center_x = (window.innerWidth - rect.width) / 2;
-      const center_y = (window.innerHeight - rect.height) / 2;
-      set_window_position({ x: center_x, y: center_y });
+    const saved = read_storage(DESKTOP_STORAGE_KEY);
+    const is_valid = saved && Array.isArray(saved.files) && Array.isArray(saved.recycle) && Array.isArray(saved.positions);
+
+    if(!is_valid)
+    {
+      set_desktop_icons(prev => line_up_icons(prev));
+    } else
+    {
+      const restore = (file) => ({ ...file, action: get_file_action_ref.current(file.file_type) });
+      const files = saved.files.map(restore);
+      const positions = new Map(saved.positions);
+
+      set_desktop_icons(prev => clamp_icons([...prev, ...files].map(icon => (
+        positions.has(icon.id) ? { ...icon, position: positions.get(icon.id) } : icon
+      ))));
+      set_user_files(files);
+      set_recycle_bin_files(saved.recycle.map(restore));
+      set_file_counter(Number(saved.counter) || 1);
     }
+    set_desktop_ready(true);
   }, []);
+
+  // save after load finished, and not on every mousemove of a drag
+  useEffect(() => {
+    if(!desktop_ready || dragging_icon) return;
+
+    write_storage(DESKTOP_STORAGE_KEY, {
+      files: desktop_icons.filter(icon => icon.type === 'file').map(strip_action),
+      recycle: recycle_bin_files.map(strip_action),
+      positions: desktop_icons.map(icon => [icon.id, icon.position]),
+      counter: file_counter
+    });
+  }, [desktop_ready, dragging_icon, desktop_icons, recycle_bin_files, file_counter]);
+
+  useEffect(() => {
+    write_storage(DISPLAY_STORAGE_KEY, display_settings);
+    reset_idle_timer();
+  }, [display_settings, reset_idle_timer]);
+
+  // keep icons and the portfolio title bar reachable when the browser gets smaller
+  useEffect(() => {
+    const handle_resize = () => {
+      set_desktop_icons(prev => clamp_icons(prev));
+      set_window_position(prev => ({
+        x: Math.max(0, Math.min(prev.x, window.innerWidth - 200)),
+        y: Math.max(0, Math.min(prev.y, window.innerHeight - 100))
+      }));
+    };
+
+    window.addEventListener('resize', handle_resize);
+    return () => window.removeEventListener('resize', handle_resize);
+  }, []);
+
+  // portfolio window only exists once the loader is gone
+  useLayoutEffect(() => {
+    if(is_loading || !window_ref.current) return;
+
+    const rect = window_ref.current.getBoundingClientRect();
+    const center_x = Math.max(0, (window.innerWidth - rect.width) / 2);
+    const center_y = Math.max(0, (window.innerHeight - TASKBAR_HEIGHT - rect.height) / 2);
+    set_window_position({ x: center_x, y: center_y });
+  }, [is_loading]);
 
   useEffect(() => {
     const titlebar = titlebar_ref.current;
@@ -253,7 +447,7 @@ const Windows98Home = () => {
         titlebar.removeEventListener('dragstart', prevent_select);
       };
     }
-  }, []);
+  }, [is_loading]);
 
   const handle_pointer_down = (e) => {
     if(e.target.closest('button')) return;
@@ -265,7 +459,7 @@ const Windows98Home = () => {
     play_sound('click');
     
     const windowEl = window_ref.current;
-    if(!windowEl || is_maximized) return;
+    if(!windowEl || portfolio_full) return;
     
     const rect = windowEl.getBoundingClientRect();
     const offsetX = e.clientX - rect.left;
@@ -344,7 +538,9 @@ const Windows98Home = () => {
   const handle_icon_mouse_down = (e, iconId) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
+    if(e.button !== 0) return;
+
     const icon = desktop_icons.find(i => i.id === iconId);
 
     if(!icon) return;
@@ -354,12 +550,14 @@ const Windows98Home = () => {
       set_selected_icon_ids([iconId]);
     }
 
-    const rect = e.currentTarget.getBoundingClientRect();
     set_drag_icon_offset({
       x: e.clientX - icon.position.x,
       y: e.clientY - icon.position.y
     });
-    
+
+    drag_start_ref.current = { x: e.clientX, y: e.clientY };
+    drag_origin_ref.current = icon.position;
+    drag_position_ref.current = null;
     set_dragging_icon(iconId);
     document.body.style.userSelect = 'none';
   };
@@ -368,12 +566,18 @@ const Windows98Home = () => {
     if(!dragging_icon) return;
     
     e.preventDefault();
+
+    const moved_distance = Math.hypot(e.clientX - drag_start_ref.current.x, e.clientY - drag_start_ref.current.y);
+    if(!drag_position_ref.current && moved_distance < ICON_DRAG_THRESHOLD) return;
+
     const new_x = e.clientX - drag_icon_offset.x;
     const new_y = e.clientY - drag_icon_offset.y;
-    
+
     const bounded_x = Math.max(0, Math.min(new_x, window.innerWidth - 80));
-    const bounded_y = Math.max(0, Math.min(new_y, window.innerHeight - 100));
-    
+    const bounded_y = Math.max(0, Math.min(new_y, window.innerHeight - ICON_BOTTOM_MARGIN));
+
+    drag_position_ref.current = { x: bounded_x, y: bounded_y };
+
     const draggedIcon = desktop_icons.find(icon => icon.id === dragging_icon);
     
     if(draggedIcon && draggedIcon.type === 'file') 
@@ -390,7 +594,7 @@ const Windows98Home = () => {
 
         if(recycle_bin_element) 
           {
-          if(distance < 80) 
+          if(distance < RECYCLE_DROP_DISTANCE)
             {
             recycle_bin_element.classList.add('drop-hover');
           } else 
@@ -415,61 +619,41 @@ const Windows98Home = () => {
       {
       recycle_bin_element.classList.remove('drop-hover');
     }
-    
-    if(dragging_icon) 
-      {
-      const recycle_bin = desktop_icons.find(icon => icon.id === 'recycle-bin');
-      const dragged_icon = desktop_icons.find(icon => icon.id === dragging_icon);
-      
-      if(recycle_bin && dragged_icon && dragged_icon.type === 'file') 
-        {
-        const distance = Math.sqrt(
-          Math.pow(dragged_icon.position.x - recycle_bin.position.x, 2) + 
-          Math.pow(dragged_icon.position.y - recycle_bin.position.y, 2)
-        );
-        
-        if(distance < 80) 
-          {
-          set_recycle_bin_files(prev => [...prev, dragged_icon]);
-          set_desktop_icons(prev => prev.filter(icon => icon.id !== dragging_icon));
-          set_user_files(prev => prev.filter(file => file.id !== dragging_icon));
-          
-          set_desktop_icons(prev => prev.map(icon => 
-            icon.id === 'recycle-bin' 
-              ? { 
-                  ...icon, 
-                  icon: WIN98_ICONS.recycle_full
-                }
-              : icon
-          ));
-        }
-      }
-    }
-    
-    // Snap to desktop grid (80px x 80px)
-    if(dragging_icon)
-    {
-      const GRID_X = 80;
-      const GRID_Y = 80;
-      const OFFSET_X = 20;
-      const OFFSET_Y = 20;
 
-      set_desktop_icons(prev => prev.map(icon => {
-        if(icon.id === dragging_icon)
-        {
-          const snap_x = Math.max(10, Math.min(window.innerWidth - 80, Math.round((icon.position.x - OFFSET_X) / GRID_X) * GRID_X + OFFSET_X));
-          const snap_y = Math.max(10, Math.min(window.innerHeight - 100, Math.round((icon.position.y - OFFSET_Y) / GRID_Y) * GRID_Y + OFFSET_Y));
-          return {
-            ...icon,
-            position: { x: snap_x, y: snap_y }
-          };
-        }
-        return icon;
-      }));
-    }
+    // no position in the ref means the mouse never passed the drag threshold (plain click)
+    const drop_position = drag_position_ref.current;
+    const dropped_id = dragging_icon;
 
+    drag_position_ref.current = null;
     set_dragging_icon(null);
     document.body.style.userSelect = '';
+
+    if(!dropped_id || !drop_position) return;
+
+    const recycle_bin = desktop_icons.find(icon => icon.id === 'recycle-bin');
+    const dragged_icon = desktop_icons.find(icon => icon.id === dropped_id);
+
+    if(recycle_bin && dragged_icon && dragged_icon.type === 'file')
+    {
+      const distance = Math.hypot(drop_position.x - recycle_bin.position.x, drop_position.y - recycle_bin.position.y);
+
+      if(distance < RECYCLE_DROP_DISTANCE)
+      {
+        // restore puts the file back where the drag started, not on top of the bin
+        set_recycle_bin_files(prev => [...prev, { ...dragged_icon, position: drag_origin_ref.current }]);
+        set_desktop_icons(prev => prev.filter(icon => icon.id !== dropped_id));
+        set_user_files(prev => prev.filter(file => file.id !== dropped_id));
+        return;
+      }
+    }
+
+    // Snap to desktop grid
+    const snap_x = Math.min(window.innerWidth - 80, Math.round((drop_position.x - ICON_OFFSET) / ICON_GRID_X) * ICON_GRID_X + ICON_OFFSET);
+    const snap_y = Math.min(window.innerHeight - ICON_BOTTOM_MARGIN, Math.round((drop_position.y - ICON_OFFSET) / ICON_GRID_Y) * ICON_GRID_Y + ICON_OFFSET);
+
+    set_desktop_icons(prev => prev.map(icon => (
+      icon.id === dropped_id ? { ...icon, position: { x: snap_x, y: snap_y }} : icon
+    )));
   };
 
   const open_file_in_notepad = (file) => {
@@ -499,7 +683,6 @@ const Windows98Home = () => {
       open_window('recycle_bin');
     } else if(lower === 'notepad')
     {
-      set_current_notepad_file(null);
       open_window('notepad');
     } else if(lower === 'cmd' || lower === 'dos' || lower === 'command')
     {
@@ -519,16 +702,19 @@ const Windows98Home = () => {
       set_is_minimized(false);
     } else if(lower === 'theme' || lower === 'themes' || lower === 'control panel')
     {
-      set_theme_manager_open(true);
+      open_window('display');
     } else if(lower === 'screensaver')
     {
       set_screensaver_active(true);
     } else if(raw.startsWith('http://') || raw.startsWith('https://'))
     {
       window.open(raw, '_blank');
-    } else 
+    } else
     {
-      open_window('msdos');
+      show_win98_alert(`Cannot find the file '${raw}' (or one of its components). Make sure the path and filename are correct and that all required libraries are available.`, {
+        title: raw,
+        icon: 'error'
+      });
     }
   };
 
@@ -557,19 +743,7 @@ const Windows98Home = () => {
       created: new Date()
     };
 
-    if(type === 'text')
-    {
-      new_file.action = () => open_file_in_notepad(new_file);
-    } else if(type === 'folder')
-    {
-      new_file.action = () => open_window('projects');
-    } else if(type === 'exe')
-    {
-      new_file.action = () => open_window('msdos');
-    } else 
-    {
-      new_file.action = () => alert('Opening ' + file_name);
-    }
+    new_file.action = get_file_action(type);
 
     set_user_files(prev => [...prev, new_file]);
     set_desktop_icons(prev => [...prev, new_file]);
@@ -581,6 +755,8 @@ const Windows98Home = () => {
   };
 
   const open_desktop_context_menu = (e) => {
+    if(e.target.closest(NON_DESKTOP_SELECTOR)) return;
+
     e.preventDefault();
     e.stopPropagation();
     set_context_menu_data({
@@ -591,32 +767,25 @@ const Windows98Home = () => {
           label: 'Arrange by Name',
           icon: WIN98_ICONS.directory_open,
           action: () => {
-            set_desktop_icons(prev => [...prev].sort((a, b) => a.name.localeCompare(b.name)));
+            set_desktop_icons(prev => line_up_icons([...prev].sort((a, b) => a.name.localeCompare(b.name))));
           }
         },
         {
           label: 'Arrange by Type',
           icon: WIN98_ICONS.file_lines,
           action: () => {
-            set_desktop_icons(prev => [...prev].sort((a, b) => (a.type || '').localeCompare(b.type || '')));
+            set_desktop_icons(prev => line_up_icons([...prev].sort((a, b) => (a.type || '').localeCompare(b.type || ''))));
           }
         },
         {
           label: 'Line up Icons',
           action: () => {
-            set_desktop_icons(prev => prev.map((icon, idx) => ({
-              ...icon,
-              position: {
-                x: 20 + Math.floor(idx / 6) * 85,
-                y: 20 + (idx % 6) * 80
-              }
-            })));
+            set_desktop_icons(prev => line_up_icons(prev));
           }
         },
         { is_separator: true },
         {
           label: 'Refresh',
-          icon: WIN98_ICONS.refresh,
           action: () => {}
         },
         { is_separator: true },
@@ -658,7 +827,7 @@ const Windows98Home = () => {
         {
           label: 'Properties',
           icon: WIN98_ICONS.themes,
-          action: () => set_theme_manager_open(true)
+          action: () => open_window('display')
         }
       ]
     });
@@ -674,7 +843,7 @@ const Windows98Home = () => {
         label: 'Open',
         action: () => {
           play_sound('open');
-          icon.action();
+          icon.action(icon);
         }
       },
       {
@@ -682,7 +851,7 @@ const Windows98Home = () => {
         icon: WIN98_ICONS.directory_open,
         action: () => {
           play_sound('open');
-          icon.action();
+          icon.action(icon);
         }
       },
       { is_separator: true }
@@ -714,8 +883,8 @@ const Windows98Home = () => {
       });
       items.push({
         label: 'Rename',
-        action: () => {
-          const new_name = prompt('Enter new file name:', icon.name);
+        action: async () => {
+          const new_name = await show_win98_prompt('Enter new file name:', icon.name, { title: 'Rename' });
           if(new_name && new_name.trim())
           {
             set_desktop_icons(prev => prev.map(i => i.id === icon.id ? { ...i, name: new_name.trim() } : i));
@@ -730,7 +899,9 @@ const Windows98Home = () => {
       label: 'Properties',
       icon: WIN98_ICONS.msg_info,
       action: () => {
-        alert('Properties for ' + icon.name + ':\nType: ' + (icon.type === 'file' ? (icon.file_type || 'Document') : 'Application') + '\nLocation: Desktop\nStatus: Ready');
+        show_win98_alert(`Type: ${icon.type === 'file' ? (icon.file_type || 'Document') : 'Application'}\nLocation: Desktop\nStatus: Ready`, {
+          title: `${icon.name} Properties`
+        });
       }
     });
 
@@ -818,14 +989,13 @@ const Windows98Home = () => {
     ));
   };
 
-  // update recycle bin icon action & status
+  // update recycle bin icon status
   useEffect(() => {
-    set_desktop_icons(prev => prev.map(icon => 
-      icon.id === 'recycle-bin' 
-        ? { 
+    set_desktop_icons(prev => prev.map(icon =>
+      icon.id === 'recycle-bin'
+        ? {
             ...icon,
-            icon: recycle_bin_files.length > 0 ? WIN98_ICONS.recycle_full : WIN98_ICONS.recycle_empty,
-            action: () => open_window('recycle_bin')
+            icon: recycle_bin_files.length > 0 ? WIN98_ICONS.recycle_full : WIN98_ICONS.recycle_empty
           }
         : icon
     ));
@@ -854,18 +1024,24 @@ const Windows98Home = () => {
     set_recycle_bin_files(prev => prev.filter(f => f.id !== file_id));
   };
 
+  // listeners stay attached for the whole drag; the ref always points at this render's handlers
+  const icon_drag_handlers_ref = useRef(null);
+  icon_drag_handlers_ref.current = { move: handle_icon_mouse_move, up: handle_icon_mouse_up };
+
   useEffect(() => {
-    if(dragging_icon) 
-      {
-      document.addEventListener('mousemove', handle_icon_mouse_move);
-      document.addEventListener('mouseup', handle_icon_mouse_up);
-      
-      return () => {
-        document.removeEventListener('mousemove', handle_icon_mouse_move);
-        document.removeEventListener('mouseup', handle_icon_mouse_up);
-      };
-    }
-  }, [dragging_icon, drag_icon_offset]);
+    if(!dragging_icon) return;
+
+    const handle_move = (e) => icon_drag_handlers_ref.current.move(e);
+    const handle_up = () => icon_drag_handlers_ref.current.up();
+
+    document.addEventListener('mousemove', handle_move);
+    document.addEventListener('mouseup', handle_up);
+
+    return () => {
+      document.removeEventListener('mousemove', handle_move);
+      document.removeEventListener('mouseup', handle_up);
+    };
+  }, [dragging_icon]);
 
   // Desktop keyboard navigation (Enter to open, arrow keys to navigate)
   useEffect(() => {
@@ -879,6 +1055,8 @@ const Windows98Home = () => {
         return;
       }
 
+      if(e.target.closest('.window')) return;
+
       if(e.key === 'Enter' && selected_icon_ids.length > 0)
       {
         const target_id = selected_icon_ids[0];
@@ -886,7 +1064,7 @@ const Windows98Home = () => {
         if(icon)
         {
           play_sound('open');
-          icon.action();
+          icon.action(icon);
         }
       } else if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key))
       {
@@ -916,9 +1094,25 @@ const Windows98Home = () => {
     return () => window.removeEventListener('keydown', handle_key_down);
   }, [desktop_icons, selected_icon_ids]);
 
+  // like a real reboot: programs close, files on the desktop stay
+  const handle_restart = () => {
+    set_shutdown_dialog_open(false);
+    set_run_dialog_open(false);
+    set_volume_popup_open(false);
+    set_start_menu_open(false);
+    set_context_menu_data(null);
+    set_active_windows([]);
+    set_minimized_windows([]);
+    set_current_notepad_file(null);
+    set_is_minimized(false);
+    set_is_maximized(false);
+    set_active_window_id('portfolio');
+    set_is_loading(true);
+  };
+
   const handle_desktop_mouse_down = (e) => {
     if(e.button !== 0) return;
-    if(e.target.closest('.window') || e.target.closest('.status-bar') || e.target.closest('.desktop-icon') || e.target.closest('.context-menu') || e.target.closest('.win98-context-menu')) return;
+    if(e.target.closest(NON_DESKTOP_SELECTOR)) return;
 
     hide_context_menu();
     set_start_menu_open(false);
@@ -982,17 +1176,18 @@ const Windows98Home = () => {
     document.addEventListener('mouseup', handle_selection_up);
   };
 
-  if(is_loading) 
+  if(is_loading)
     {
     return <Windows98Loader onComplete = {handleLoaderComplete} />;
   }
 
   return (
     <div 
-      className = {`win98-container ${is_dragging ? 'dragging' : ''}`}
-      style = {{ 
-        minHeight: '100vh', 
-        background: desktop_wallpaper,
+      className = {`win98-container scheme-${display_settings.scheme} ${is_dragging ? 'dragging' : ''}`}
+      style = {{
+        minHeight: '100vh',
+        ...get_desktop_background(display_settings.wallpaper, display_settings.pattern),
+        ...get_scheme_vars(display_settings.scheme),
         fontFamily: 'MS Sans Serif, sans-serif',
         padding: '20px',
         overflow: 'hidden',
@@ -1000,7 +1195,15 @@ const Windows98Home = () => {
       }}
       onContextMenu = {open_desktop_context_menu}
       onMouseDown = {handle_desktop_mouse_down}
-      onClick = {() => { hide_context_menu(); set_start_menu_open(false); }}
+      onPointerDown = {desktop_long_press.on_pointer_down}
+      onPointerMove = {desktop_long_press.on_pointer_move}
+      onPointerUp = {desktop_long_press.on_pointer_end}
+      onPointerCancel = {desktop_long_press.on_pointer_end}
+      onClick = {() => {
+        if(desktop_long_press.was_long_press()) return;
+        hide_context_menu();
+        set_start_menu_open(false);
+      }}
     >
             {/* Window Drag Wireframe (Performance mode) */}
       {is_dragging && window_drag_ghost && (
@@ -1020,15 +1223,16 @@ const Windows98Home = () => {
         ref = {window_ref}
         className = "window" 
         style = {{
-          maxWidth: is_maximized ? '100vw' : '800px',
-          width: is_maximized ? '100vw' : 'auto',
-          height: is_maximized ? '100vh' : 'auto',
-          position: 'absolute',
-          left: is_maximized ? '0px' : `${window_position.x}px`,
-          top: is_maximized ? '0px' : `${window_position.y}px`,
+          maxWidth: portfolio_full ? '100vw' : '800px',
+          width: portfolio_full ? '100vw' : 'auto',
+          height: portfolio_full ? 'calc(100dvh - 30px)' : 'auto',
+          flexDirection: 'column',
+          position: portfolio_full ? 'fixed' : 'absolute',
+          left: portfolio_full ? '0px' : `${window_position.x}px`,
+          top: portfolio_full ? '0px' : `${window_position.y}px`,
           cursor: is_dragging ? 'grabbing' : 'default',
           zIndex: window_z_indexes.portfolio,
-          display: is_minimized ? 'none' : 'block',
+          display: is_minimized ? 'none' : 'flex',
           color: '#000000'
         }}
         onClick = {(e) => {
@@ -1061,12 +1265,14 @@ const Windows98Home = () => {
           </div>
           <div className = "title-bar-controls">
             <button aria-label = "Minimize" className = "minimize" onClick = {handle_minimize} />
-            <button aria-label = {is_maximized ? "Restore" : "Maximize"} className = {is_maximized ? "restore" : "maximize"} onClick = {handle_maximize} />
+            {!is_mobile && (
+              <button aria-label = {is_maximized ? "Restore" : "Maximize"} className = {is_maximized ? "restore" : "maximize"} onClick = {handle_maximize} />
+            )}
             <button aria-label = "Close" className = "close" onClick = {() => router.push('/')} title = "Exit Windows 98 Mode" />
           </div>
         </div>
 
-        <div className = "window-body" style = {{ padding: '16px', color: '#000000' }}>
+        <div className = "window-body" style = {{ padding: is_mobile ? '10px' : '16px', color: '#000000', flex: 1, minHeight: 0, overflow: 'auto' }}>
           {/* User Info */}
           <fieldset style = {{ marginBottom: '16px' }}>
             <legend style = {{ display: 'flex', alignItems: 'center', gap: '6px', color: '#000080', fontWeight: 'bold' }}>
@@ -1357,7 +1563,7 @@ const Windows98Home = () => {
         <div className = "win98-quick-launch">
           <button 
             title = "Show Desktop"
-            onClick = {() => { set_is_minimized(true); set_start_menu_open(false); }}
+            onClick = {() => { set_is_minimized(true); set_minimized_windows(active_windows); set_start_menu_open(false); }}
           >
             <Image 
               src = {getWin98Icon(WIN98_ICONS.monitor)} 
@@ -1433,12 +1639,13 @@ const Windows98Home = () => {
           
           {active_windows.map((windowId) => {
             const windowInfo = {
-              resume: { title: 'Resume', icon: WIN98_ICONS.users },
+              resume: { title: 'Resume', icon: WIN98_ICONS.file_lines },
               projects: { title: 'Projects', icon: WIN98_ICONS.directory_open },
               contact: { title: 'Contact', icon: WIN98_ICONS.envelope },
               notepad: { title: 'Notepad', icon: WIN98_ICONS.notepad },
               msdos: { title: 'MS-DOS Prompt', icon: WIN98_ICONS.cmd },
               calculator: { title: 'Calculator', icon: WIN98_ICONS.executable },
+              display: { title: 'Display Properties', icon: WIN98_ICONS.monitor },
               recycle_bin: { title: 'Recycle Bin', icon: recycle_bin_files.length > 0 ? WIN98_ICONS.recycle_full : WIN98_ICONS.recycle_empty }
             };
             const info = windowInfo[windowId];
@@ -1464,27 +1671,15 @@ const Windows98Home = () => {
         <div className = "win98-taskbar-divider" />
 
         {/* System Tray — 98 style */}
-        <div 
-          className = "win98-system-tray"
-          title = {new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-        >
+        <div className = "win98-system-tray">
           <button
             className = {`win98-tray-icon-btn ${is_muted ? 'muted' : ''}`}
             title = "Volume"
             onClick = {() => set_volume_popup_open(v => !v)}
           >
-            <Image 
-              src = {getWin98Icon(WIN98_ICONS.cd_audio)} 
-              alt = "Audio" 
-              width = {16} 
-              height = {16} 
-              unoptimized 
-              style = {{ imageRendering: 'pixelated' }} 
-            />
+            <TraySpeakerIcon muted = {is_muted} />
           </button>
-          <span style = {{ fontSize: '11px', padding: '0 4px', whiteSpace: 'nowrap' }}>
-            {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-          </span>
+          <TaskbarClock />
         </div>
       </div>
 
@@ -1502,7 +1697,7 @@ const Windows98Home = () => {
           >
             {/* Windows 98 Vertical Gradient Banner */}
             <div className = "win98-start-menu-sidebar">
-              <span>WINDOWS 98</span>
+              <span><b>Windows</b>98</span>
             </div>
 
             {/* Menu Items */}
@@ -1511,7 +1706,7 @@ const Windows98Home = () => {
               <div 
                 className = {`win98-start-menu-item ${active_start_submenu === 'programs' ? 'active' : ''}`}
                 onMouseEnter = {() => set_active_start_submenu('programs')}
-                onClick = {() => set_active_start_submenu(active_start_submenu === 'programs' ? null : 'programs')}
+                onClick = {() => set_active_start_submenu('programs')}
               >
                 <div style = {{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <Image src = {getWin98Icon(WIN98_ICONS.directory_open)} width = {16} height = {16} alt = "" unoptimized style = {{ imageRendering: 'pixelated' }} />
@@ -1564,7 +1759,7 @@ const Windows98Home = () => {
                       onClick = {() => { open_window('resume'); set_start_menu_open(false); set_active_start_submenu(null); }}
                     >
                       <div style = {{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Image src = {getWin98Icon(WIN98_ICONS.users)} width = {16} height = {16} alt = "" unoptimized style = {{ imageRendering: 'pixelated' }} />
+                        <Image src = {getWin98Icon(WIN98_ICONS.file_lines)} width = {16} height = {16} alt = "" unoptimized style = {{ imageRendering: 'pixelated' }} />
                         <span>Resume</span>
                       </div>
                     </div>
@@ -1594,7 +1789,7 @@ const Windows98Home = () => {
               <div 
                 className = {`win98-start-menu-item ${active_start_submenu === 'settings' ? 'active' : ''}`}
                 onMouseEnter = {() => set_active_start_submenu('settings')}
-                onClick = {() => set_active_start_submenu(active_start_submenu === 'settings' ? null : 'settings')}
+                onClick = {() => set_active_start_submenu('settings')}
               >
                 <div style = {{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <Image src = {getWin98Icon(WIN98_ICONS.gears)} width = {16} height = {16} alt = "" unoptimized style = {{ imageRendering: 'pixelated' }} />
@@ -1607,7 +1802,7 @@ const Windows98Home = () => {
                   <div className = "win98-start-submenu" onClick = {(e) => e.stopPropagation()}>
                     <div 
                       className = "win98-start-menu-item"
-                      onClick = {() => { set_theme_manager_open(true); set_start_menu_open(false); set_active_start_submenu(null); }}
+                      onClick = {() => { open_window('display'); set_start_menu_open(false); set_active_start_submenu(null); }}
                     >
                       <div style = {{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <Image src = {getWin98Icon(WIN98_ICONS.themes)} width = {16} height = {16} alt = "" unoptimized style = {{ imageRendering: 'pixelated' }} />
@@ -1661,55 +1856,48 @@ const Windows98Home = () => {
             data-id = {icon.id}
             data-type = {icon.type}
             style = {{
-              position: 'absolute',
               left: `${icon.position.x}px`,
               top: `${icon.position.y}px`,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
               cursor: dragging_icon === icon.id ? 'grabbing' : 'pointer',
-              padding: '8px',
-              borderRadius: '4px',
-              backgroundColor: 'transparent',
-              border: '1px solid transparent',
-              zIndex: dragging_icon === icon.id ? 51 : 50,
-              userSelect: 'none'
+              zIndex: dragging_icon === icon.id ? 51 : 50
             }}
             onMouseDown = {(e) => handle_icon_mouse_down(e, icon.id)}
+            onPointerDown = {(e) => icon_long_press.on_pointer_down(e, icon)}
+            onPointerMove = {icon_long_press.on_pointer_move}
+            onPointerUp = {icon_long_press.on_pointer_end}
+            onPointerCancel = {icon_long_press.on_pointer_end}
             onClick = {(e) => {
               e.stopPropagation();
               set_selected_icon_ids([icon.id]);
+              // touch screens open on a single tap, like a phone home screen
+              if(is_touch_device() && !icon_long_press.was_long_press() && !dragging_icon)
+              {
+                icon.action(icon);
+              }
             }}
             onDoubleClick = {(e) => {
               e.stopPropagation();
-              if(!dragging_icon) 
+              if(!dragging_icon && !is_touch_device())
               {
-                icon.action();
+                icon.action(icon);
               }
             }}
             onContextMenu = {(e) => open_icon_context_menu(e, icon)}
           >
-            <Image 
-              src = {getWin98Icon(icon.icon)}
-              alt = {icon.name}
-              width = {32}
-              height = {32}
-              unoptimized
-              style = {{ imageRendering: 'pixelated', marginBottom: '4px', pointerEvents: 'none' }}
-            />
-            <span 
-              className = "desktop-icon-label"
-              style = {{ 
-                fontSize: '10px', 
-                color: 'white',
-                textAlign: 'center',
-                textShadow: is_selected ? 'none' : '1px 1px 2px rgba(0,0,0,0.8)',
-                maxWidth: '64px',
-                lineHeight: '1.2',
-                padding: '1px 2px',
-                pointerEvents: 'none'
-              }}
+            <span
+              className = "desktop-icon-image"
+              style = {{ '--icon-url': `url("${getWin98Icon(icon.icon)}")` }}
             >
+              <Image
+                src = {getWin98Icon(icon.icon)}
+                alt = {icon.name}
+                width = {32}
+                height = {32}
+                unoptimized
+                draggable = {false}
+              />
+            </span>
+            <span className = "desktop-icon-label">
               {icon.name}
             </span>
           </div>
@@ -1742,20 +1930,23 @@ const Windows98Home = () => {
       {/* Classic Retro Windows 98 Screensaver */}
       {screensaver_active && (
         <Windows98Screensaver
-          mode = {screensaver_type}
-          on_exit = {() => set_screensaver_active(false)}
+          mode = {screensaver_preview || (display_settings.screensaver === 'none' ? 'mystify' : display_settings.screensaver)}
+          on_exit = {() => { set_screensaver_active(false); set_screensaver_preview(null); }}
         />
       )}
 
       {/* Display Properties Dialog with mini CRT monitor preview */}
-      {theme_manager_open && (
+      {active_windows.includes('display') && (
         <Windows98DisplayProperties 
-          onClose = {() => set_theme_manager_open(false)}
-          current_wallpaper = {desktop_wallpaper}
-          on_apply_wallpaper = {(wp) => set_desktop_wallpaper(wp)}
-          current_screensaver = {screensaver_type}
-          on_apply_screensaver = {(st) => set_screensaver_type(st)}
-          on_preview_screensaver = {() => set_screensaver_active(true)}
+          onClose = {() => closeWindow('display')}
+          onFocus = {() => bring_to_front('display')}
+          onMinimize = {() => minimize_child_window('display')}
+          isMinimized = {minimized_windows.includes('display')}
+          isActive = {active_window_id === 'display'}
+          zIndex = {window_z_indexes.display || Z_BASE}
+          current_settings = {display_settings}
+          on_apply = {(settings) => set_display_settings(normalize_display(settings))}
+          on_preview_screensaver = {(mode) => { set_screensaver_preview(mode); set_screensaver_active(true); }}
         />
       )}
 
@@ -1763,6 +1954,7 @@ const Windows98Home = () => {
       {volume_popup_open && (
         <Windows98VolumePopup
           on_close = {() => set_volume_popup_open(false)}
+          on_mute_change = {set_is_muted}
         />
       )}
 
@@ -1778,7 +1970,7 @@ const Windows98Home = () => {
       {shutdown_dialog_open && (
         <Windows98ShutdownDialog
           on_close = {() => set_shutdown_dialog_open(false)}
-          on_restart = {() => { set_shutdown_dialog_open(false); set_is_loading(true); }}
+          on_restart = {handle_restart}
           on_dos = {() => { set_shutdown_dialog_open(false); open_window('msdos'); }}
           on_exit_mode = {() => router.push('/')}
         />
@@ -1802,6 +1994,9 @@ const Windows98Home = () => {
         onEmptyRecycleBin = {empty_recycle_bin}
         onDeleteRecycleForever = {handle_delete_recycle_forever}
       />
+
+      {/* Win98-style message boxes (replace browser alert/confirm/prompt) */}
+      <Windows98DialogHost />
     </div>
   );
 };

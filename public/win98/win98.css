@@ -68,6 +68,7 @@
 .win98-msdos .msdos-toolbar-btn
 {
     width: 24px;
+    min-width: 0;
     height: 22px;
     padding: 0;
     display: flex;
@@ -141,7 +142,7 @@ body.win98-mode
     -webkit-font-smoothing: none !important;
     -moz-osx-font-smoothing: unset !important;
     font-smooth: never !important;
-    background: #008080 !important;
+    background-color: #008080;
     color: #000000;
     line-height: normal;
     margin: 0;
@@ -280,22 +281,61 @@ body.win98-mode
 
 .win98-container .title-bar button { cursor: pointer; }
 
-.win98-container .desktop-icon:hover
+/* desktop icons: fixed 75px cell so every label centers under its icon, like Win98 */
+.win98-container .desktop-icon
 {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
+    position: absolute;
+    width: 75px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 0;
+    user-select: none;
 }
 
-.win98-container .desktop-icon.selected
+.win98-container .desktop-icon-image
 {
-    background: rgba(0, 0, 128, 0.25);
+    position: relative;
+    width: 32px;
+    height: 32px;
+    pointer-events: none;
+}
+
+.win98-container .desktop-icon-image img
+{
+    display: block;
+    image-rendering: pixelated;
+}
+
+/* selected icon gets the navy tint, masked to the icon shape */
+.win98-container .desktop-icon.selected .desktop-icon-image::after
+{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 128, 0.5);
+    -webkit-mask: var(--icon-url) center / 32px 32px no-repeat;
+    mask: var(--icon-url) center / 32px 32px no-repeat;
+}
+
+.win98-container .desktop-icon-label
+{
+    max-width: 73px;
+    padding: 1px 2px;
+    font-size: 11px;
+    line-height: 13px;
+    color: #ffffff;
+    text-align: center;
+    overflow-wrap: break-word;
+    border: 1px dotted transparent;
+    pointer-events: none;
 }
 
 .win98-container .desktop-icon.selected .desktop-icon-label
 {
     background: #000080;
-    color: #ffffff;
-    outline: 1px dotted #ffff80;
+    border-color: #ffff80;
 }
 
 .win98-container .desktop-selection-box
@@ -397,11 +437,6 @@ body.win98-mode
     cursor: pointer;
 }
 
-.win98-tray-icon-btn.muted
-{
-    opacity: 0.45;
-}
-
 .win98-taskbar-item
 {
     height: 22px;
@@ -474,6 +509,14 @@ body.win98-mode
     font-size: 11px;
     font-weight: normal;
 }
+
+.win98-container .title-bar.inactive
+{
+    background: linear-gradient(90deg, #808080, #b5b5b5);
+    color: #c0c0c0;
+}
+
+.win98-container .title-bar.inactive .title-bar-text { color: #c0c0c0; }
 
 .win98-container .title-bar-text
 {
@@ -1946,61 +1989,6 @@ body.win98-mode
     background: #c0c0c0;
 }
 
-.win98-context-menu
-{
-    position: fixed;
-    background: #c0c0c0;
-    border: 2px outset #ffffff;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-    padding: 2px;
-    min-width: 170px;
-    z-index: 100002;
-    user-select: none;
-    font-family: "MS Sans Serif", "Pixelated MS Sans Serif", Tahoma, sans-serif;
-    font-size: 11px;
-}
-
-.win98-context-menu-item
-{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 3px 18px 3px 6px;
-    cursor: default;
-    color: #000000;
-    white-space: nowrap;
-}
-
-.win98-context-menu-item:hover:not(.disabled)
-{
-    background: #000080;
-    color: #ffffff;
-}
-
-.win98-context-menu-item.disabled
-{
-    color: #808080;
-    text-shadow: 1px 1px 0 #ffffff;
-    cursor: default;
-}
-
-.win98-context-menu-separator
-{
-    height: 0;
-    border-top: 1px solid #808080;
-    border-bottom: 1px solid #ffffff;
-    margin: 3px 1px;
-}
-
-.win98-screensaver
-{
-    position: fixed;
-    inset: 0;
-    z-index: 999999;
-    background: #000000;
-    cursor: none;
-}
-
 .win98-container .context-menu button
 {
     width: 100%;
@@ -2058,52 +2046,30 @@ body.win98-mode
     margin: 3px 1px;
 }
 
-.win98-screensaver
-{
-    position: fixed;
-    inset: 0;
-    z-index: 999999;
-    background: #000000;
-    cursor: none;
-}
-
 .win98-container .context-menu button:hover
 {
-    background: #316ac5;
+    background: #000080;
     color: white;
-    border: 1px solid #316ac5;
+    border: 1px solid #000080;
 }
 
-.win98-container .desktop-icon { transition: background-color 0.1s ease; }
+.win98-container .desktop-icon.dragging { opacity: 0.6; }
 
-.win98-container .desktop-icon:hover
+/* recycle bin lights up like a selected icon while a file hovers over it */
+.win98-container .desktop-icon[data-id="recycle-bin"].drop-hover .desktop-icon-label
 {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px dotted rgba(255, 255, 255, 0.5);
+    background: #000080;
+    border-color: #ffff80;
 }
 
-.win98-container .desktop-icon.dragging
+.win98-container .desktop-icon[data-id="recycle-bin"].drop-hover .desktop-icon-image::after
 {
-    opacity: 0.8;
-    transform: scale(1.05);
-    z-index: 1000;
-}
-
-.win98-container .desktop-icon[data-type="file"] { border: 1px solid transparent; }
-
-.win98-container .desktop-icon[data-type="file"]:hover
-{
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px dotted rgba(255, 255, 255, 0.7);
-}
-
-.win98-container .desktop-icon[data-id="recycle-bin"] { transition: all 0.2s ease; }
-
-.win98-container .desktop-icon[data-id="recycle-bin"].drop-hover
-{
-    background: rgba(255, 255, 0, 0.2);
-    border: 2px dashed yellow;
-    transform: scale(1.1);
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 128, 0.5);
+    -webkit-mask: var(--icon-url) center / 32px 32px no-repeat;
+    mask: var(--icon-url) center / 32px 32px no-repeat;
 }
 
 @keyframes file-created
@@ -2140,33 +2106,9 @@ body.win98-mode
 
 .win98-container .theme-manager-window { z-index: 10000 !important; }
 
-.desktop-icon
-{
-    transition: background-color 0.2s ease;
-    user-select: none;
-}
-
-.desktop-icon:hover { background-color: rgba(255, 255, 255, 0.1) !important; }
-
-.desktop-icon.dragging
-{
-    opacity: 0.8;
-    transform: rotate(2deg);
-    z-index: 9998 !important;
-}
-
-.desktop-icon.selected
-{
-    background-color: rgba(0, 0, 128, 0.3) !important;
-    border: 1px dotted rgba(255, 255, 255, 0.8) !important;
-}
-
-.desktop-icon img { transition: transform 0.1s ease; }
-.desktop-icon:hover img { transform: scale(1.05); }
-.desktop-icon:active img { transform: scale(0.95); }
 .theme-manager-window { z-index: 10000 !important; }
 
-.win98-container > div:not(.window):not(.theme-manager-window) { z-index: 999; }
+.win98-container > div:not(.window):not(.theme-manager-window):not(.win98-start-menu) { z-index: 999; }
 
 .theme-manager-window
 {
@@ -2209,82 +2151,51 @@ body.win98-mode
     border-radius: 4px;
 }
 
-:root
+/* appearance schemes: Home sets --scheme-* on .win98-container from lib/win98-display.js */
+.win98-container
 {
-    --win98-primary: #008080;
-    --win98-secondary: #c0c0c0;
-    --win98-accent: #000080;
-    --win98-window: #c0c0c0;
-    --win98-text: #000000;
-    --win98-highlight: #0000ff;
+    --scheme-face: #c0c0c0;
+    --scheme-title-a: #000080;
+    --scheme-title-b: #1084d0;
+    --scheme-highlight: #000080;
 }
 
-.win98-container { background: var(--win98-primary) !important; }
-
-/* Theme overrides */
-body.win98-mode.matrix-theme .win98-container .window,
-body.win98-mode.cyber-theme .win98-container .window
+.win98-container .title-bar:not(.inactive)
 {
-    background: var(--win98-window);
-    color: var(--win98-text);
+    background: linear-gradient(90deg, var(--scheme-title-a), var(--scheme-title-b));
 }
 
-body.win98-mode.matrix-theme .win98-container .title-bar,
-body.win98-mode.cyber-theme .win98-container .title-bar
+.win98-container .title-bar.inactive
 {
-    background: var(--win98-secondary) !important;
-    color: var(--win98-text) !important;
+    background: linear-gradient(90deg, #808080, var(--scheme-face));
 }
 
-body.win98-mode.matrix-theme .win98-container .title-bar-text,
-body.win98-mode.cyber-theme .win98-container .title-bar-text { color: var(--win98-text); }
-
-body.win98-mode.matrix-theme .win98-container button,
-body.win98-mode.cyber-theme .win98-container button
+.win98-container .win98-start-menu-item:hover,
+.win98-container .win98-start-menu-item.active,
+.win98-start-menu-item:hover,
+.win98-start-menu-item.active,
+.win98-context-menu-item:hover:not(.disabled),
+.win98-container .desktop-icon.selected .desktop-icon-label
 {
-    background: var(--win98-secondary);
-    color: var(--win98-text);
+    background: var(--scheme-highlight);
 }
 
-body.win98-mode.matrix-theme .win98-container button:hover,
-body.win98-mode.cyber-theme .win98-container button:hover
+/* non-standard schemes recolor the 3D face; !important beats the inline #c0c0c0 used across the apps */
+.win98-container:not(.scheme-standard) .window,
+.win98-container:not(.scheme-standard) .window-body,
+.win98-container:not(.scheme-standard) .status-bar,
+.win98-container:not(.scheme-standard) .status-bar-field,
+.win98-container:not(.scheme-standard) button,
+.win98-container:not(.scheme-standard) fieldset legend,
+.win98-container:not(.scheme-standard) menu[role="tablist"] li,
+.win98-container:not(.scheme-standard) .win98-taskbar,
+.win98-container:not(.scheme-standard) .win98-taskbar-item,
+.win98-container:not(.scheme-standard) .win98-start-menu,
+.win98-container:not(.scheme-standard) .win98-start-submenu,
+.win98-container:not(.scheme-standard) .win98-context-menu,
+.win98-container:not(.scheme-standard) .context-menu
 {
-    background: var(--win98-highlight);
-    color: white;
-}
-
-body.win98-mode.matrix-theme .win98-container .status-bar,
-body.win98-mode.cyber-theme .win98-container .status-bar
-{
-    background: var(--win98-secondary);
-    color: var(--win98-text);
-}
-
-body.win98-mode.matrix-theme .win98-container fieldset,
-body.win98-mode.cyber-theme .win98-container fieldset
-{ border-color: var(--win98-text); }
-
-body.win98-mode.matrix-theme .win98-container legend,
-body.win98-mode.cyber-theme .win98-container legend { color: var(--win98-text); }
-
-body.win98-mode.matrix-theme
-{
-    --win98-primary: #000000;
-    --win98-secondary: #001100;
-    --win98-accent: #00ff00;
-    --win98-window: #001100;
-    --win98-text: #00ff00;
-    --win98-highlight: #00ff00;
-}
-
-body.win98-mode.cyber-theme
-{
-    --win98-primary: #0a0a0a;
-    --win98-secondary: #1a0033;
-    --win98-accent: #ff00ff;
-    --win98-window: #1a0033;
-    --win98-text: #00ffff;
-    --win98-highlight: #ff00ff;
+    background-color: var(--scheme-face) !important;
 }
 
 .desktop-icon { z-index: 100 !important; }
@@ -2382,7 +2293,7 @@ body.win98-mode.cyber-theme
 .win98-start-menu-sidebar
 {
     width: 26px;
-    background: linear-gradient(180deg, #000080 0%, #1084d0 100%);
+    background: linear-gradient(0deg, #000080 0%, #1084d0 100%);
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -2394,12 +2305,16 @@ body.win98-mode.cyber-theme
 {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
+    color: #c0c0c0;
+    font-weight: normal;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+}
+
+.win98-start-menu-sidebar b
+{
     color: #ffffff;
-    font-weight: bold;
-    font-size: 13px;
-    letter-spacing: 2px;
-    font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+    font-weight: 900;
 }
 
 .win98-start-menu-content
@@ -2429,11 +2344,12 @@ body.win98-mode.cyber-theme
     color: #ffffff;
 }
 
+/* start menu sits on the taskbar, so submenus grow upward to stay on screen */
 .win98-start-submenu
 {
     position: absolute;
     left: 100%;
-    top: 0;
+    bottom: -4px;
     background: #c0c0c0;
     border: 2px outset #ffffff;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
@@ -2448,4 +2364,59 @@ body.win98-mode.cyber-theme
     border-top: 1px solid #808080;
     border-bottom: 1px solid #ffffff;
     margin: 3px 2px;
+}
+
+/* touch: no callout or text selection on long press, no double-tap zoom on the desktop */
+.win98-container
+{
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+}
+
+.win98-taskbar-item
+{
+    min-width: 0;
+    flex: 0 1 auto;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* phones: windows are full screen (see lib/win98-mobile.js), so make the chrome finger-sized */
+@media (max-width: 768px)
+{
+    .win98-taskbar-handle,
+    .win98-taskbar-divider,
+    .win98-quick-launch button:not([title="Show Desktop"]) { display: none; }
+
+    .win98-taskbar-item
+    {
+        flex: 0 1 110px;
+        padding: 0 4px;
+    }
+
+    .win98-container .title-bar { min-height: 30px; }
+
+    .win98-container .title-bar-controls button
+    {
+        min-width: 26px;
+        min-height: 22px;
+        background-position: center !important;
+    }
+
+    .win98-container .title-bar-controls button[aria-label="Minimize"] { background-position: bottom 5px center !important; }
+
+    .win98-start-menu-item { padding: 9px 10px; }
+
+    .win98-start-submenu { min-width: 150px; }
+
+    .win98-context-menu-item { padding: 9px 18px 9px 8px; }
+
+    .win98-container .desktop-icon { padding: 6px 0; }
+}
+
+/* calculator keys share grid columns; 98.css gives buttons a 75px min-width that overflows the window */
+.win98-calculator button
+{
+    min-width: 0;
+    padding: 0;
 }

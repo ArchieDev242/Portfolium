@@ -330,7 +330,7 @@ const ProjectPageClient = ({ params }) => {
             <div>
               <h3 className = "text-xl font-semibold mb-3">Technologies Used</h3>
               <div className = "flex flex-wrap gap-2">
-                {project.technologies.map((tech, index) => (
+                {(project.technologies || []).map((tech, index) => (
                   <span
                     key = {index}
                     className = "px-3 py-1 bg-accent-default/20 text-accent-default rounded-full text-sm"
@@ -425,7 +425,7 @@ const ProjectPageClient = ({ params }) => {
               <h3 className = "text-xl font-semibold">How to Use</h3>
               <ol className = "list-decimal list-inside space-y-2 text-white/80">
                 <li>
-                  Upload your video into the "videos" folder in Psych Engine
+                  Upload your video into the &quot;videos&quot; folder in Psych Engine
                 </li>
                 <li>Ensure your video is sized at 1280x720 resolution</li>
                 <li>Add the Lua script to your mod</li>
@@ -435,16 +435,16 @@ const ProjectPageClient = ({ params }) => {
               <div className = "bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
                 <h4 className = "text-yellow-400 font-semibold mb-2">Note:</h4>
                 <p className = "text-white/80 text-sm">
-                  You may encounter a "return value not supported" message when
-                  playing songs with cutscenes. This doesn't affect gameplay or
-                  the mod's functionality, so it can be safely ignored.
+                  You may encounter a &quot;return value not supported&quot; message when
+                  playing songs with cutscenes. This doesn&apos;t affect gameplay or
+                  the mod&apos;s functionality, so it can be safely ignored.
                 </p>
               </div>
 
               <h3 className = "text-xl font-semibold">Impact</h3>
               <p className = "text-white/80 leading-relaxed">
                 This simple tool has helped over 3,000 modders easily add
-                cutscenes to their Friday Night Funkin' mods without needing to
+                cutscenes to their Friday Night Funkin&apos; mods without needing to
                 learn Lua programming. It demonstrates how small utilities can
                 have a significant impact on the modding community.
               </p>

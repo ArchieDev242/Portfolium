@@ -10,8 +10,8 @@ import { projectsData } from "@/data/projects";
 import { withBasePath } from "@/lib/asset-path";
 import AddProjectModal from "@/components/AddProjectModal";
 
-// dev-only: flip to true locally to show the "+ Add Project" button, keep false before committing/deploying
-const IS_ADMIN = false;
+// the add-project button only exists in `npm run dev`; static export builds never show it
+const IS_ADMIN = process.env.NODE_ENV === "development";
 
 const IconComponent = ({ name }) => {
   switch(name)
@@ -65,7 +65,7 @@ const ProjectCard = ({ project, index }) => {
             : project.description}
         </p>
         <div className = "flex flex-wrap gap-2 mb-4">
-          {project.technologies.map((tech, i) => (
+          {(project.technologies || []).map((tech, i) => (
             <span
               key = {i}
               className = "px-3 py-1 bg-accent-default/10 text-accent-default rounded-full text-sm"
@@ -127,7 +127,7 @@ const ProjectsPage = () => {
       {IS_ADMIN && (
         <button
           onClick = {() => set_is_add_modal_open(true)}
-          className = "fixed bottom-8 right-8 z-40 w-14 h-14 rounded-full bg-accent-default text-black text-2xl font-bold shadow-lg hover:scale-110 transition-transform"
+          className = "fixed bottom-24 right-6 z-40 w-14 h-14 rounded-full bg-accent-default text-black text-2xl font-bold shadow-lg hover:scale-110 transition-transform"
           title = "Add Project"
         >
           +

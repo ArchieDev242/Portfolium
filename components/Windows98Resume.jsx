@@ -52,7 +52,7 @@ const Win98_resume = ({ onClose, onFocus, onMinimize, isMinimized, isActive, zIn
   return (
     <Windows98Window
       title = "Resume - Maksym Kopychko"
-      icon = {WIN98_ICONS.users}
+      icon = {WIN98_ICONS.file_lines}
       onClose = {onClose}
       onFocus = {onFocus}
       isActive = {isActive}

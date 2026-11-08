@@ -1,26 +1,28 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
 import Windows98Window from './Windows98Window';
-import { getWin98Icon, WIN98_ICONS } from '@/lib/win98-icons';
+import { WIN98_ICONS } from '@/lib/win98-icons';
 import { play_sound } from '@/lib/win98-audio';
+import {
+  WALLPAPERS,
+  PATTERNS,
+  SCHEMES,
+  SCREENSAVERS,
+  DEFAULT_DISPLAY,
+  get_desktop_background,
+  get_scheme
+} from '@/lib/win98-display';
 
-const WALLPAPERS = [
-  { id: 'teal', name: 'Windows 98 Teal', color: '#008080' },
-  { id: 'navy', name: 'Setup 98 Navy', color: '#000080' },
-  { id: 'forest', name: 'Forest Green', color: '#228B22' },
-  { id: 'ocean', name: 'Ocean Blue', color: '#006994' },
-  { id: 'sunset', name: 'Sunset Orange', color: '#FF6347' },
-  { id: 'matrix', name: 'Matrix Black', color: '#000000' },
-  { id: 'cyber', name: 'Cyberpunk Violet', color: '#1a0033' }
-];
+const LIST_ITEM_STYLE = {
+  padding: '2px 6px',
+  cursor: 'default',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '6px'
+};
 
-const SCREENSAVERS = [
-  { id: 'mystify', name: 'Mystify Your Mind' },
-  { id: 'starfield', name: '3D Flying Windows / Starfield' },
-  { id: 'none', name: '(None)' }
-];
+const BUTTON_STYLE = { minWidth: '70px', height: '23px', fontSize: '11px' };
 
 const Windows98DisplayProperties = ({
   onClose,
@@ -29,21 +31,25 @@ const Windows98DisplayProperties = ({
   isMinimized,
   isActive,
   zIndex,
-  current_wallpaper = '#008080',
-  on_apply_wallpaper,
-  current_screensaver = 'mystify',
-  on_apply_screensaver,
+  current_settings = DEFAULT_DISPLAY,
+  on_apply,
   on_preview_screensaver
 }) => {
   const [active_tab, set_active_tab] = useState('background');
-  const [selected_wallpaper, set_selected_wallpaper] = useState(current_wallpaper);
-  const [selected_screensaver, set_selected_screensaver] = useState(current_screensaver);
-  const [idle_minutes, set_idle_minutes] = useState(2);
+  const [draft, set_draft] = useState(current_settings);
   const mini_canvas_ref = useRef(null);
+
+  const is_dirty = JSON.stringify(draft) !== JSON.stringify(current_settings);
+  const scheme = get_scheme(draft.scheme);
+
+  const update_draft = (changes) => {
+    play_sound('click');
+    set_draft(prev => ({ ...prev, ...changes }));
+  };
 
   // Mini screensaver animation inside CRT monitor
   useEffect(() => {
-    if(active_tab !== 'screensaver' || selected_screensaver === 'none') return;
+    if(active_tab !== 'screensaver' || draft.screensaver === 'none') return;
 
     const canvas = mini_canvas_ref.current;
     if(!canvas) return;
@@ -54,7 +60,7 @@ const Windows98DisplayProperties = ({
     const w = (canvas.width = 152);
     const h = (canvas.height = 112);
 
-    if(selected_screensaver === 'starfield')
+    if(draft.screensaver === 'starfield')
     {
       const stars = Array.from({ length: 40 }, () => ({
         x: (Math.random() - 0.5) * w,
@@ -126,18 +132,25 @@ const Windows98DisplayProperties = ({
     }
 
     return () => cancelAnimationFrame(anim_id);
-  }, [active_tab, selected_screensaver]);
+  }, [active_tab, draft.screensaver]);
 
   const handle_apply = () => {
     play_sound('click');
-    if(on_apply_wallpaper) on_apply_wallpaper(selected_wallpaper);
-    if(on_apply_screensaver) on_apply_screensaver(selected_screensaver);
+    if(on_apply) on_apply(draft);
   };
 
   const handle_ok = () => {
-    handle_apply();
+    if(is_dirty && on_apply) on_apply(draft);
     if(onClose) onClose();
   };
+
+  const tab = (id, label) => (
+    <li role = "tab" aria-selected = {active_tab === id}>
+      <a href = {`#${id}`} onClick = {(e) => { e.preventDefault(); set_active_tab(id); }}>
+        {label}
+      </a>
+    </li>
+  );
 
   return (
     <Windows98Window
@@ -150,13 +163,13 @@ const Windows98DisplayProperties = ({
       isActive = {isActive}
       zIndex = {zIndex}
       width = {410}
-      height = {475}
+      height = {500}
       resizable = {false}
       maximizable = {false}
       minimizable = {true}
     >
-      <div 
-        style = {{ 
+      <div
+        style = {{
           padding: '4px',
           fontFamily: '"Pixelated MS Sans Serif", Arial, sans-serif',
           fontSize: '11px',
@@ -164,29 +177,16 @@ const Windows98DisplayProperties = ({
           userSelect: 'none'
         }}
       >
-        {/* Tabs */}
         <menu role = "tablist">
-          <li role = "tab" aria-selected = {active_tab === 'background'}>
-            <a href = "#background" onClick = {(e) => { e.preventDefault(); set_active_tab('background'); }}>
-              Background
-            </a>
-          </li>
-          <li role = "tab" aria-selected = {active_tab === 'screensaver'}>
-            <a href = "#screensaver" onClick = {(e) => { e.preventDefault(); set_active_tab('screensaver'); }}>
-              Screen Saver
-            </a>
-          </li>
-          <li role = "tab" aria-selected = {active_tab === 'appearance'}>
-            <a href = "#appearance" onClick = {(e) => { e.preventDefault(); set_active_tab('appearance'); }}>
-              Appearance
-            </a>
-          </li>
+          {tab('background', 'Background')}
+          {tab('screensaver', 'Screen Saver')}
+          {tab('appearance', 'Appearance')}
         </menu>
 
-        <div className = "window" role = "tabpanel" style = {{ padding: '10px', minHeight: '340px' }}>
-          {/* Authentic Mini CRT Monitor Preview Box */}
-          <div style = {{ display: 'flex', justifyContent: 'center', marginBottom: '12px' }}>
-            <div 
+        <div className = "window" role = "tabpanel" style = {{ padding: '10px', minHeight: '360px' }}>
+          {/* mini CRT monitor preview */}
+          <div style = {{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
+            <div
               style = {{
                 width: '184px',
                 height: '144px',
@@ -201,12 +201,14 @@ const Windows98DisplayProperties = ({
                 position: 'relative'
               }}
             >
-              {/* Inner CRT Glass Screen */}
-              <div 
+              <div
+                data-testid = "display-preview"
                 style = {{
                   width: '154px',
                   height: '114px',
-                  background: active_tab === 'screensaver' ? '#000000' : selected_wallpaper,
+                  ...(active_tab === 'screensaver'
+                    ? { background: '#000000' }
+                    : get_desktop_background(draft.wallpaper, draft.pattern)),
                   border: '2px inset #000000',
                   borderRadius: '3px',
                   overflow: 'hidden',
@@ -217,26 +219,25 @@ const Windows98DisplayProperties = ({
                 }}
               >
                 {active_tab === 'screensaver' ? (
-                  selected_screensaver !== 'none' ? (
+                  draft.screensaver !== 'none' ? (
                     <canvas ref = {mini_canvas_ref} style = {{ display: 'block', width: '152px', height: '112px' }} />
                   ) : (
                     <div style = {{ color: '#888888', fontSize: '9px' }}>(None)</div>
                   )
                 ) : (
-                  /* Mini Window Preview on Desktop */
-                  <div 
+                  <div
                     style = {{
                       width: '110px',
                       height: '75px',
-                      background: '#c0c0c0',
+                      background: scheme.face,
                       border: '1px outset #ffffff',
                       boxShadow: '1px 1px 3px rgba(0,0,0,0.5)',
                       padding: '1px'
                     }}
                   >
-                    <div 
+                    <div
                       style = {{
-                        background: 'linear-gradient(90deg, #000080, #1084d0)',
+                        background: `linear-gradient(90deg, ${scheme.title_a}, ${scheme.title_b})`,
                         color: '#ffffff',
                         fontSize: '7px',
                         fontWeight: 'bold',
@@ -250,13 +251,15 @@ const Windows98DisplayProperties = ({
                     </div>
                     <div style = {{ padding: '4px', fontSize: '7px', color: '#000000' }}>
                       Window Text
+                      <div style = {{ marginTop: '4px', background: scheme.highlight, color: '#ffffff', padding: '0 2px' }}>
+                        Selected
+                      </div>
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* Monitor Stand */}
-              <div 
+              <div
                 style = {{
                   position: 'absolute',
                   bottom: '-12px',
@@ -270,132 +273,133 @@ const Windows98DisplayProperties = ({
             </div>
           </div>
 
-          {/* Tab 1: Background */}
           {active_tab === 'background' && (
-            <div>
-              <fieldset>
-                <legend>Wallpaper</legend>
-                <div style = {{ display: 'flex', gap: '8px' }}>
-                  <div 
-                    className = "sunken-panel"
-                    style = {{
-                      flex: 1,
-                      height: '110px',
-                      background: '#ffffff',
-                      overflowY: 'auto',
-                      border: '2px inset #808080'
-                    }}
-                  >
-                    {WALLPAPERS.map((wp) => (
+            <fieldset>
+              <legend>Wallpaper</legend>
+              <div style = {{ display: 'flex', gap: '8px' }}>
+                <div
+                  role = "listbox"
+                  aria-label = "Wallpaper"
+                  style = {{
+                    flex: 1,
+                    height: '132px',
+                    background: '#ffffff',
+                    overflowY: 'auto',
+                    border: '2px inset #808080'
+                  }}
+                >
+                  {WALLPAPERS.map((wp) => {
+                    const is_selected = draft.wallpaper === wp.color;
+                    return (
                       <div
                         key = {wp.id}
-                        onClick = {() => { play_sound('click'); set_selected_wallpaper(wp.color); }}
+                        role = "option"
+                        aria-selected = {is_selected}
+                        onClick = {() => update_draft({ wallpaper: wp.color })}
                         style = {{
-                          padding: '2px 6px',
-                          cursor: 'pointer',
-                          background: selected_wallpaper === wp.color ? '#000080' : 'transparent',
-                          color: selected_wallpaper === wp.color ? '#ffffff' : '#000000',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '6px'
+                          ...LIST_ITEM_STYLE,
+                          background: is_selected ? '#000080' : 'transparent',
+                          color: is_selected ? '#ffffff' : '#000000'
                         }}
                       >
                         <div style = {{ width: '12px', height: '12px', background: wp.color, border: '1px solid #000000' }} />
                         <span>{wp.name}</span>
                       </div>
-                    ))}
-                  </div>
-
-                  <div style = {{ width: '100px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <button style = {{ height: '23px', fontSize: '11px' }} onClick = {() => set_selected_wallpaper('#008080')}>
-                      Default
-                    </button>
-                    <div style = {{ fontSize: '10px', marginTop: '6px' }}>Display:</div>
-                    <select style = {{ fontSize: '11px' }}>
-                      <option>Stretch</option>
-                      <option>Tile</option>
-                      <option>Center</option>
-                    </select>
-                  </div>
+                    );
+                  })}
                 </div>
-              </fieldset>
-            </div>
-          )}
 
-          {/* Tab 2: Screen Saver */}
-          {active_tab === 'screensaver' && (
-            <div>
-              <fieldset>
-                <legend>Screen Saver</legend>
-                <div style = {{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '10px' }}>
-                  <select 
-                    value = {selected_screensaver}
-                    onChange = {(e) => { play_sound('click'); set_selected_screensaver(e.target.value); }}
-                    style = {{ flex: 1, fontSize: '11px', height: '22px' }}
+                <div style = {{ width: '100px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <button
+                    style = {{ height: '23px', fontSize: '11px' }}
+                    onClick = {() => update_draft({ wallpaper: DEFAULT_DISPLAY.wallpaper, pattern: DEFAULT_DISPLAY.pattern })}
                   >
-                    {SCREENSAVERS.map((sc) => (
-                      <option key = {sc.id} value = {sc.id}>{sc.name}</option>
-                    ))}
-                  </select>
-
-                  <button 
-                    onClick = {() => { if(on_preview_screensaver) on_preview_screensaver(); }}
-                    style = {{ minWidth: '70px', height: '23px', fontSize: '11px' }}
-                  >
-                    Preview
+                    Default
                   </button>
-                </div>
-
-                <div style = {{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span>Wait:</span>
-                  <input 
-                    type = "number" 
-                    min = "1" 
-                    max = "60" 
-                    value = {idle_minutes} 
-                    onChange = {(e) => set_idle_minutes(parseInt(e.target.value, 10) || 1)}
-                    style = {{ width: '45px', padding: '2px', fontSize: '11px' }} 
-                  />
-                  <span>minutes</span>
-                </div>
-              </fieldset>
-            </div>
-          )}
-
-          {/* Tab 3: Appearance */}
-          {active_tab === 'appearance' && (
-            <div>
-              <fieldset>
-                <legend>Scheme</legend>
-                <div style = {{ marginBottom: '10px' }}>
-                  <select style = {{ width: '100%', fontSize: '11px', height: '22px' }}>
-                    <option>Windows Standard</option>
-                    <option>Windows Classic</option>
-                    <option>High Contrast Black</option>
-                    <option>Wheat</option>
-                    <option>Rainy Day</option>
-                    <option>Rose</option>
+                  <label htmlFor = "display-pattern" style = {{ fontSize: '11px', marginTop: '6px' }}>Pattern:</label>
+                  <select
+                    id = "display-pattern"
+                    value = {draft.pattern}
+                    onChange = {(e) => update_draft({ pattern: e.target.value })}
+                    style = {{ fontSize: '11px' }}
+                  >
+                    {PATTERNS.map((pattern) => (
+                      <option key = {pattern.id} value = {pattern.id}>{pattern.name}</option>
+                    ))}
                   </select>
                 </div>
-                <div style = {{ fontSize: '11px', color: '#555555' }}>
-                  Classic 3D color gradients, scrollbars, and window borders matching authentic Win98 specifications.
-                </div>
-              </fieldset>
-            </div>
+              </div>
+            </fieldset>
+          )}
+
+          {active_tab === 'screensaver' && (
+            <fieldset>
+              <legend>Screen Saver</legend>
+              <div style = {{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '10px' }}>
+                <select
+                  aria-label = "Screen Saver"
+                  value = {draft.screensaver}
+                  onChange = {(e) => update_draft({ screensaver: e.target.value })}
+                  style = {{ flex: 1, fontSize: '11px', height: '22px' }}
+                >
+                  {SCREENSAVERS.map((sc) => (
+                    <option key = {sc.id} value = {sc.id}>{sc.name}</option>
+                  ))}
+                </select>
+
+                <button
+                  disabled = {draft.screensaver === 'none'}
+                  onClick = {() => { if(on_preview_screensaver) on_preview_screensaver(draft.screensaver); }}
+                  style = {BUTTON_STYLE}
+                >
+                  Preview
+                </button>
+              </div>
+
+              <div style = {{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <label htmlFor = "display-wait">Wait:</label>
+                <input
+                  id = "display-wait"
+                  type = "number"
+                  min = "1"
+                  max = "60"
+                  disabled = {draft.screensaver === 'none'}
+                  value = {draft.idle_minutes}
+                  onChange = {(e) => set_draft(prev => ({
+                    ...prev,
+                    idle_minutes: Math.min(60, Math.max(1, parseInt(e.target.value, 10) || 1))
+                  }))}
+                  style = {{ width: '45px', padding: '2px', fontSize: '11px' }}
+                />
+                <span>minutes</span>
+              </div>
+            </fieldset>
+          )}
+
+          {active_tab === 'appearance' && (
+            <fieldset>
+              <legend>Scheme</legend>
+              <select
+                aria-label = "Scheme"
+                value = {draft.scheme}
+                onChange = {(e) => update_draft({ scheme: e.target.value })}
+                style = {{ width: '100%', fontSize: '11px', height: '22px', marginBottom: '10px' }}
+              >
+                {SCHEMES.map((item) => (
+                  <option key = {item.id} value = {item.id}>{item.name}</option>
+                ))}
+              </select>
+              <div style = {{ fontSize: '11px', color: '#555555' }}>
+                Changes window, menu and title bar colors for the whole desktop.
+              </div>
+            </fieldset>
           )}
         </div>
 
-        {/* Action Buttons */}
         <div style = {{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginTop: '10px' }}>
-          <button onClick = {handle_ok} style = {{ minWidth: '70px', height: '23px', fontSize: '11px' }}>
-            OK
-          </button>
-          <button onClick = {onClose} style = {{ minWidth: '70px', height: '23px', fontSize: '11px' }}>
-            Cancel
-          </button>
-          <button onClick = {handle_apply} style = {{ minWidth: '70px', height: '23px', fontSize: '11px' }}>
-            Apply
-          </button>
+          <button onClick = {handle_ok} style = {BUTTON_STYLE}>OK</button>
+          <button onClick = {onClose} style = {BUTTON_STYLE}>Cancel</button>
+          <button onClick = {handle_apply} disabled = {!is_dirty} style = {BUTTON_STYLE}>Apply</button>
         </div>
       </div>
     </Windows98Window>

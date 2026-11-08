@@ -1,6 +1,41 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import SkillIcon from './SkillIcon';
+
+// list of possible skills
+const SKILLS = [
+  'html', 'css', 'js', 'react', 'nextjs',
+  'nodejs', 'express', 'mongodb', 'tailwind', 'figma'
+];
+
+const create_target = (game_area_el) => {
+  if(!game_area_el) return null;
+
+  const game_area = game_area_el.getBoundingClientRect();
+  const size = Math.floor(Math.random() * 30) + 40; // Size from 40 to 70px
+
+  const x = Math.floor(Math.random() * (game_area.width - size));
+  const y = Math.floor(Math.random() * (game_area.height - size));
+
+  const skill = SKILLS[Math.floor(Math.random() * SKILLS.length)];
+
+  const speed_x = (Math.random() - 0.5) * 4;
+  const speed_y = (Math.random() - 0.5) * 4;
+
+  const points = Math.floor(Math.random() * 3) + 1;
+
+  return {
+    id: Date.now() + Math.random(),
+    x,
+    y,
+    size,
+    skill,
+    speedX: speed_x,
+    speedY: speed_y,
+    points,
+    clicked: false
+  };
+};
 
 const SkillMinigame = ({ onComplete }) => {
   const [game_started, setGameStarted] = useState(false);
@@ -9,41 +44,6 @@ const SkillMinigame = ({ onComplete }) => {
   const [timeLeft, setTimeLeft] = useState(30);
   const [targets, setTargets] = useState([]);
   const game_area_ref = useRef(null);
-  
-  // list of possible skills
-  const skills = [
-    'html', 'css', 'js', 'react', 'nextjs', 
-    'nodejs', 'express', 'mongodb', 'tailwind', 'figma'
-  ];
-  
-  const create_target = () => {
-    if(!game_area_ref.current) return null;
-    
-    const gameArea = game_area_ref.current.getBoundingClientRect();
-    const size = Math.floor(Math.random() * 30) + 40; // Size from 40 to 70px
-    
-    const x = Math.floor(Math.random() * (gameArea.width - size));
-    const y = Math.floor(Math.random() * (gameArea.height - size));
-    
-    const skill = skills[Math.floor(Math.random() * skills.length)];
-    
-    const speed_x = (Math.random() - 0.5) * 4;
-    const speed_y = (Math.random() - 0.5) * 4;
-    
-    const points = Math.floor(Math.random() * 3) + 1;
-    
-    return {
-      id: Date.now() + Math.random(),
-      x,
-      y,
-      size,
-      skill,
-      speedX: speed_x,
-      speedY: speed_y,
-      points,
-      clicked: false
-    };
-  };
   
   const update_targets = () => {
     if(!game_area_ref.current) return;
@@ -110,34 +110,30 @@ const SkillMinigame = ({ onComplete }) => {
     setTargets([]);
   };
   
-  const end_game = () => {
+  const end_game = useCallback(() => {
     setGameStarted(false);
     setGameOver(true);
-    
-    if(onComplete) 
-      {
+
+    if(onComplete)
+    {
       onComplete(score);
     }
-  };
-  
+  }, [onComplete, score]);
+
   useEffect(() => {
     if(!game_started || game_over) return;
-    
-    const timer = setInterval(() => {
-      setTimeLeft(prevTime => {
-        if(prevTime <= 1) 
-          {
-          clearInterval(timer);
-          end_game();
 
-          return 0;
-        }
-        return prevTime - 1;
-      });
+    const timer = setInterval(() => {
+      setTimeLeft(prevTime => Math.max(0, prevTime - 1));
     }, 1000);
-    
+
     return () => clearInterval(timer);
   }, [game_started, game_over]);
+
+  // end from an effect, not the state updater, so onComplete gets the final score
+  useEffect(() => {
+    if(game_started && !game_over && timeLeft === 0) end_game();
+  }, [game_started, game_over, timeLeft, end_game]);
   
   useEffect(() => {
     if(!game_started || game_over) return;
@@ -145,7 +141,7 @@ const SkillMinigame = ({ onComplete }) => {
     const interval = setInterval(() => {
       if(targets.length < 10) 
         {
-        const new_target = create_target();
+        const new_target = create_target(game_area_ref.current);
 
         if(new_target) 
           {

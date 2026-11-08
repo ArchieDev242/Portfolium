@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { get_master_volume, set_master_volume, get_sound_muted, set_sound_muted, play_sound } from '@/lib/win98-audio';
 
-const Windows98VolumePopup = ({ on_close }) => {
+const Windows98VolumePopup = ({ on_close, on_mute_change }) => {
   const popup_ref = useRef(null);
   const [volume, set_volume] = useState(Math.round(get_master_volume() * 100));
   const [muted, set_muted] = useState(get_sound_muted());
@@ -45,6 +45,7 @@ const Windows98VolumePopup = ({ on_close }) => {
     const is_m = e.target.checked;
     set_muted(is_m);
     set_sound_muted(is_m);
+    if(on_mute_change) on_mute_change(is_m);
     if(!is_m) play_sound('click');
   };
 

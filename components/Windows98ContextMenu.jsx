@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { getWin98Icon } from '@/lib/win98-icons';
 import { play_sound } from '@/lib/win98-audio';
@@ -31,18 +31,29 @@ const Windows98ContextMenu = ({ x, y, items = [], on_close }) => {
     };
   }, [on_close]);
 
-  const win_w = typeof window !== 'undefined' ? window.innerWidth : 800;
-  const win_h = typeof window !== 'undefined' ? window.innerHeight : 600;
-  const adjusted_x = Math.max(0, Math.min(x, win_w - 180));
-  const adjusted_y = Math.max(0, Math.min(y, win_h - items.length * 24 - 15));
+  const [position, set_position] = useState({ x, y });
+
+  // measure the real menu, then open it up/left of the pointer when it would leave the screen, like Win98
+  useLayoutEffect(() => {
+    const menu = menu_ref.current;
+    if(!menu) return;
+
+    const { width, height } = menu.getBoundingClientRect();
+    const flip_x = x + width > window.innerWidth ? x - width : x;
+    const flip_y = y + height > window.innerHeight ? y - height : y;
+    set_position({
+      x: Math.max(0, Math.min(flip_x, window.innerWidth - width)),
+      y: Math.max(0, Math.min(flip_y, window.innerHeight - height))
+    });
+  }, [x, y, items.length]);
 
   return (
     <div 
       ref = {menu_ref}
       className = "win98-context-menu"
       style = {{
-        left: `${adjusted_x}px`,
-        top: `${adjusted_y}px`
+        left: `${position.x}px`,
+        top: `${position.y}px`
       }}
       onClick = {(e) => e.stopPropagation()}
       onContextMenu = {(e) => { e.preventDefault(); e.stopPropagation(); }}

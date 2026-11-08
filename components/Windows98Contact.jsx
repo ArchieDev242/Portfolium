@@ -69,12 +69,15 @@ const Win98_contact = ({ onClose, onFocus, onMinimize, isMinimized, isActive, zI
       icon = {WIN98_ICONS.envelope}
       onClose = {onClose}
       onFocus = {onFocus}
+      onMinimize = {onMinimize}
+      isMinimized = {isMinimized}
       isActive = {isActive}
       zIndex = {zIndex}
       width = {600}
       height = {500}
       resizable = {true}
       maximizable = {false}
+      minimizable = {true}
     >
       <div style = {{ fontFamily: 'MS Sans Serif, sans-serif', fontSize: '11px' }}>
         <fieldset style = {{ marginBottom: '15px' }}>

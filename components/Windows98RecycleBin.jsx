@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Windows98Window from './Windows98Window';
 import Windows98ContextMenu from './Windows98ContextMenu';
+import { show_win98_alert, show_win98_confirm } from './Windows98Dialog';
 import { getWin98Icon, WIN98_ICONS } from '@/lib/win98-icons';
 import { play_sound } from '@/lib/win98-audio';
 
@@ -30,9 +31,13 @@ const Windows98RecycleBin = ({
     set_selected_id(null);
   };
 
-  const handle_empty = () => {
+  const handle_empty = async () => {
     if(files.length === 0) return;
-    if(confirm('Are you sure you want to permanently delete all items in the Recycle Bin?'))
+    const confirmed = await show_win98_confirm(`Are you sure you want to delete these ${files.length} items?`, {
+      title: 'Confirm Multiple File Delete',
+      icon: 'warning'
+    });
+    if(confirmed)
     {
       play_sound('close');
       if(onEmptyBin) onEmptyBin();
@@ -58,8 +63,12 @@ const Windows98RecycleBin = ({
         },
         {
           label: 'Delete',
-          action: () => {
-            if(confirm(`Are you sure you want to permanently delete "${file.name}"?`))
+          action: async () => {
+            const confirmed = await show_win98_confirm(`Are you sure you want to delete '${file.name}'?`, {
+              title: 'Confirm File Delete',
+              icon: 'warning'
+            });
+            if(confirmed)
             {
               if(onDeleteForever) onDeleteForever(file.id);
             }
@@ -69,7 +78,9 @@ const Windows98RecycleBin = ({
         {
           label: 'Properties',
           action: () => {
-            alert(`File: ${file.name}\nType: ${file.file_type || 'Document'}\nOriginal Location: C:\\WINDOWS\\Desktop`);
+            show_win98_alert(`File: ${file.name}\nType: ${file.file_type || 'Document'}\nOriginal Location: C:\\WINDOWS\\Desktop`, {
+              title: `${file.name} Properties`
+            });
           }
         }
       ]
